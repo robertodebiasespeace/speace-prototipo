@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "version": "1.0",
+    "created": "2026-04-26T09:13:25.106551",
+    "last_updated": "2026-04-26T09:13:25.782019",
+    "update_count": 0
+  },
+  "speace_state": {
+    "phase": 1,
+    "fitness": 0.5863,
+    "active_agents": [],
+    "last_cycle": "CYCLE-SPEACE-MAIN-0003",
+    "proposals_pending": 0
+  },
+  "planet_state": {
+    "climate": {
+      "status": "critical",
+      "co2_ppm": 422,
+      "last_updated": null
+    },
+    "biodiversity": {
+      "status": "declining",
+      "last_updated": null
+    },
+    "social": {
+      "sdg_progress": "insufficient",
+      "last_updated": null
+    }
+  },
+  "technology_state": {
+    "ai_capability_level": "narrow_general",
+    "iot_connected_devices_bn": 16,
+    "quantum_readiness": "experimental"
+  },
+  "rigene_objectives": [
+    "Guide AI and tech ecosystem toward improvement of life and natural ecosystems",
+    "Solve global problems: climate change, pollution, poverty, pandemic",
+    "Develop Digital DNA framework for safe technological evolution",
+    "Achieve UN SDGs Agenda 2030",
+    "Create TINA - Technical Intelligent Nervous Adaptive System",
+    "Build distributed cognitive collective brain",
+    "Promote harmony, peace, ecological-social-technological balance"
+  ],
+  "knowledge_graph": {},
+  "scenarios": []
+}

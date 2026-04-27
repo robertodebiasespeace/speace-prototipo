@@ -6,10 +6,10 @@
 # ============================================================
 
 meta:
-  version: "1.3"
-  last_updated: "2026-04-20"
-  last_mutation_id: "EPI-003"
-  mutation_count: 3
+  version: "1.5"
+  last_updated: "2026-04-26"
+  last_mutation_id: "EPI-005"
+  mutation_count: 5
   # EPI-001: Aggiunta sezione consciousness_metrics (ACF Integration)
   #          + fitness_function v2 (6 componenti) in mutation_rules.yaml
   # EPI-002: M2 – external_benchmark_validated=true dopo benchmark suite 6/6 pass
@@ -18,6 +18,14 @@ meta:
   #          Anthropic → mock). Benchmark suite 8/8 pass (incluso bench_llm_smoke
   #          e bench_neural_flow). Flag neural_flow_enabled rimane OFF (opt-in).
   #          (PROP-CORTEX-NEURAL-M3L, evidence in benchmarks/results.json)
+  # EPI-004: M4.18 – Aggiunto blocco mesh: (enabled=false, smfoi_bridge_step3bis=false).
+  #          CNM e2e 26/26 PASS (M4.16). Mesh default-OFF, opt-in via SafeProactive.
+  #          (PROP-CNM-M4-CLOSURE, evidence: cortex/mesh/_tests_e2e.py 26/26)
+  # EPI-005: M5.7 – Attivati blocchi cognitive_autonomy.homeostasis (enabled=true)
+  #          e cognitive_autonomy.motivation (enabled=true).
+  #          HomeostaticController dh/dt + SystemReceptors + ConsciousnessIndex +
+  #          ValueField V_internal verificati (25+N test pass).
+  #          (PROP-COG-AUTONOMY-EPI005)
 
 # --- Parametri di apprendimento e adattamento ---
 learning:
@@ -207,3 +215,58 @@ mutation_history:
       Suite benchmark estesa: 8/8 pass (aggiunti bench_llm_smoke + bench_neural_flow).
     evidence: "benchmarks/results.json (8/8 pass, 2026-04-20)"
     snapshot_pre: "pending_before_m4_1"   # snapshot dedicato verrà creato prima di M4.1
+  - id: "EPI-004"
+    timestamp: "2026-04-26T09:15:00"
+    proposal: "PROP-CNM-M4-CLOSURE"
+    change: >
+      Aggiunto blocco mesh: con enabled=false (default OFF) e smfoi_bridge_step3bis=false.
+      Test e2e CNM 26/26 PASS (M4.16). Bridge SMFOI step3bis opt-in.
+      BrainIntegration integrato nel runtime (NEU-003, --brain flag).
+      Tutti i moduli BRN-001->020 importabili (21/21 smoke test).
+    evidence: "cortex/mesh/_tests_e2e.py (26/26 pass, 2026-04-26)"
+    snapshot_pre: "snap_20260426_091325_startup"
+  - id: "EPI-005"
+    timestamp: "2026-04-26T10:30:00"
+    proposal: "PROP-COG-AUTONOMY-EPI005"
+    change: >
+      cognitive_autonomy.homeostasis.enabled: false -> true
+      cognitive_autonomy.motivation.enabled: false -> true
+      HomeostaticController dh/dt, SystemReceptors wiring,
+      ConsciousnessIndex EMA setpoint emergenti, ValueField V_internal.
+    evidence: "cortex/cognitive_autonomy/homeostasis/_tests_homeostasis.py (25/25)"
+    snapshot_pre: "snap_20260426_091325_startup"
+
+# --- Mesh CNM (M4) ---
+mesh:
+  enabled: false                # EPI-004: OFF by default — abilitare con proposta SafeProactive
+  smfoi_bridge_step3bis: false  # step3bis opt-in: attivare dopo staging M4.16 verificato
+  heartbeat_interval_s: 60      # intervallo tick daemon mesh
+  telemetry_path: "safeproactive/state/mesh_state.jsonl"
+  max_proposals_per_tick: 5
+  harmony_alert_threshold: 0.65
+  needs_baseline_neurons: 10
+
+# --- Cognitive Autonomy M5 ---
+cognitive_autonomy:
+  homeostasis:
+    enabled: true               # EPI-005: ON (2026-04-26) — HomeostaticController attivo
+    heartbeat_s: 30.0
+    k_restore: 0.10             # forza ripristino verso setpoint
+    k_input: 0.30               # peso receptor reading
+    tolerance: 0.15
+    h_setpoint_static:
+      energy:    0.75
+      safety:    0.95
+      curiosity: 0.50
+      coherence: 0.70
+      alignment: 0.80
+  motivation:
+    enabled: true               # EPI-005: ON (2026-04-26) — ValueField V_internal attivo
+  memory:
+    enabled: false              # M5.8
+  attention:
+    enabled: false              # M5.11
+  plasticity:
+    enabled: false              # M5.14
+  constraints:
+    enabled: false              # M5.17

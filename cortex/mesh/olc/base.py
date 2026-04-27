@@ -111,7 +111,10 @@ class OLCBase:
             if "List[" in ann or "list[" in ann:
                 if val is not None and not isinstance(val, (list, tuple)):
                     violations.append(f"{type(self).__name__}.{f.name}: atteso list/tuple, trovato {type(val).__name__}")
-            if ("Dict[" in ann or "dict[" in ann) and val is not None and not isinstance(val, dict):
+            elif ("Dict[" in ann or "dict[" in ann) and val is not None and not isinstance(val, dict):
+                # NB: elif (non if) — un'annotazione `List[Dict[str, Any]]` contiene
+                # entrambi i token; senza elif il check Dict scatterebbe sulla list
+                # e produrrebbe un falso positivo "atteso dict, trovato list".
                 violations.append(f"{type(self).__name__}.{f.name}: atteso dict, trovato {type(val).__name__}")
         return violations
 

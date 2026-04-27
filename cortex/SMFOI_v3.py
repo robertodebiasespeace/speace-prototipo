@@ -104,6 +104,41 @@ class SMFOIKernel:
             push = self._step3_push_detection(external_push)
             context["push"] = push
 
+            # STEP 3.bis (M4.15, OPT-IN): Needs Check via Continuous Neural Mesh.
+            # Attivo solo se `epigenome.mesh.enabled` (default OFF, abilitato in EPI-004).
+            # Fail-soft: qualunque errore non interrompe il ciclo SMFOI.
+            try:
+                from cortex.mesh.smfoi_bridge import is_enabled as _mesh_enabled
+                from cortex.mesh.smfoi_bridge import step3bis_needs_check as _mesh_needs_check
+                if _mesh_enabled(self.epigenome):
+                    runtime_snap = {
+                        "cycles": self.cycle_count,
+                        "agent": self.agent_name,
+                        "recursion_level": self.recursion_level,
+                    }
+                    needs_res = _mesh_needs_check(
+                        push=push,
+                        epigenome=self.epigenome,
+                        runtime_snapshot=runtime_snap,
+                    )
+                    context["mesh_step3bis"] = needs_res.to_dict()
+                    if needs_res.promoted:
+                        push = needs_res.push
+                        context["push"] = push
+                        self._log(
+                            f"[STEP 3.bis] Mesh needs check → promoted "
+                            f"(verdict={needs_res.verdict}, drv={needs_res.driving_need}, "
+                            f"props={needs_res.proposals_count})"
+                        )
+                    else:
+                        self._log(
+                            f"[STEP 3.bis] Mesh needs check → no-op "
+                            f"(verdict={needs_res.verdict or '—'})"
+                        )
+            except Exception as _mesh_err:
+                # Difensivo extra: il bridge è già fail-soft, ma blindiamo il kernel
+                context["mesh_step3bis_error"] = str(_mesh_err)
+
             # STEP 4: Survival & Evolution Stack
             response_level, action_plan = self._step4_survival_evolution(sea_state, constraints, push)
             context["response_level"] = response_level

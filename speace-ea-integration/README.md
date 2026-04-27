@@ -60,8 +60,7 @@ fitness = alignment×0.25 + task_success×0.20 + stability×0.15
 6. Apri MetaEditor (F7), compila l'EA
 7. Trascina l'EA sul chart XAUUSD
 8. Nella scheda **Inputs** imposta:
-   - `SPEACE_RelativePath = speace-ea-integration\shared_state\`
-   - (Il percorso completo sarà: `%APPDATA%\MetaQuotes\Terminal\Common\speace-ea-integration\shared_state\`)
+   - `SPEACE_SharedPath = C:\Users\rober\Documents\Claude\Projects\SPEACE-prototipo\speace-ea-integration\shared_state\`
 
 ### 2. Avvio SPEACE-EA
 
@@ -175,4 +174,9 @@ Mode                 LastWriteTime         Length Name
 -a----        20/04/2026     15:58            165 ea_params.json
 -a----        20/04/2026     15:58            161 ea_state.json
                                                  metrics
+
+
+ Get-Content "C:\Users\rober\Documents\Claude\Projects\SPEACE-prototipo\speace-ea-integration\shared_state\ea_metrics.json"
+
+
 ```

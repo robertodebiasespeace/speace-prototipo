@@ -97,6 +97,12 @@ def api_status() -> Dict[str, Any]:
         c = bench["results"].get("cindex") or {}
         c_index = c.get("c_index")
 
+    # M5.4 — leggi stato cognitivo (viability_score, h_state)
+    cog_state = _read_json(ROOT / "safeproactive" / "state" / "cognitive_state.json") or {}
+    viability_score   = cog_state.get("viability_score", None)
+    h_state           = cog_state.get("h_state", {})
+    cognitive_enabled = cog_state.get("enabled", False)
+
     return {
         "name": "SPEACE",
         "full_name": "SuPer Entità Autonoma Cibernetica Evolutiva",
@@ -108,6 +114,12 @@ def api_status() -> Dict[str, Any]:
         "fitness_target": 0.55,
         "c_index": c_index,
         "c_index_target": 0.42,
+        # M5.4: homeostasis
+        "viability_score":     viability_score,
+        "viability_target":    0.80,
+        "h_state":             h_state,
+        "cognitive_enabled":   cognitive_enabled,
+        "cognitive_ts":        cog_state.get("ts"),
         "cycles_total": len(cycles),
         "last_cycle": last_cycle,
         "last_bench_ts": bench.get("timestamp"),
@@ -396,7 +408,7 @@ INDEX_HTML = r"""<!doctype html>
 <main class="max-w-7xl mx-auto px-6 py-6 space-y-6">
 
   <!-- KPI ROW -->
-  <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
+  <section class="grid grid-cols-2 md:grid-cols-5 gap-4">
     <div class="card">
       <div class="text-xs uppercase text-slate-400">Fase</div>
       <div class="kpi text-3xl font-semibold mt-1" id="kpi-phase">—</div>
@@ -417,6 +429,26 @@ INDEX_HTML = r"""<!doctype html>
       <div class="kpi text-3xl font-semibold mt-1" id="kpi-fit">—</div>
       <div class="text-xs text-slate-500 mt-1">target ≥ 0.55</div>
     </div>
+    <div class="card">
+      <div class="text-xs uppercase text-slate-400">Viability (M5)</div>
+      <div class="kpi text-3xl font-semibold mt-1" id="kpi-viability">—</div>
+      <div class="text-xs text-slate-500 mt-1" id="kpi-viability-sub">homeostasis OFF</div>
+    </div>
+  </section>
+
+  <!-- M5.4 COGNITIVE STATE ROW -->
+  <section id="cognitive-section" class="card" style="display:none">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="font-semibold text-lg">Cognitive Autonomy — Homeostasis (M5)</h2>
+      <span class="chip chip-ok" id="cog-status-chip">ENABLED</span>
+    </div>
+    <p class="text-xs text-slate-400 mb-3">
+      Drive omeostatici (0–1). Setpoint target 0.5–0.8. Viability = media score_d per tutti i drive.
+    </p>
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-3" id="drives-grid">
+      <!-- populated by JS -->
+    </div>
+    <div class="mt-3 text-xs text-slate-400" id="cog-ts">—</div>
   </section>
 
   <!-- CHARTS ROW -->
@@ -566,6 +598,45 @@ async function refresh(){
     document.getElementById('kpi-align').textContent = fmt(status.speace_alignment_score, 1) + ' / 100';
     document.getElementById('kpi-agi').textContent = fmt(agi.overall_on_100, 1);
     document.getElementById('kpi-fit').textContent = fmt(status.fitness_current, 3);
+
+    // M5.4 — Viability KPI
+    const viab = status.viability_score;
+    const viabEl = document.getElementById('kpi-viability');
+    const viabSub = document.getElementById('kpi-viability-sub');
+    if (viab === null || viab === undefined) {
+      viabEl.textContent = '—';
+      viabSub.textContent = 'homeostasis OFF';
+      viabEl.style.color = '';
+    } else {
+      viabEl.textContent = viab.toFixed(3);
+      viabSub.textContent = viab >= 0.80 ? '✓ target ≥ 0.80' : '⚠ sotto target 0.80';
+      viabEl.style.color = viab >= 0.80 ? '#22d3ee' : viab >= 0.60 ? '#f59e0b' : '#ef4444';
+    }
+
+    // M5.4 — Cognitive section + drives grid
+    const cogSec = document.getElementById('cognitive-section');
+    if (status.cognitive_enabled && status.h_state && Object.keys(status.h_state).length > 0) {
+      cogSec.style.display = '';
+      document.getElementById('cog-ts').textContent = 'Aggiornato: ' + (status.cognitive_ts || '—');
+      const grid = document.getElementById('drives-grid');
+      grid.innerHTML = '';
+      const driveColors = {safety:'#22d3ee', energy:'#a3e635', coherence:'#c084fc',
+                           curiosity:'#fb923c', alignment:'#34d399'};
+      for (const [drive, val] of Object.entries(status.h_state)) {
+        const pct = Math.round(val * 100);
+        const color = driveColors[drive] || '#94a3b8';
+        const div = document.createElement('div');
+        div.className = 'text-center';
+        div.innerHTML = \`<div class="text-xs uppercase text-slate-400 mb-1">\${drive}</div>
+          <div class="text-xl font-semibold" style="color:\${color}">\${val.toFixed(3)}</div>
+          <div class="w-full bg-slate-700 rounded-full h-1.5 mt-1">
+            <div class="h-1.5 rounded-full" style="width:\${pct}%;background:\${color}"></div>
+          </div>\`;
+        grid.appendChild(div);
+      }
+    } else {
+      cogSec.style.display = 'none';
+    }
     document.getElementById('v').textContent = status.dashboard_version;
     document.getElementById('subtitle').textContent =
       status.full_name + ' — ' + status.phase_name + ' · mesh ' + (status.mesh_version||'?');

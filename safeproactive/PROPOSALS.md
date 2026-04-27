@@ -5,12 +5,12 @@
 ---
 
 
-## PROP-SYSTEM_S-b8bed3
-- **Timestamp:** 2026-04-20T09:38:45.342891
+## PROP-SYSTEM_S-377fa2
+- **Timestamp:** 2026-04-26T09:13:25.155277
 - **Azione:** system_startup
 - **Risk Level:** LOW
 - **Sorgente:** speace-main
-- **Descrizione:** Avvio sistema SPEACE v1.0 | 3 cicli pianificati
+- **Descrizione:** Avvio sistema SPEACE v1.1 | 3 cicli pianificati | Brain=ON
 - **Status:** APPROVED
 - **Approvato da:** auto-system
 

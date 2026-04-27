@@ -781,4 +781,85 @@ La filosofia è la stessa di M3L (Appendice D): **l'intelligenza emerge dall'arc
 
 ---
 
-*Documento ingegneristico vivo. Versione 1.3 del 2026-04-21 (M3L chiuso; M4-CNM in corso, M4.2–M4.6 chiusi con 74/74 test verdi). Rivedere ad ogni chiusura milestone.*
+## Appendice F — Integrazioni Esterne (Obsidian + Hermes Agent)
+
+**Stato:** SCAFFOLD implementati 2026-04-24 (`cortex/integrations/`), default OFF. Attivazione solo tramite `digitaldna/epigenome.yaml → integrations.*.enabled = true` e approvazione SafeProactive.
+
+### F.1. Motivazione
+
+Due strumenti esterni, se correttamente inglobati, accelerano la roadmap cognitiva senza comprometterne la governance:
+
+1. **Obsidian** — editor Markdown con grafo bidirezionale e plugin REST API locale. Si presta a diventare *external Hippocampus cortex*: le note SPEACE (episodi, proposte, brief Team Scientifico) vengono proiettate nel vault; la graph view rende navigabile la memoria; l'umano può annotare direttamente nel vault e le annotazioni tornano al Default Mode Network come input di riflessione.
+2. **Hermes Agent** (Nous Research, MIT, Feb 2026) — framework agentico che include **memoria persistente FTS5 + LLM summaries**, skill registry, 6 backend di esecuzione (locale/Docker/SSH/Daytona/Singularity/Modal), learning loop, gateway multi-piattaforma. La sua memoria persistente chiude direttamente **GAP 3** della critica BRIGHT/attNA, rimpiazzando l'implementazione custom prevista in M5.6.
+
+### F.2. Architettura
+
+```
+       (umano)                                 SPEACE Cortex
+          │                                          │
+          │                                          │
+     ┌────▼────┐       Local REST API          ┌─────▼─────┐
+     │Obsidian │ ◀────── 127.0.0.1:27123 ─────▶│Hippocampus│
+     │  Vault  │                                └─────┬─────┘
+     └─────────┘                                      │
+                                                      ▼
+                                               ┌──────────────┐
+                                               │ Hermes Agent │
+                                               │  FTS5 mem +  │
+                                               │  skill reg + │
+                                               │  gateways*   │
+                                               └──────┬───────┘
+                                                      │
+                                                      ▼
+                                               SafeProactive
+                                               (veto HIGH)
+
+*gateway WhatsApp/Telegram/Discord: DISABILITATI di default.
+```
+
+### F.3. Flag epigenetici introdotti
+
+Candidati per `EPI-006` (dopo M4-CNM, prima di M5 completo — questa mutazione apre solo gli *hook*, non attiva comportamenti):
+
+```yaml
+integrations:
+  obsidian:
+    enabled: false
+    vault_path: null
+    rest_api_port: 27123
+    folder_episodes: "SPEACE/Episodes"
+    folder_proposals: "SPEACE/Proposals"
+    folder_briefs:   "SPEACE/Briefs"
+    folder_cycle_logs: "SPEACE/Cycles"
+  hermes:
+    enabled: false
+    base_url: null
+    api_key: null
+    memory_db: "memory/hermes.sqlite"
+    allow_gateways: false
+    default_backend: "local"
+```
+
+### F.4. Moduli implementati
+
+- `cortex/integrations/__init__.py` — package marker, documenta la politica opt-in.
+- `cortex/integrations/obsidian_bridge.py` — `ObsidianConfig`, `ObsidianBridge` (`push_episode`, `push_proposal`, `pull_human_notes`). Scrittura gated da `_write_safeproactive_check` (stub LOW-risk).
+- `cortex/integrations/hermes_adapter.py` — `HermesConfig`, `HermesAdapter` (`remember`, `recall`, `run_skill`, `send_via_gateway`). Gating `_safeproactive_gate` con risk-tiering LOW/MEDIUM/HIGH; gateway esterni bloccati per default anche con `allow_gateways=True` finché SafeProactive HIGH non approva.
+
+Nessuno dei due moduli importa dipendenze esterne all'import-time: entrambi sono sicuri da importare anche su macchine senza Obsidian o Hermes installati, coerentemente con la politica "niente side-effect all'import" già applicata al resto del Cortex.
+
+### F.5. Collegamenti con i moduli SPEACE esistenti
+
+- **Hippocampus**: l'output di `episode.commit()` diventa `ObsidianBridge.push_episode()` + `HermesAdapter.remember()` quando i flag sono attivi.
+- **SafeProactive**: ogni scrittura MEDIUM+ verso Hermes (es. `run_skill`) genera automaticamente una `PROP-HERMES-*` in `PROPOSALS.md`.
+- **Default Mode Network (M3L)**: `ObsidianBridge.pull_human_notes()` fornisce input di riflessione estratto direttamente dalle annotazioni umane nel vault.
+- **CNM M4**: gli skill Hermes sono candidati a essere esposti come neuroni di livello **L4 (action)** nel futuro registry mesh.
+- **Team Scientifico**: il *Daily Planetary Health Brief* viene proiettato in `SPEACE/Briefs/` come nota Markdown con frontmatter strutturato, navigabile in graph view.
+
+### F.6. Task correlati (vedi `SPEACE-TASKS-ACTIVE.md`)
+
+`INT-OBS.1`, `INT-OBS.2`, `INT-OBS.3`, `INT-HRM.1`, `INT-HRM.2`, `INT-HRM.3`, `INT-OLL.1`. Stato attuale: scaffold (`INT-OBS.1` + `INT-HRM.1`) completati 2026-04-24. Le attivazioni reali (config epigenetica + approvazione SafeProactive) sono successive e volutamente separate dallo scaffold.
+
+---
+
+*Documento ingegneristico vivo. Versione 1.4 del 2026-04-24 (M3L chiuso; M4-CNM M4.2–M4.6 chiusi con 74/74 test verdi; Appendice F aggiunta per integrazioni Obsidian + Hermes; PROP-COGNITIVE-AUTONOMY-M5 in DRAFT). Rivedere ad ogni chiusura milestone.*
