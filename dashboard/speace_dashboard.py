@@ -942,6 +942,15 @@ async function refresh(){
   } catch (e) {
     console.error(e);
     document.getElementById('last-refresh').textContent = 'errore: '+e.message;
+    // Mostra banner errore visibile
+    let banner = document.getElementById('err-banner');
+    if (!banner) {
+      banner = document.createElement('div');
+      banner.id = 'err-banner';
+      banner.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#7f1d1d;color:#fca5a5;padding:10px 20px;border-radius:8px;z-index:999;font-size:13px;border:1px solid #ef4444;max-width:90vw;text-align:center';
+      document.body.appendChild(banner);
+    }
+    banner.textContent = '⚠ API non raggiungibile — assicurati che il server Python sia in esecuzione: python dashboard/speace_dashboard.py → poi apri http://127.0.0.1:8765 (' + e.message + ')';
   }
 }
 
