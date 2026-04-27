@@ -789,11 +789,12 @@ async function refresh(){
         const color = driveColors[drive] || '#94a3b8';
         const div = document.createElement('div');
         div.className = 'text-center';
-        div.innerHTML = \`<div class="text-xs uppercase text-slate-400 mb-1">\${drive}</div>
-          <div class="text-xl font-semibold" style="color:\${color}">\${val.toFixed(3)}</div>
-          <div class="w-full bg-slate-700 rounded-full h-1.5 mt-1">
-            <div class="h-1.5 rounded-full" style="width:\${pct}%;background:\${color}"></div>
-          </div>\`;
+        div.innerHTML =
+          '<div class="text-xs uppercase text-slate-400 mb-1">' + drive + '</div>' +
+          '<div class="text-xl font-semibold" style="color:' + color + '">' + val.toFixed(3) + '</div>' +
+          '<div class="w-full bg-slate-700 rounded-full h-1.5 mt-1">' +
+            '<div class="h-1.5 rounded-full" style="width:' + pct + '%;background:' + color + '"></div>' +
+          '</div>';
         grid.appendChild(div);
       }
     } else {
