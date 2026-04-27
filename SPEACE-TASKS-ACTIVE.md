@@ -208,3 +208,60 @@ integrations:
 ---
 
 *Tasks board dinamico. v1.8 — 2026-04-26 (M5.3+M5.5 COMPLETATI: ConsciousnessIndex port con EMA setpoint emergenti + wiring BrainIntegration; ValueField V_internal con gradiente ∇V e suggest_action; integrazione HC+VF+CI verificata. Prossimo: M5.7 EPI-005 + M5.8 autobiographical memory.)*
+
+---
+
+## AREA: M7 — DriveExecutive + Sensor Integration
+
+> **Prerequisito critico identificato (2026-04-27):** Prima di qualsiasi integrazione sensoriale
+> è obbligatorio implementare il `DriveExecutive` — il bridge causale che trasforma i drive
+> omeostatici (viability, curiosity, coherence, energy, alignment) in parametri comportamentali
+> effettivi. Senza questo componente i drive restano epifenomeni computazionali (dashboard theater).
+>
+> SafeProactive: PROP-M7-DRIVE-EXECUTIVE (PENDING_APPROVAL)
+
+### M7.0 — DriveExecutive (OBBLIGATORIO, PRIMO)
+
+| ID | Stato | Prio | Descrizione | Criterio chiusura |
+|----|-------|------|-------------|-------------------|
+| M7.01 | ⬜ | 🔴 | `drive_executive.py` — DriveExecutive + BehavioralState dataclass | BehavioralState emesso a ogni tick |
+| M7.02 | ⬜ | 🔴 | `task_selector.py` — TaskSelector drive-aware (legge BehavioralState) | Task selection cambia in base a viability/curiosity |
+| M7.03 | ⬜ | 🔴 | `self_repair.py` — SelfRepairTrigger (viability recovery protocol) | viability < 0.4 → sospende task, avvia recupero |
+| M7.04 | ⬜ | 🔴 | Wiring SMFOI_v3.py step 4 → legge BehavioralState prima di Output Action | Step 4 modificato, test smoke pass |
+| M7.05 | ⬜ | 🔴 | Test suite causale (≥ 25 test) — verifica comportamenti, non snapshot | ≥ 2 comportamenti causali dimostrati |
+| M7.06 | ⬜ | 🔴 | EPI-008: `cognitive_autonomy.executive.enabled: true` | epigenome.yaml aggiornato |
+
+**Regole causali fondamentali (da implementare in DriveExecutive):**
+
+| Drive | Condizione | Effetto comportamentale |
+|-------|------------|------------------------|
+| viability | < 0.4 | `self_repair_mode=True` — sospendi task non critici, avvia recovery |
+| viability | < 0.6 | `focus_shift="conserve"` — riduce parallelismo, ottimizza risorse |
+| curiosity | > 0.7 | `exploration_bonus=+0.3` — genera task esplorative spontanee |
+| coherence | < 0.4 | `memory_priority_boost=+0.5` — prioritizza consolidamento memoria |
+| energy | < 0.3 | `planning_depth=1` — solo pianificazione superficiale |
+| alignment | < 0.5 | `mutation_gate_open=False` — blocca mutazioni epigenetiche |
+| Φ (phi) | > 0.7 | `max_parallel_tasks=4` — altrimenti 1-2 |
+
+**Criterio avanzamento M7.0 → M7.1:**
+Dimostrare almeno 2 comportamenti causali verificabili nei test:
+1. viability scende sotto soglia → task selection cambia → registrato in AutobiographicalMemory
+2. curiosity supera soglia → task esplorativa generata spontaneamente → proposta SafeProactive
+
+### M7.1–M7.6 — Sensor Integration (BLOCCATO fino a M7.0 completato)
+
+| ID | Stato | Prio | Descrizione | Criterio chiusura |
+|----|-------|------|-------------|-------------------|
+| M7.11 | ⬜ | 🟠 | `SensorHub` — gateway unificato stream sensoriali | Riceve mock stream, aggiorna WorldSnapshot |
+| M7.12 | ⬜ | 🟠 | `IoT Connector` — MQTT/WebSocket bridge per dispositivi reali/simulati | Connessione a broker MQTT locale (Mosquitto) |
+| M7.13 | ⬜ | 🟡 | `PerceptionModule` — pre-processing segnali → entità WorldSnapshot | Video/audio/temp → planet_state aggiornato |
+| M7.14 | ⬜ | 🟡 | `SensorSimulator` — dati sintetici ambientali per test e sviluppo | 5 tipi di segnale simulato (video, audio, temp, gas, pressione) |
+| M7.15 | ⬜ | 🟡 | WorldModel ← SensorHub wiring (aggiorna planet_state in real-time) | CO2/temp aggiornati da sensore → inference rieseguita |
+| M7.16 | ⬜ | 🟡 | Test suite ≥ 40 test | Suite completa con SensorSimulator |
+| M7.17 | ⬜ | 🟡 | EPI-009: `sensor_integration.enabled: true` | epigenome.yaml aggiornato |
+
+---
+
+*v1.9 — 2026-04-27: M5 COMPLETATA (6/6, 148 test), M6 COMPLETATA (6/6, 47 test, 9° comparto Cortex attivo).
+EPI-006 + EPI-007 applicati. Dashboard v1.2.0. Push GitHub commit 23be94f.
+M7.0 DriveExecutive inserito come prerequisito obbligatorio — PROP-M7-DRIVE-EXECUTIVE PENDING_APPROVAL.*
