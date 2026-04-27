@@ -6,6 +6,6 @@ mesh status). Single-file stdlib-only — non richiede Flask/Django.
 
 Uso:
     python -m dashboard.speace_dashboard
-    # poi apri http://localhost:8765
+    # poi apri http://localhost:8769
 """
 __version__ = "1.0.0"

@@ -18,6 +18,7 @@ Endpoints:
   GET  /api/epigenome      → mutazioni DNA attive
   GET  /api/cycles         → ultimi N cicli SMFOI
   GET  /api/m5             → Cognitive Autonomy M5 (6 sottosistemi)
+  GET  /api/m6             → World Model M6 (KG + feeds + inference)
   GET  /healthz            → liveness probe
 """
 from __future__ import annotations
@@ -33,10 +34,10 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 HOST = os.environ.get("SPEACE_DASHBOARD_HOST", "127.0.0.1")
-PORT = int(os.environ.get("SPEACE_DASHBOARD_PORT", "8765"))
+PORT = int(os.environ.get("SPEACE_DASHBOARD_PORT", "8769"))
 
 ROOT = Path(__file__).resolve().parent.parent  # SPEACE-prototipo/
-DASHBOARD_VERSION = "1.1.0"
+DASHBOARD_VERSION = "1.2.0"
 
 
 # -------------------------------------------------------------- data readers --
@@ -473,6 +474,34 @@ def api_m5() -> Dict[str, Any]:
     }
 
 
+def api_m6() -> Dict[str, Any]:
+    """M6 World Model — stato aggregato del WorldModelCortex."""
+    try:
+        import sys
+        sys.path.insert(0, str(ROOT))
+        from cortex.cognitive_autonomy.world_model.cortex import WorldModelCortex
+        wm = WorldModelCortex(seed_path=ROOT / "memory" / "world_model.json", db_path=None)
+        wm.initialize(seed_kg=True)
+        stats = wm.get_stats()
+        summary = wm._build_summary()
+        return {
+            "enabled":         True,
+            "kg_entities":     stats["knowledge_graph"]["entity_count"],
+            "kg_triples":      stats["knowledge_graph"]["triple_count"],
+            "entity_types":    stats["knowledge_graph"]["entity_types"],
+            "scenarios":       stats["snapshot"].get("scenarios", 0),
+            "feeds":           {n: (wm.snapshot.get("feed_cache." + n + ".status") or "offline")
+                                for n in ["nasa", "noaa", "un_sdg"]},
+            "co2_ppm":         summary.get("co2_ppm"),
+            "climate_status":  summary.get("climate_status"),
+            "sdg_progress":    summary.get("sdg_progress"),
+            "speace_phase":    summary.get("speace_phase"),
+            "milestone":       "M6",
+        }
+    except Exception as e:
+        return {"enabled": False, "error": str(e), "milestone": "M6"}
+
+
 # -------------------------------------------------------------- html page --
 
 INDEX_HTML = r"""<!doctype html>
@@ -574,6 +603,42 @@ INDEX_HTML = r"""<!doctype html>
       <div class="grid grid-cols-2 md:grid-cols-5 gap-3" id="drives-grid">
         <!-- populated by JS -->
       </div>
+    </div>
+  </section>
+
+  <!-- M6 WORLD MODEL PANEL -->
+  <section class="card" id="m6-section">
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <h2 class="font-semibold text-lg">World Model — M6 (9° Comparto Cortex)</h2>
+        <p class="text-xs text-slate-400 mt-0.5">Knowledge Graph · Feed Esterni · Inferenza Causale</p>
+      </div>
+      <span class="chip chip-ok" id="m6-status-chip">ACTIVE</span>
+    </div>
+
+    <!-- KG stats + feeds -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+      <div class="bg-slate-900/60 border border-slate-700 rounded-xl p-3 text-center">
+        <div class="text-xs text-slate-400 mb-1">KG Entities</div>
+        <div class="text-2xl font-semibold text-cyan-400" id="m6-kg-entities">—</div>
+      </div>
+      <div class="bg-slate-900/60 border border-slate-700 rounded-xl p-3 text-center">
+        <div class="text-xs text-slate-400 mb-1">KG Triples</div>
+        <div class="text-2xl font-semibold text-indigo-400" id="m6-kg-triples">—</div>
+      </div>
+      <div class="bg-slate-900/60 border border-slate-700 rounded-xl p-3 text-center">
+        <div class="text-xs text-slate-400 mb-1">CO2 (ppm)</div>
+        <div class="text-2xl font-semibold text-amber-400" id="m6-co2">—</div>
+      </div>
+      <div class="bg-slate-900/60 border border-slate-700 rounded-xl p-3 text-center">
+        <div class="text-xs text-slate-400 mb-1">Climate</div>
+        <div class="text-lg font-semibold" id="m6-climate">—</div>
+      </div>
+    </div>
+
+    <!-- Feed status -->
+    <div class="flex gap-3 flex-wrap" id="m6-feeds">
+      <!-- populated by JS -->
     </div>
   </section>
 
@@ -708,7 +773,7 @@ function setChip(el, ok, okText, warnText){
 
 async function refresh(){
   try {
-    const [status, agi, cap, arch, ms, epi, cyc, m5] = await Promise.all([
+    const [status, agi, cap, arch, ms, epi, cyc, m5, m6] = await Promise.all([
       fetchJSON('/api/status'),
       fetchJSON('/api/agi'),
       fetchJSON('/api/capabilities'),
@@ -717,6 +782,7 @@ async function refresh(){
       fetchJSON('/api/epigenome'),
       fetchJSON('/api/cycles'),
       fetchJSON('/api/m5'),
+      fetchJSON('/api/m6'),
     ]);
 
     // KPI
@@ -725,6 +791,38 @@ async function refresh(){
     document.getElementById('kpi-align').textContent = fmt(status.speace_alignment_score, 1) + ' / 100';
     document.getElementById('kpi-agi').textContent = fmt(agi.overall_on_100, 1);
     document.getElementById('kpi-fit').textContent = fmt(status.fitness_current, 3);
+
+
+    // M6 World Model panel
+    if (m6) {
+      const chip = document.getElementById('m6-status-chip');
+      if (chip) {
+        chip.textContent = m6.enabled ? 'ACTIVE' : 'ERROR';
+        chip.className = 'chip ' + (m6.enabled ? 'chip-ok' : 'chip-bad');
+      }
+      const setEl = (id, val) => { const e = document.getElementById(id); if(e) e.textContent = val !== null && val !== undefined ? val : '—'; };
+      setEl('m6-kg-entities', m6.kg_entities);
+      setEl('m6-kg-triples',  m6.kg_triples);
+      setEl('m6-co2',         m6.co2_ppm ? m6.co2_ppm.toFixed(1) : '—');
+      const climEl = document.getElementById('m6-climate');
+      if (climEl) {
+        climEl.textContent = m6.climate_status || '—';
+        climEl.style.color = m6.climate_status === 'critical' ? '#f59e0b' : '#22c55e';
+      }
+      // Feed status chips
+      const feedsDiv = document.getElementById('m6-feeds');
+      if (feedsDiv && m6.feeds) {
+        feedsDiv.innerHTML = '';
+        const feedLabels = {nasa: 'NASA DONKI', noaa: 'NOAA CO2', un_sdg: 'UN SDG'};
+        Object.entries(m6.feeds).forEach(([k, status]) => {
+          const ok = status === 'ok' || status === 'cached' || status === 'offline';
+          const span = document.createElement('span');
+          span.className = 'chip ' + (status === 'ok' ? 'chip-ok' : status === 'cached' ? 'chip-ok' : 'chip-warn');
+          span.textContent = (feedLabels[k] || k) + ': ' + status;
+          feedsDiv.appendChild(span);
+        });
+      }
+    }
 
     // M5.4 — Viability KPI
     const viab = status.viability_score;
@@ -1012,6 +1110,8 @@ class _Handler(BaseHTTPRequestHandler):
                 self._send_json(api_cycles())
             elif path == "/api/m5":
                 self._send_json(api_m5())
+            elif path == "/api/m6":
+                self._send_json(api_m6())
             else:
                 self._send_json({"error": "not found", "path": path}, 404)
         except Exception as e:

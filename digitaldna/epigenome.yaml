@@ -7,9 +7,9 @@
 
 meta:
   version: "1.5"
-  last_updated: "2026-04-26"
-  last_mutation_id: "EPI-005"
-  mutation_count: 5
+  last_updated: "2026-04-27"
+  last_mutation_id: "EPI-007"
+  mutation_count: 7
   # EPI-001: Aggiunta sezione consciousness_metrics (ACF Integration)
   #          + fitness_function v2 (6 componenti) in mutation_rules.yaml
   # EPI-002: M2 – external_benchmark_validated=true dopo benchmark suite 6/6 pass
@@ -22,6 +22,11 @@ meta:
   #          CNM e2e 26/26 PASS (M4.16). Mesh default-OFF, opt-in via SafeProactive.
   #          (PROP-CNM-M4-CLOSURE, evidence: cortex/mesh/_tests_e2e.py 26/26)
   # EPI-005: M5.7 – Attivati blocchi cognitive_autonomy.homeostasis (enabled=true)
+  # EPI-006: M5.20 – cognitive_autonomy.m5_complete=true, memory/attention/plasticity/
+  #          constraints tutti enabled=true. Cognitive Autonomy Score 6/6, 148 test green.
+  # EPI-007: M6.9 – cognitive_autonomy.world_model.enabled=true.
+  #          WorldModelCortex (9° comparto): WorldSnapshot + KnowledgeGraph + Feeds +
+  #          InferenceEngine + MemoryBridge. 47 test pass. Dashboard v1.2.0 panel M6 live.
   #          e cognitive_autonomy.motivation (enabled=true).
   #          HomeostaticController dh/dt + SystemReceptors + ConsciousnessIndex +
   #          ValueField V_internal verificati (25+N test pass).
@@ -199,6 +204,31 @@ flags:
 
 # --- Storico mutazioni (ultime 10) ---
 mutation_history:
+  - id: "EPI-006"
+    timestamp: "2026-04-27T09:00:00"
+    proposal: "PROP-COG-AUTONOMY-M5-COMPLETE"
+    change: >
+      cognitive_autonomy.memory.enabled: false -> true
+      cognitive_autonomy.attention.enabled: false -> true
+      cognitive_autonomy.plasticity.enabled: false -> true
+      cognitive_autonomy.constraints.enabled: false -> true
+      cognitive_autonomy.m5_complete: true
+      Cognitive Autonomy Score 6/6. AutobiographicalMemory SQLite,
+      Attention UCB1 RL, Plasticity Hebbian, ConstraintLayer penalità.
+    evidence: "cortex/cognitive_autonomy/*/_tests_*.py (148 test pass, 2026-04-27)"
+    snapshot_pre: "snap_20260426_epigenome_pre_epi006"
+  - id: "EPI-007"
+    timestamp: "2026-04-27T10:00:00"
+    proposal: "PROP-WORLD-MODEL-M6-CORTEX"
+    change: >
+      cognitive_autonomy.world_model.enabled: true (nuovo blocco)
+      WorldModelCortex attivato come 9° comparto SPEACE Cortex.
+      Componenti: WorldSnapshot (M6.1), KnowledgeGraph (M6.2),
+      FeedConnectors NASA/NOAA/UN-SDG (M6.3), InferenceEngine (M6.4),
+      MemoryBridge (M6.5), WorldModelCortex facade (M6.6).
+      Dashboard v1.2.0 panel M6 live. 47 test pass.
+    evidence: "cortex/cognitive_autonomy/world_model/_tests_world_model.py (47/47, 2026-04-27)"
+    snapshot_pre: "snap_20260427_epigenome_pre_epi007"
   - id: "EPI-002"
     timestamp: "2026-04-18T14:38:00"
     proposal: "PROP-BENCHMARK-ROLLBACK-M2"
@@ -263,10 +293,21 @@ cognitive_autonomy:
   motivation:
     enabled: true               # EPI-005: ON (2026-04-26) — ValueField V_internal attivo
   memory:
-    enabled: false              # M5.8
+    enabled: true               # EPI-006: ON (2026-04-27) — AutobiographicalMemory SQLite attivo
   attention:
-    enabled: false              # M5.11
+    enabled: true               # EPI-006: ON (2026-04-27) — Attention UCB1 RL-driven attivo
   plasticity:
-    enabled: false              # M5.14
+    enabled: true               # EPI-006: ON (2026-04-27) — Plasticity Hebbian + pruning attivi
   constraints:
-    enabled: false              # M5.17
+    enabled: true               # EPI-006: ON (2026-04-27) — ConstraintLayer penalità attivo
+  world_model:
+    enabled: true               # EPI-007: ON (2026-04-27) — WorldModelCortex 9° comparto attivo
+    seed_path: "memory/world_model.json"
+    db_path: null               # null = in-memory; path per SQLite persistence
+    feeds:
+      nasa_donki: true
+      noaa_climate: true
+      un_sdg: true
+    inference_rules_active: true
+    memory_bridge_active: true
+  m5_complete: true             # EPI-006: M5 Cognitive Autonomy Score 6/6 (2026-04-27): ON (2026-04-27) — ConstraintLayer penalità attivo
