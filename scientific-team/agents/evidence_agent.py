@@ -1,6 +1,6 @@
 """
 SPEACE Scientific Team – Evidence Verification Agent (Fact-Checker)
-Versione: 1.0 | 2026-04-17
+Versione: 1.1 | 2026-04-27
 
 Agente fact-checker che verifica affidabilità e freschezza dei dati nei report
 degli altri agenti. Riduce il rischio di errori sistemici da dati non verificati.
@@ -58,6 +58,7 @@ class EvidenceAgent:
 
     NAME = "Evidence Verification Agent"
     DOMAIN = "evidence_verification"
+    ROUTING_HINT = "reasoning"   # fact-checking richiede ragionamento critico → Anthropic claude-haiku
 
     def __init__(self, api_key: Optional[str] = None):
         self.api_key = api_key or os.environ.get("ANTHROPIC_API_KEY")
@@ -117,6 +118,7 @@ class EvidenceAgent:
                 system=SYSTEM_PROMPT,
                 max_tokens=600,
                 temperature=0.2,
+                routing_hint="reasoning",   # EvidenceAgent → Anthropic claude-haiku
             )
             text = resp.text or ""
             result = {

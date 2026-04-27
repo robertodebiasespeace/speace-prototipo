@@ -157,40 +157,57 @@ neural_flow:
                                            # (eccezioni: hippocampus, default_mode_network)
   validated_by_benchmark: true  # 2026-04-20: bench_neural_flow 2/2 scenari pass
 
-# --- LLM Adapter (M3L) ---
-# Cascade: openai_compat (LM Studio) → anthropic (Claude API) → mock (safety net)
-# Il mock è sempre attivo come ultima risorsa: il sistema non può rimanere senza LLM.
+# --- LLM Adapter (M3L / aggiornato 2026-04-27) ---
+# Primary: Ollama gemma3:4b (locale, gratuito, RTX 3060 6GB VRAM).
+# Routing selettivo: agenti reasoning-intensive (adversarial, evidence)
+# usano Anthropic claude-haiku come backend dedicato.
+# Cascade fallback: ollama_native → anthropic → mock (safety net sempre ON).
 llm:
-  primary: "openai_compat"      # backend primario (LM Studio locale, porta 1234)
-  fallback_chain:               # ordine di fallback (primo disponibile vince)
-    - "anthropic"
-    - "mock"
+  primary: "ollama_native"          # gemma3:4b locale — default per tutti gli agenti
+  fallback_chain:
+    - "anthropic"                   # fallback API per agenti reasoning o se Ollama è down
+    - "mock"                        # safety net sempre attivo
+  routing:
+    health_check_on_start: true
+    skip_failing_backend_s: 60      # circuit breaker leggero
+    log_backend_used: true
+    # Agenti reasoning-intensive → bypass Ollama, usa Anthropic direttamente
+    reasoning_agents:
+      - "adversarial"
+      - "evidence"
+    reasoning_backend: "anthropic"  # backend dedicato per adversarial + evidence
+    default_backend: null           # null = usa llm.primary per tutto il resto
   backends:
-    openai_compat:
+    ollama_native:
       enabled: true
+      base_url: "http://localhost:11434"
+      model: "gemma3:4b"            # 2.5GB VRAM Q4 — fits RTX 3060 6GB
+      timeout_s: 60                 # locale può essere più lento a freddo
+      max_retries: 1
+      use_chat_api: true            # usa /api/chat (messages format, consigliato)
+      num_ctx: 4096                 # context window — max 128K per gemma3:4b
+    openai_compat:
+      enabled: false                # era LM Studio — disabilitato, usa ollama_native
       base_url: "http://localhost:1234/v1"
-      model: "local-model"      # auto-detect: il primo modello caricato in LM Studio
+      model: "local-model"
       timeout_s: 30
       max_retries: 1
-    ollama_native:
-      enabled: false            # opzionale, richiede ollama serve
-      base_url: "http://localhost:11434"
-      model: "llama3.1:8b-instruct-q4_K_M"
-      timeout_s: 30
+    ollama_openai_compat:
+      enabled: false                # alternativa: Ollama via /v1 (OpenAI-style)
+      base_url: "http://localhost:11434/v1"
+      model: "gemma3:4b"
+      api_key: "ollama"             # Ollama accetta qualsiasi stringa
+      timeout_s: 60
     anthropic:
       enabled: true
-      model: "claude-haiku-4-5-20251001"  # rapido ed economico per fallback
+      model: "claude-haiku-4-5-20251001"   # rapido ed economico
       timeout_s: 30
       requires_env: "ANTHROPIC_API_KEY"
     mock:
-      enabled: true             # SEMPRE ON: safety net
-      latency_ms: 1             # risposta quasi-istantanea
-      is_stub: true             # segnalato esplicitamente in LLMResponse
-  routing:
-    health_check_on_start: true
-    skip_failing_backend_s: 60  # dopo fallimento, non riprovare per 60s (circuit breaker leggero)
-    log_backend_used: true
-  validated_by_benchmark: true  # 2026-04-20: bench_llm_smoke pass (cascade → mock)
+      enabled: true                 # SEMPRE ON — safety net
+      latency_ms: 1
+      is_stub: true
+  validated_by_benchmark: true      # bench_llm_smoke pass (cascade → mock)
 
 # --- Flag di sistema ---
 flags:
@@ -198,6 +215,7 @@ flags:
   external_benchmark_validated: true   # M2 (2026-04-18): 6/6 pass → M3L.6 (2026-04-20): 8/8 pass
   neural_flow_enabled: false           # M3L.6: opt-in, da abilitare in staging dopo verifica
   llm_cascade_enabled: true            # M3L.6: cascade sempre attiva (mock come safety net)
+  ollama_primary: true                  # 2026-04-27: Ollama gemma3:4b come backend primario
   debug_mode: false
   verbose_logging: true
   safe_mode: true               # disabilita azioni rischiose

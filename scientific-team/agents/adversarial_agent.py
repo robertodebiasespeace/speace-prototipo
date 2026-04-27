@@ -1,6 +1,6 @@
 """
 SPEACE Scientific Team – Adversarial Agent (Critic)
-Versione: 1.0 | 2026-04-17
+Versione: 1.1 | 2026-04-27
 
 Agente critico che esamina i report degli altri agenti per identificare bias,
 errori logici e rischi nascosti. Riduce il rischio di groupthink nel team.
@@ -59,6 +59,7 @@ class AdversarialAgent:
 
     NAME = "Adversarial Agent (Critic)"
     DOMAIN = "adversarial_critique"
+    ROUTING_HINT = "reasoning"   # richiede ragionamento critico → Anthropic claude-haiku
 
     def __init__(self, api_key: Optional[str] = None):
         self.api_key = api_key or os.environ.get("ANTHROPIC_API_KEY")
@@ -103,6 +104,7 @@ class AdversarialAgent:
                 system=SYSTEM_PROMPT,
                 max_tokens=600,
                 temperature=0.2,
+                routing_hint="reasoning",   # Adversarial → Anthropic claude-haiku
             )
             result = {
                 "agent": self.NAME,
