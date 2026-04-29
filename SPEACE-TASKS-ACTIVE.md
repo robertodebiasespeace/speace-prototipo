@@ -1,7 +1,7 @@
 # SPEACE — Tasks Board Attivo
 
-**Versione:** 2.1
-**Data:** 2026-04-26
+**Versione:** 2.9
+**Data:** 2026-04-29
 **Stato:** Documento vivo — aggiornato al completamento/inserimento di task
 **Scopo:** Vista sintetica e dinamica di tutti i task attivi per lo sviluppo di SPEACE, con snapshot dello stato complessivo.
 
@@ -17,7 +17,7 @@
 
 ---
 
-## Snapshot Stato SPEACE (2026-04-26)
+## Snapshot Stato SPEACE (2026-04-29)
 
 - **Milestone chiuse:** M0 (scaffolding), M1 (SafeProactive+DigitalDNA), M2 (Team Scientifico ridotto), M3 (Cortex 9 comparti), M3L (LLM as Semantic Tissue).
 - **Milestone CHIUSA (2026-04-26): M4-CNM** — tutti i task completati: M4.1→M4.11, M4.13→M4.16, M4.18, M4.20. Suite mesh: **158/158 + 26/26 e2e = 184 test verdi**. EPI-004 applicata (`epigenome.yaml` v1.4, blocco `mesh:` default OFF). `SPEACE-main.py` v1.1 con `--brain` flag e `_run_brain_cycle()`. **M5.1+ ora sbloccato.**
@@ -35,9 +35,13 @@
 - **Rischi aperti:** git push bloccato da sandbox (workaround: `PUSH-NOW.bat`); AGI-gap BRIGHT in attesa di approvazione M5; BRN-016→020 stubs da implementare; `cortex/brain/` non ancora wired nel runtime principale.
 
 **C-index (ultimo ciclo runtime):** ~0.427 (SMFOI) + ~0.311 (Brain) — dual C-index operativo.
-**Livello evolutivo dichiarato:** Modular Emergent (R=9 SMFOI).
+**Livello evolutivo dichiarato:** Modular Emergent (R=9 SMFOI) → avanzamento verso Lv3 (auto-modifica codice).
 **BRN integrati:** 15/20 fully implemented · 5/20 stub · wired via `--brain` flag (NEU-003 ✅).
 **M5 progress:** M5.0→M5.11 ✅ (A+B+M5C.1) · M5.12→M5.20 ⬜ · Test coverage: 25+39+24+22+32=**142 test green** · Dashboard v2: viability KPI + drives grid + cognitive section.
+**BCS:** ~88% (post M13.1 CodeMutationLab + M14.3 PersistentIdentity). Target M14 completa: ~90%.
+**Test emergenza:** 27 (EM-04→EM-27). EM-26 CodeMutationLab PASS · EM-27 PersistentIdentity PASS.
+**DigitalDNA:** epigenome.yaml v2.2 (EPI-017: evolution.code_mutation_lab + identity.persistent_identity ON).
+**Nuovi moduli M13.1+M14.3:** `cortex/evolution/code_mutation_lab.py` · `cortex/identity/persistent_identity.py`.
 
 ---
 
@@ -207,7 +211,37 @@ integrations:
 
 ---
 
-*Tasks board dinamico. v1.8 — 2026-04-26 (M5.3+M5.5 COMPLETATI: ConsciousnessIndex port con EMA setpoint emergenti + wiring BrainIntegration; ValueField V_internal con gradiente ∇V e suggest_action; integrazione HC+VF+CI verificata. Prossimo: M5.7 EPI-005 + M5.8 autobiographical memory.)*
+*Tasks board dinamico. v2.8 — 2026-04-29 ★ BCS ~86% (target 80% superato da M12) ★ M9+M10+M11+M12+M13 COMPLETI. EPI-011→EPI-016 applicate. epigenome v2.1. Moduli attivi: EnergyBudget, PredictiveCoding+BehavioralPredictor, CognitiveImmune, EventBus, ResonanceScheduler, ConsolidationPass, MetabolicSwitch, CircadianOscillator, GlialSupport, HomeostaticPlasticity, ValenceIntegrator, CriticalityController, SemanticSearch. Test emergence: 25 (EM-04 a EM-25). Emergence Score stimato: ~97%.*
+
+---
+
+---
+
+## AREA: M9 + M10 — Bio-Inspired Architecture (2026-04-28)
+
+> **Milestone M9** (EnergyBudget, EPI-011) e **M10** (Bio-Inspired Review, EPI-012 + EPI-013) in completamento.
+> BCS (Bio-Inspired Completeness Score): 51% → ~72%. Emergence Score: ~73% → ~91%.
+
+| ID | Stato | Prio | Descrizione | Criterio chiusura |
+|----|-------|------|-------------|-------------------|
+| M9.1 | ✅ | 🔴 | `energy/budget.py` EnergyBudget + EnergyConfig + SleepWakeCycle | EPI-011, EM-15 PASS |
+| M9.2 | ✅ | 🟠 | `energy/scheduler.py` ProcessScheduler TaskPriority P0-P4 | energy bassa → deferral esplorativo |
+| M10.0 | ✅ | 🟠 | `docs/SPEACE-M10-BioInspired-Architecture-Review.md` | 42 principi bio-ispirati analizzati, BCS 51%→65% |
+| M10.1 | ✅ | 🔴 | `predictive/predictive_processor.py` PredictiveCoding Friston | EM-16 PASS: segnali stabili soppressi, novità trasmessa |
+| M10.2 | ✅ | 🔴 | `immune/cognitive_immune.py` CognitiveImmune 6 ThreatPattern | EM-17 PASS: threat bloccato, cache < 5ms, trusted safe |
+| M10.3a | ✅ | 🟠 | `events/event_bus.py` EventBus pub/sub + WILDCARD + metriche | EM-18: pub/sub delivery + WILDCARD corretto |
+| M10.3b | ✅ | 🟠 | `events/resonance.py` ResonanceScheduler Golden Ratio anti-risonanza | conflict_score < 0.20, fixed_interval rispettato |
+| M10.4a | ✅ | 🟠 | `consolidation/consolidation_pass.py` hippocampal replay | EM-19: traces+pruning, compression_ratio > 0 |
+| M10.4b | ✅ | 🟠 | `metabolic/metabolic_switch.py` NORMAL/REDUCED/CONSERVATION | EM-19: mode transitions + load stimato corretto |
+| M10.5 | ✅ | 🔴 | EPI-013 + PROPOSALS.md + push GitHub | `epigenome.yaml` v1.8, GitHub sync |
+| M11.1 | ✅ | 🟠 | `temporal/circadian_oscillator.py` CircadianOscillator (SCN analog) | EM-20 PASS: ritmi 24h+90min, ormoni simulati, modulatori |
+| M11.2 | ✅ | 🟠 | `glial/glial_support.py` GlialSupport (tripartite synapse + glymphatica) | EM-21 PASS: plasticity boost, sleep cleanup 8×, metabolic regen |
+| M12.1 | ✅ | 🔴 | `plasticity/homeostatic_plasticity.py` + `valence/valence_integrator.py` | EM-22+EM-23 PASS: synaptic scaling + segnale affettivo tanh |
+| M12.2 | ✅ | 🔴 | EPI-015 + epigenome v2.0 + BCS 82% (target 80% ★ SUPERATO) | 23 test totali, Emergence Score ~95% |
+
+**EPI applicate:** EPI-011→EPI-015 (epigenome v2.0)
+**Test M9→M12:** EM-15 ✅ · EM-16 ✅ · EM-17 ✅ · EM-18 ✅ · EM-19 ✅ · EM-20 ✅ · EM-21 ✅ · EM-22 ✅ · EM-23 ✅
+**★ BCS: 51% → 82% (target 80% SUPERATO) ★**
 
 ---
 
@@ -264,4 +298,166 @@ Dimostrare almeno 2 comportamenti causali verificabili nei test:
 
 *v1.9 — 2026-04-27: M5 COMPLETATA (6/6, 148 test), M6 COMPLETATA (6/6, 47 test, 9° comparto Cortex attivo).
 EPI-006 + EPI-007 applicati. Dashboard v1.2.0. Push GitHub commit 23be94f.
-M7.0 DriveExecutive inserito come prerequisito obbligatorio — PROP-M7-DRIVE-EXECUTIVE PENDING_APPROVAL.*
+M7.0 DriveExecutive inserito come prerequisito obbligatorio — PROP-M7-DRIVE-EXECUTIVE PENDING_APPROVAL.
+Emergence Test Suite v1.0 completata: score 46% (4 PASS 4 PARTIAL 5 FAIL). Push GitHub commit e8a9bac.*
+
+---
+
+## AREA: GROK_SPEACE INTEGRATION — Task estratte da documento Grok v1.2 (2026-04-27)
+
+> Sorgente: `C:\Users\rober\Desktop\Grok_SPEACE\docs\grok_speace.md`
+> Parallelismo con roadmap esistente — task prioritizzate per impatto su Emergence Score.
+
+### 🟢 Quick Win — HomeostaticController abilitazione (IMMEDIATO, 1 file)
+
+| ID | Status | Pri | Task | Criterio |
+|----|--------|-----|------|----------|
+| GK-01 | ⬜ | 🔴 | Abilitare `HomeostaticController` (`enabled=True` in `HomeostasisConfig`) + test alert reali | EM-05 → PASS (viability drop genera alerts); EM-06 avanza verso PASS con DriveExecutive |
+
+> **Gap attuale:** `HomeostasisConfig.enabled = False` (riga 64 di controller.py) → il controller
+> è in scaffold mode, viability_score sempre 1.0, zero alert. Una riga di codice sblocca M5 reale.
+> **Impact:** Emergence Score L3 da PARTIAL → PASS immediato.
+
+---
+
+### 🔵 M8 — Swarm Agentic Integration (Grok Fase 5 → da speaceorganismocibernetico)
+
+> I neuroni `PlannerNeuron`, `CriticNeuron`, `ExecutorNeuron`, `ResearcherNeuron` esistono già
+> in `speaceorganismocibernetico/SPEACE_Cortex/comparti/` e usano `OllamaNeuron` (gemma3:4b).
+> Vanno portati in `cortex/cognitive_autonomy/swarm/` e wireati al ciclo SMFOI.
+
+| ID | Status | Pri | Task | Criterio |
+|----|--------|-----|------|----------|
+| M8.01 | ⬜ | 🟠 | Port `OllamaNeuron` base → `cortex/cognitive_autonomy/swarm/neuron_base.py` | Import funzionante, test smoke pass |
+| M8.02 | ⬜ | 🟠 | Port 4 neuroni: Planner, Critic, Executor, Researcher → `cortex/cognitive_autonomy/swarm/` | 4 neuroni istanziabili con Ollama |
+| M8.03 | ⬜ | 🟠 | `SwarmOrchestrator` — riceve task da DriveExecutive, dispatcha a neurone appropriato | Task decomposition: 1 task → N subtask |
+| M8.04 | ⬜ | 🟠 | Wiring: SMFOI_v3.py step 5 (Output Action) → SwarmOrchestrator | BehavioralState.exploration_bonus → Planner attivato |
+| M8.05 | ⬜ | 🟡 | `CriticNeuron` valida output di Planner/Executor (loop anti-groupthink) | Critic intercetta errori nel 50%+ dei test |
+| M8.06 | ⬜ | 🟡 | Test suite Swarm ≥ 20 test (task decomposition, critic loop, executor output) | EM-03 L2 → PASS (PFC integra feedback multi-agente) |
+| M8.07 | ⬜ | 🟡 | EPI-010: `cognitive_autonomy.swarm.enabled: true` in epigenome.yaml | Mutazione registrata |
+
+> **Impact Emergence Score:** EM-03 (L2 FAIL) → PASS, EM-07 (L3) upgrade, score stimato +15%.
+
+---
+
+### 🟣 M8.1 — Temporal Lobe + Momeria (Grok Fase 1 incompleta)
+
+> `temporal_lobe.py` esiste in entrambi i repo ma non è wireato al WorldModel/KnowledgeGraph.
+> "Momeria" = memoria episodica + semantica persistente (upgrade del nostro Hippocampus stub).
+
+| ID | Status | Pri | Task | Criterio |
+|----|--------|-----|------|----------|
+| M8.11 | ⬜ | 🟠 | Port + unifica `TemporalLobe` da entrambi i repo → `cortex/cognitive_autonomy/memory/temporal_lobe.py` | Classe unificata con API coerente |
+| M8.12 | ⬜ | 🟠 | Wiring `TemporalLobe` ↔ `KnowledgeGraph`: episodi → entità KG + retrieval semantico | Episodio salvato → entità KG creata → recuperabile via BFS |
+| M8.13 | ⬜ | 🟠 | Fix `Hippocampus` persistenza: episodi sopravvivono tra chiamate (SQLite backend) | EM-04 → PASS (episodes_retrieved > 0) |
+| M8.14 | ⬜ | 🟡 | Wiring `Hippocampus` → `PrefrontalCortex`: memory_episodes nel context PFC | EM-04b → PASS (PFC produce output diverso con memoria) |
+| M8.15 | ⬜ | 🟡 | Test suite memoria ≥ 15 test | Semantic retrieval + episodic influence su PFC |
+
+> **Impact:** EM-04, EM-04b (entrambi L2 FAIL) → PASS. Emergence Score +10%.
+
+---
+
+### ⚪ M9 — Astrocyte Support Layer (Grok Fase 2)
+
+> `cortex/astrocyte_network.py` esiste ma è stub (solo `GapJunction` per segnali Φ).
+> Grok propone astrociti come layer di supporto parallelo al grafo neurale.
+
+| ID | Status | Pri | Task | Criterio |
+|----|--------|-----|------|----------|
+| M9.01 | ⬜ | 🟡 | Implementare `AstrocyteLayer` completo: rewiring dinamico + gap junction signals | N nodi rewired dopo 10 cicli di attività |
+| M9.02 | ⬜ | 🟡 | Wiring `AstrocyteLayer` → `PlasticityEngine` (edge pruning guidato da attività) | Archi con bassa attività → potati da astrociti |
+| M9.03 | ⬜ | 🟡 | Propagazione alert Φ via gap junctions (alta Φ → modula attenzione) | ConsciousnessIndex Φ alto → gating attenzione aumenta |
+| M9.04 | ⬜ | 🟡 | Test suite astrociti ≥ 10 test | Plasticity Nature-2026 inspired |
+
+---
+
+### ⚪ M10 — System 3: Meta-cognizione + Identità Narrativa (Grok Fase 4)
+
+> Upgrade del DefaultModeNetwork verso "System 3": meta-cognizione persistente + narrativa
+> identitaria. Senza Ollama i test sono PARTIAL; con Ollama diventano genuini.
+
+| ID | Status | Pri | Task | Criterio |
+|----|--------|-----|------|----------|
+| M10.01 | ⬜ | 🟡 | `NarrativeIdentityModule` — costruisce e aggiorna la "storia di sé" di SPEACE | Narrativa aggiornata dopo ogni milestone (autobiographical memory → summary) |
+| M10.02 | ⬜ | 🟡 | `MetaCognitionLayer` — riflette su cicli passati con Ollama (non template) | EM-09, EM-10 → PASS con Ollama |
+| M10.03 | ⬜ | 🟡 | `GoalGenerator` — genera nuovi goal da stato interno (curiosity + viability + identità) | Goal autonomo generato senza input esterno |
+| M10.04 | ⬜ | 🟡 | Wiring System3 ↔ DriveExecutive (goal generati influenzano BehavioralState) | L3 EM-06 upgrade post-M7.0 |
+
+---
+
+### Riepilogo impatto stimato su Emergence Score
+
+| Milestone | Test impattati | Score attuale | Score stimato post |
+|-----------|---------------|--------------|-------------------|
+| GK-01 (HomeostaticController ON) | EM-05 | PARTIAL | PASS |
+| M7.0 DriveExecutive | EM-06 | FAIL | PASS |
+| M8 Swarm Agentic | EM-03 | FAIL | PASS |
+| M8.1 Temporal Lobe / Momeria | EM-04, EM-04b | FAIL, FAIL | PASS, PASS |
+| M9 Astrocyte Layer | EM-11 | PASS | PASS+ |
+| M10 System 3 + Ollama | EM-09, EM-10 | PARTIAL, PARTIAL | PASS, PASS |
+| **Totale stimato** | | **46%** | **~80%** |
+
+---
+
+*v2.0 — 2026-04-27: Integrazione task da Grok_SPEACE v1.2. Roadmap estesa a M10.
+Quick win identificato: GK-01 (HomeostaticController enabled=True, 1 riga, Emergence +5% immediato).
+Swarm Agentic Layer (M8) ad alta priorità: neuroni Ollama già esistenti in speaceorganismocibernetico.*
+
+---
+
+## AREA: M14 — Autonomia Evolutiva (2026-04-29)
+
+> Sorgente: analisi comparativa 7 repository SPEACE — `docs/MULTI-REPO-ANALYSIS-2026-04-29.md`
+> BCS attuale: **~88%** (post M13.1 + M14.3). Target post-M14 completa: **~90%**.
+> Obiettivo: trasformare SPEACE da sistema che *subisce* mutazioni a sistema che *modifica il proprio codice* e mantiene identità narrativa persistente. SMFOI Livello 3.
+
+| ID | Stato | Prio | Descrizione | Criterio chiusura |
+|----|-------|------|-------------|-------------------|
+| M13.1 | ✅ | 🔴 | `evolution/code_mutation_lab.py` — CodeMutationLab AST + backup + rollback (APPROVATO da Roberto 2026-04-29) | EM-26 PASS: backup, gate, apply, rollback, content restored |
+| M14.3 | ✅ | 🔴 | `identity/persistent_identity.py` — PersistentIdentity: total_thoughts, achievements, goals, rolling history | EM-27 PASS: file persistence, auto-achievement threshold, history rolling 50 |
+| M14.2 | ⬜ | 🟠 | `evolution/evolutionary_algorithm.py` — GA reale: population, crossover, selezione top-50%, fitness | Sorgente: Grok v4.3. Sandbox su copia epigenome. Propone best individual via SafeProactive |
+| M14.4 | ⬜ | 🟡 | `governance/neural_parliament.py` — NeuralParliament stub: voto ponderato per Risk Level LOW | Governance autonoma per micro-decisioni. Escalation a umano se consensus < 0.8 |
+| M14.5 | ⬜ | 🟢 | `homeostasis/kinetic_flow.py` — Homeodyna+Kinetica: flusso energetico inter-lobo | total_kinetic alimenta EnergyBudget. Sorgente: Grok v4.3 |
+| M14.7 | ✅ | 🟢 | EPI-017: `evolution.code_mutation_lab` + `identity.persistent_identity` + EM-26/EM-27 | epigenome.yaml v2.2. 27 test totali (EM-04→EM-27). |
+
+**Sorgenti integrazione M14:**
+- M13.1: `GPT SPEACE brain_core_v3/evolution/code_mutation_lab.py`
+- M14.3: `GROK SPEACE v4.3/core/persistent_identity.py`
+- M14.2: `GROK SPEACE v4.3/evolution/evolutionary_algorithm.py`
+- M14.4: `speaceorganismocibernetico/neural_parliament.py`
+
+---
+
+## AREA: M13 — Grok SPEACE v4.2 Integration (2026-04-28)
+
+> Sorgente: analisi comparativa GROK SPEACE v1.5–v4.2 vs SPEACE-prototipo.
+> Documento completo: `docs/GROK-SPEACE-V4.2-GAP-ANALYSIS.md`
+> BCS attuale: **82%**. Target post-M13: **~86%**.
+> 4 innovazioni architetturali identificate, 3 APPROVED (low risk), 1 PENDING_APPROVAL (medium).
+
+| ID | Stato | Prio | Descrizione | Criterio chiusura |
+|----|-------|------|-------------|-------------------|
+| M13.0 | ✅ | 🔴 | `criticality/criticality_controller.py` — CriticalityController SOC (ordine/caos) | EM-24 PASS: zone detection + modulation_suggestion coerente |
+| M13.2 | ✅ | 🟠 | Completare `predictive/predictive_processor.py` (scaffold M10 → implementazione) | BehavioralPredictor aggiunto: rolling history, predict_next_state, get_prediction_error |
+| M13.3 | ✅ | 🟡 | `memory/semantic_search.py` + `real_embeddings.py` — Ollama nomic-embed-text + cosine sim | EM-25 PASS: cosine search + fallback deterministico normalizzato |
+| M13.1 | ✅ | 🟡 | `evolution/code_mutation_lab.py` — AST mutation + backup + rollback | EM-26 PASS: backup, gate SafeProactive, apply, rollback, content restored |
+| M13.4 | ⬜ | 🟢 | `agency/tool_registry.py` — ToolRegistry centralizzato (read/write/run_python/shell) | DriveExecutive può interrogare registry per capacità disponibili |
+| M13.5 | ✅ | 🟢 | EPI-016: `criticality/behavioral_predictor/semantic_search.enabled: true` + test suite | epigenome.yaml v2.1. EM-24+EM-25 aggiunti. 25 test totali. |
+
+**Proposte SafeProactive:**
+- PROP-M13-CRITICALITY: **APPROVED** (low risk, auto)
+- PROP-M13-PREDICTIVE-COMPLETE: **APPROVED** (low risk, auto)
+- PROP-M13-SEMANTIC-MEMORY: **APPROVED** (low risk, auto)
+- PROP-M13-AST-MUTATION: **PENDING_APPROVAL** (medium risk — richiede Roberto)
+
+**Dipendenze:** M13.0 → M13.5 (EPI-016). M13.2 indipendente. M13.3 richiede Ollama con nomic-embed-text. M13.1 bloccato su PENDING_APPROVAL.
+
+**Test di emergenza nuovi:** EM-24 (CriticalityController), EM-25 (SemanticSearch).
+
+---
+
+*v2.8 — 2026-04-28: Gap analysis GROK SPEACE v1.5→v4.2 completata.
+4 innovazioni identificate: CriticalityController (SOC), PredictiveEngine completo, RealEmbeddings+VectorMemory, CodeMutationLab (AST).
+Report: `docs/GROK-SPEACE-V4.2-GAP-ANALYSIS.md`. Proposals M13 aggiunte a PROPOSALS.md.
+SPEACE-prototipo rimane più avanzato di Grok v4.2 su: ValenceIntegrator, GlialSupport, CircadianOscillator, HomeostaticPlasticity, DriveExecutive, DigitalDNA, SafeProactive, SMFOI-KERNEL.
+Grok v4.2 apporta contributi puntuali di alto valore (criticality, embeddings, AST mutation) non presenti nel prototipo.*

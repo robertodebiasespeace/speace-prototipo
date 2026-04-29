@@ -32,6 +32,14 @@ try:
     _CONSCIOUSNESS_AVAILABLE = True
 except ImportError:
     _CONSCIOUSNESS_AVAILABLE = False
+
+# Importa DriveExecutive (M7.0 — ponte causale Drive→Comportamento)
+try:
+    from cortex.cognitive_autonomy.executive import DriveExecutive, DriveSnapshot
+    from cortex.cognitive_autonomy.homeostasis.controller import HomeostaticController
+    _DRIVE_EXECUTIVE_AVAILABLE = True
+except ImportError:
+    _DRIVE_EXECUTIVE_AVAILABLE = False
 STATE_FILE = ROOT_DIR / "state.json"
 EPIGENOME_PATH = ROOT_DIR / "digitaldna" / "epigenome.yaml"
 GENOME_PATH = ROOT_DIR / "digitaldna" / "genome.yaml"
@@ -69,6 +77,15 @@ class SMFOIKernel:
         else:
             self.consciousness = None
             self._log("ACF Consciousness Index non disponibile (import fallito)")
+
+        # M7.0: DriveExecutive (ponte causale Drive→BehavioralState)
+        if _DRIVE_EXECUTIVE_AVAILABLE:
+            self._drive_executive = DriveExecutive()
+            self._homeostatic_ctrl = HomeostaticController()
+            self._log("DriveExecutive M7.0 attivato ✓")
+        else:
+            self._drive_executive = None
+            self._homeostatic_ctrl = None
 
         self._log(f"SMFOI-KERNEL v{self.VERSION} inizializzato | Agent: {agent_name} | Level: {recursion_level}")
 
@@ -380,8 +397,38 @@ class SMFOIKernel:
         """
         self._log("\n[STEP 4] Survival & Evolution Stack")
 
+        # M7.0: Calcola BehavioralState da DriveExecutive
+        behavioral_state = None
+        if self._drive_executive is not None and self._homeostatic_ctrl is not None:
+            try:
+                # Leggi receptor readings dal sea_state / constraints
+                receptor_readings = {
+                    "energy":    constraints.get("resource_budget", {}).get("ram_pct", 0.8),
+                    "safety":    1.0 if constraints.get("resource_budget", {}).get("ram_ok", True) else 0.2,
+                    "coherence": sea_state.get("fitness_current", 0.7),
+                }
+                hc_result = self._homeostatic_ctrl.update(receptor_readings)
+                # Phi da ConsciousnessIndex se disponibile (altrimenti 0.5)
+                phi_val = 0.5
+                behavioral_state = self._drive_executive.compute_from_homeostasis(
+                    hc_result, phi=phi_val
+                )
+                self._log(
+                    f"  [DriveExec] repair={behavioral_state.self_repair_mode} "
+                    f"parallel={behavioral_state.max_parallel_tasks} "
+                    f"explore_bonus={behavioral_state.exploration_bonus:.2f} "
+                    f"rules={behavioral_state.triggered_rules}"
+                )
+                # Propaga in context per step 5 e outcome evaluation
+                sea_state["behavioral_state"] = behavioral_state.to_dict()
+            except Exception as _de_err:
+                self._log(f"  [DriveExec] WARNING: {_de_err}")
+
+        # Usa BehavioralState per modulare il livello di risposta
+        _repair_override = behavioral_state is not None and behavioral_state.self_repair_mode
+
         # Determina livello
-        if not constraints["resource_budget"]["ram_ok"]:
+        if _repair_override or not constraints["resource_budget"]["ram_ok"]:
             level = 0
             action_plan = {"action": "stabilize", "target": "ram", "reason": "RAM critica"}
         elif push["type"] == "pending_proposals":

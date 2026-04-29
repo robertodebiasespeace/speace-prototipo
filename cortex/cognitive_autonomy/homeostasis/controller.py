@@ -61,7 +61,7 @@ class Drive(str, Enum):
 class HomeostasisConfig:
     """Configurazione omeostasi — letta da epigenome.cognitive_autonomy.homeostasis."""
 
-    enabled: bool = False
+    enabled: bool = True   # GK-01: attivato (era False scaffold). 2026-04-27
     heartbeat_s: float = 30.0
     k_restore: float = 0.10   # forza ripristino verso setpoint
     k_input: float = 0.30     # peso receptor reading

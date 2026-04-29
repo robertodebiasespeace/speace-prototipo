@@ -6,10 +6,10 @@
 # ============================================================
 
 meta:
-  version: "1.5"
-  last_updated: "2026-04-27"
-  last_mutation_id: "EPI-007"
-  mutation_count: 7
+  version: "2.2"
+  last_updated: "2026-04-29"
+  last_mutation_id: "EPI-017"
+  mutation_count: 17
   # EPI-001: Aggiunta sezione consciousness_metrics (ACF Integration)
   #          + fitness_function v2 (6 componenti) in mutation_rules.yaml
   # EPI-002: M2 – external_benchmark_validated=true dopo benchmark suite 6/6 pass
@@ -31,6 +31,123 @@ meta:
   #          HomeostaticController dh/dt + SystemReceptors + ConsciousnessIndex +
   #          ValueField V_internal verificati (25+N test pass).
   #          (PROP-COG-AUTONOMY-EPI005)
+  # EPI-008: M7.0 — cognitive_autonomy.executive.enabled: true
+  #          DriveExecutive (ponte causale Drive→BehavioralState) attivato.
+  #          BehavioralState: max_parallel_tasks, exploration_bonus, memory_priority_boost,
+  #          planning_depth, self_repair_mode, mutation_gate_open, focus_shift.
+  #          7 regole causali (R1-R7). 46 test PASS. SMFOI step4 wired.
+  #          (PROP-M7-DRIVE-EXECUTIVE → APPROVED)
+  # EPI-010: M8 — cognitive_autonomy.swarm.enabled: true
+  #          SwarmOrchestrator (10° comparto): NeuronBase + PlannerNeuron + CriticNeuron
+  #          ExecutorNeuron + ResearcherNeuron + SwarmOrchestrator pipeline.
+  #          29 test PASS. Emergence EM-03 FAIL→PASS. Score: 58%→65%.
+  #          M8.1: AutobiographicalMemory wired to SwarmOrchestrator synthesis.
+  #          EM-04 + EM-04b FAIL→PASS. Score: 65%→~73%.
+  #          (PROP-M8-SWARM-AGENTIC → APPROVED)
+  # EPI-012: M10 — Bio-Inspired Architecture Review + nuovi moduli attivati.
+  #          cognitive_autonomy.predictive.enabled: true (M10.1)
+  #          PredictiveProcessor (Friston Free Energy): filtra segnali stabili,
+  #          trasmette solo prediction error. Suppression rate > 60% in stato stabile.
+  #          EM-16 PASS: segnale stabile soppresso, viability drop trasmesso.
+  #          cognitive_autonomy.immune.enabled: true (M10.2)
+  #          CognitiveImmune: self/non-self recognition, 6 ThreatPattern builtin,
+  #          ImmuneMemory (cache rapida), SourceTrust (TRUSTED/KNOWN/QUARANTINED).
+  #          EM-17 PASS: threat bloccato, cache < 5ms, sorgente trusted non bloccata.
+  #          Bio-Inspired Completeness Score: 51% → ~65%.
+  #          Emergence Score stimato: ~82% → ~88%.
+  #          (PROP-M10-BIOINSPIRED → APPROVED)
+  # EPI-017: M13.1+M14.3 — CodeMutationLab + PersistentIdentity (2026-04-29)
+  #          evolution.code_mutation_lab.enabled: true (M13.1)
+  #          CodeMutationLab: auto-modifica Python con AST + backup + rollback.
+  #          Pipeline: backup→ast_validate→mutate→ast_check→write→post_check→rollback.
+  #          MutationType: ADD_LOGGING, ADD_TYPE_HINTS, IMPROVE_ERROR_HANDLING,
+  #          ADD_MODULE_DOCSTRING, ADD_AUDIT_NOTE. SafeProactive gate obbligatorio.
+  #          EM-26 PASS: backup, AST gate, apply, rollback, contenuto ripristinato.
+  #          identity.persistent_identity.enabled: true (M14.3)
+  #          PersistentIdentity: storage JSON multi-sessione. total_thoughts counter,
+  #          achievements (auto threshold=0.85 + manuali), long_term_goals con progress,
+  #          emergence_history rolling 50, core_values, narrative log rolling 100.
+  #          Integrazione SMFOI Step 1 (Self-Location): tick() ad ogni ciclo cognitivo.
+  #          EM-27 PASS: file creation, auto-achievement, rolling history, persistenza.
+  #          BCS stimato: 86% → ~88%. Test totali: 27 (EM-04→EM-27).
+  #          (PROP-M13-AST-MUTATION + PROP-M14-PERSISTENT-IDENTITY → APPROVED by Roberto)
+  # EPI-016: M13.0+M13.2+M13.3 — Grok SPEACE v4.2 Integration (2026-04-29)
+  #          cognitive_autonomy.criticality.enabled: true (M13.0)
+  #          CriticalityController: Self-Organized Criticality (Beggs & Plenz 2003).
+  #          order_score = coherence*0.6 + (1-novelty)*0.4
+  #          Zone: OVER-ORDERED / CRITICAL / OVER-CHAOTIC.
+  #          ModulationSuggestion: temperature_delta, exploration_bonus, mutation_gate.
+  #          EM-24 PASS: zone detection, modulation, mutation_gate coerente.
+  #          cognitive_autonomy.predictive.behavioral.enabled: true (M13.2)
+  #          BehavioralPredictor: rolling history (maxlen=20), predict_next_state(),
+  #          get_prediction_error(). Classi: recall/explore/repair/plan/general.
+  #          Boost confidenza se storia conferma pattern. Integra con BehavioralState.
+  #          memory.semantic_search.enabled: true (M13.3)
+  #          SemanticSearch: Ollama nomic-embed-text (768-dim) + fallback hash-based
+  #          deterministico normalizzato. Cosine similarity pesata × importance.
+  #          RealEmbeddings: stessa stringa → stesso vettore (deterministico).
+  #          EM-25 PASS: cosine search > random baseline, fallback senza Ollama.
+  #          BCS stimato: 82% → ~86%. Test totali: 25 (EM-04→EM-25).
+  #          (PROP-M13-CRITICALITY + PROP-M13-PREDICTIVE-COMPLETE +
+  #           PROP-M13-SEMANTIC-MEMORY → APPROVED)
+  # EPI-015: M12.1 — HomeostaticPlasticityRegulator + ValenceIntegrator
+  #          ★ BCS TARGET RAGGIUNTO: ~82% (target era 80% by M12) ★
+  #          cognitive_autonomy.plasticity.homeostatic.enabled: true (M12.1)
+  #          HomeostaticPlasticityRegulator: synaptic scaling (Turrigiano 2000).
+  #          Previene runaway potentiation con moving average + scale_factor [0.70–1.30].
+  #          Direzioni: SCALE_DOWN (cronicamente alta), SCALE_UP (cronicamente bassa), STABLE.
+  #          Integrato in cortex/cognitive_autonomy/plasticity/__init__.py.
+  #          EM-22 PASS: scale_down con attività>0.70, scale_up<0.35, STABLE a 0.55.
+  #          cognitive_autonomy.valence.enabled: true (M12.1)
+  #          ValenceIntegrator: amigdala+nucleus_accumbens analog.
+  #          Segnale affettivo scalare [-1, +1]: tanh(Σ w_i·(drive_i-0.5)·2·sens).
+  #          AffectiveState: DISTRESS / UNEASE / NEUTRAL / CONTENT / THRIVING.
+  #          EMA smoothing (alpha=0.15) + arousal = |valence| + noise_floor.
+  #          EM-23 PASS: crisi→DISTRESS(v<0), ottimale→THRIVING(v>0), monotone, EMA.
+  #          BCS: ~78% → ~82% (+4pp). Emergence Score: ~93% → ~95%.
+  #          (PROP-M12-PLASTICITY-VALENCE → APPROVED)
+  # EPI-014: M11.1+M11.2 — CircadianOscillator + GlialSupport
+  #          cognitive_autonomy.temporal.enabled: true (M11.1)
+  #          CircadianOscillator: pacemaker bio-temporale (SCN analog).
+  #          Ritmo circadiano 24h (Fourier biologico) + ultradiano 90min.
+  #          Segnali ormonali simulati: cortisolo, melatonina, adenosina, BDNF.
+  #          Vettore modulatori: curiosity_mod, energy_mod, plasticity_mod,
+  #          immune_mod, consolidation_mod, exploration_mod.
+  #          EM-20 PASS: MORNING_PEAK→curiosity alta, NIGHT_VALLEY→consolidation alta,
+  #          AFTERNOON→plasticity alta, modulate() corretto.
+  #          cognitive_autonomy.glial.enabled: true (M11.2)
+  #          GlialSupport: tripartite synapse + glymphatic system.
+  #          AstrocyteNetwork (11 nodi, topologia funzionale) integrata nel pipeline.
+  #          plasticity_boost da calcium wave (Ca²⁺ → CAMKII → LTP analog).
+  #          metabolic_supply: lattato shuttle per neuroni attivi.
+  #          cleanup_rate: glymphatica 8× più attiva in DEEP_SLEEP.
+  #          coherence_gain: propagazione Ca²⁺ → Φ aumenta leggermente.
+  #          EM-21 PASS: plasticity boost, glymphatica in sleep, metabolic regen.
+  #          BCS: ~72% → ~78%. Emergence Score: ~91% → ~93%.
+  #          (PROP-M11-TEMPORAL-GLIAL → APPROVED)
+  # EPI-013: M10.3+M10.4 — EventBus + ResonanceScheduler + ConsolidationPass + MetabolicSwitch
+  #          cortex.events: pub/sub in-process (thread-safe, zero deps esterne).
+  #          EventBus: sync/async modes, WILDCARD subscriber, dead letter queue, metriche.
+  #          ResonanceScheduler: anti-risonanza heartbeat (Golden Ratio offset, φ-sequence).
+  #          Conflict score < 0.15 su 3600s per 9 processi SPEACE default.
+  #          cognitive_autonomy.consolidation.enabled: true (M10.4)
+  #          ConsolidationPass: hippocampal replay durante DEEP_SLEEP.
+  #          Rank → Cluster → Compress → Prune → Emit MEMORY_CONSOLIDATED.
+  #          cognitive_autonomy.metabolic.enabled: true (M10.4)
+  #          MetabolicSwitch: NORMAL/REDUCED/CONSERVATION (P0-P3 priority gating).
+  #          Hysteresis ±0.05 per stabilità. Stima carico computazionale.
+  #          EM-18 PASS: EventBus delivery, WILDCARD, metrics, anti-risonanza.
+  #          EM-19 PASS: ConsolidationPass traces+pruning, MetabolicSwitch mode transitions.
+  #          BCS: ~65% → ~72%. Emergence Score: ~88% → ~91%.
+  #          (PROP-M10-EVENTS-CONSOLIDATION → APPROVED)
+  # EPI-011: M9 — cognitive_autonomy.energy.enabled: true
+  #          EnergyBudget (bio-inspired): EnergyConfig + EnergyBudget + EnergySnapshot.
+  #          SleepWakeCycle (AWAKE/IDLE/DEEP_SLEEP): heartbeat adattivo.
+  #          ProcessScheduler: gating talamo-corticale, TaskPriority P0-P4.
+  #          Principi bio-ispirati: sparse activation, lazy computation, cache TTL.
+  #          Calibrato per hardware domestico (16GB RAM, 35% CPU budget).
+  #          EM-15 PASS: energy_drive bassa → deferral esplorativo + heartbeat ridotto.
+  #          (PROP-M9-ENERGY-BUDGET → APPROVED)
 
 # --- Parametri di apprendimento e adattamento ---
 learning:
@@ -222,6 +339,170 @@ flags:
 
 # --- Storico mutazioni (ultime 10) ---
 mutation_history:
+  - id: "GK-01"
+    timestamp: "2026-04-27T13:00:00"
+    proposal: "PROP-GK01-HOMEOSTASIS-ENABLE"
+    change: >
+      HomeostasisConfig.enabled default: False → True (controller.py:64).
+      Fix code default — YAML aveva già enabled:true da EPI-005, ma il default Python
+      bypassed quando HomeostaticController istanziato senza from_epigenome().
+      Emergence EM-05: PARTIAL → PASS.
+  - id: "EPI-008"
+    timestamp: "2026-04-27T17:00:00"
+    proposal: "PROP-M7-DRIVE-EXECUTIVE"
+    change: >
+      cognitive_autonomy.executive.enabled: false → true.
+      Implementato DriveExecutive (drive_executive.py): BehavioralState dataclass
+      con 7 regole causali (R1-R7) che traducono drive omeostatici in comportamento.
+      Implementato TaskSelector (task_selector.py): selezione task guidata da BehavioralState.
+      Implementato SelfRepairTrigger (self_repair.py): gestione ciclo auto-riparazione.
+      SMFOI_v3.py step 4 wired: legge BehavioralState prima di Output Action.
+      Test suite: 46/46 PASS (causal tests). Emergence EM-06 FAIL→PASS.
+      Emergence Score: 50% → ~57%.
+    evidence: "cortex/cognitive_autonomy/executive/_tests_executive.py (46/46, 2026-04-27)"
+    snapshot_pre: "snap_20260427_pre_epi008_gk01"
+  - id: "EPI-015"
+    timestamp: "2026-04-28T18:30:00"
+    proposal: "PROP-M12-PLASTICITY-VALENCE"
+    change: >
+      ★ MILESTONE BCS 80% RAGGIUNTA — epigenome.yaml v2.0 ★
+      M12.1 — cortex/cognitive_autonomy/plasticity/homeostatic_plasticity.py attivato.
+        HomeostaticPlasticityRegulator: synaptic scaling (Turrigiano & Nelson, 2000).
+        Monitora plasticity_activity con moving average (window=20).
+        SCALE_DOWN: attività > target+0.15 → riduce scale_factor verso 0.70.
+        SCALE_UP: attività < target-0.20 → aumenta scale_factor verso 1.30.
+        STABLE: zona ottimale → scale_factor rilassa lentamente verso 1.0.
+        Scaling moltiplicativo (biologicamente corretto: agisce su tutte le sinapsi).
+        Integrato in plasticity/__init__.py accanto a EdgePruner/EdgeGrower.
+        EM-22 PASS: alta attività→SCALE_DOWN(sf<1, lr_reduced), bassa→SCALE_UP(sf>1, lr_increased),
+        zona ottimale→STABLE, scale_factor clamped a [0.70, 1.30].
+      M12.1 — cortex/cognitive_autonomy/valence/valence_integrator.py attivato.
+        ValenceIntegrator: amigdala+nucleus_accumbens+ACC analog (Barrett 2017).
+        Formula: valence = tanh(Σ w_i·(drive_i - 0.5)·2·sensitivity).
+        Tanh garantisce saturazione biologica (esperienze estreme → ±1).
+        AffectiveState: DISTRESS(<-0.40) / UNEASE(<-0.10) / NEUTRAL(±0.10) /
+                        CONTENT(>+0.10) / THRIVING(>+0.40).
+        EMA smoothing + arousal = |valence| + noise_floor.
+        dominant_signal: la sorgente con contributo assoluto maggiore.
+        EM-23 PASS: crisi(viability=0.10)→DISTRESS(v<0), ottimale(tutti>0.85)→THRIVING(v>0),
+        neutrale(tutti=0.50)→NEUTRAL(v≈0), monotone ordinamento, EMA lag verificato.
+      BCS: ~78% → ~82% (+4pp). TARGET 80% SUPERATO.
+      Emergence Score: ~93% → ~95% (stimato post EM-22+EM-23, 23 test totali).
+      DigitalDNA versione 2.0: milestone epigenetica maggiore.
+    evidence: "tests/test_emergence.py EM-22 + EM-23 PASS (2026-04-28)"
+    snapshot_pre: "snap_20260428_pre_epi015_m12_bcs80"
+  - id: "EPI-014"
+    timestamp: "2026-04-28T17:30:00"
+    proposal: "PROP-M11-TEMPORAL-GLIAL"
+    change: >
+      M11.1 — cortex/cognitive_autonomy/temporal/ attivato (CircadianOscillator).
+        Pacemaker bio-temporale ispirato al nucleo soprachiasmatico (SCN).
+        Ritmo circadiano 24h: Fourier biologico (sinusoidi + armonica secondaria).
+        Fasi: MORNING_PEAK (07-12), AFTERNOON (12-17), EVENING (17-21), NIGHT_VALLEY (21-07).
+        Ritmo ultradiano 90min: cicli attenzione-riposo (ispirato a REM/NREM).
+        Ormoni simulati: cortisolo (picco 08:30), melatonina (alta 21:00-07:00),
+        adenosina (accumulo veglia), BDNF (picco notturno).
+        Modulatori: curiosity_mod, energy_mod, plasticity_mod, immune_mod,
+        consolidation_mod, exploration_mod — tutti [0.3–1.5].
+        EM-20 PASS: MORNING_PEAK→curiosity_mod>0.8, NIGHT_VALLEY→consolidation_mod>0.9,
+        AFTERNOON→plasticity_mod>0.9, modulate() clampa correttamente [0,1].
+      M11.2 — cortex/cognitive_autonomy/glial/ attivato (GlialSupport).
+        Tripartite synapse analog: AstrocyteNetwork (11 nodi, 14 connessioni).
+        plasticity_boost da calcium waves (Ca²⁺ → CAMKII → LTP analog).
+        metabolic_supply: lattato shuttle per neuroni attivi.
+        cleanup_rate: glimphatica 8× più attiva in DEEP_SLEEP (cleanup_sleep=0.40).
+        coherence_gain: propagazione Ca²⁺ → micro-boost Φ.
+        Emette REPAIR_STARTED su EventBus in caso di crisi metabolica.
+        EM-21 PASS: plasticity_boost>1.0 con alta attività, glymphatica attiva
+        in deep_sleep, cleanup_sleep > cleanup_awake, metabolic regen in sleep.
+      BCS: ~72% → ~78% (+6pp). Emergence Score: ~91% → ~93% (stimato post EM-20+EM-21).
+    evidence: "tests/test_emergence.py EM-20 + EM-21 PASS (2026-04-28)"
+    snapshot_pre: "snap_20260428_pre_epi014_m11"
+  - id: "EPI-013"
+    timestamp: "2026-04-28T16:00:00"
+    proposal: "PROP-M10-EVENTS-CONSOLIDATION"
+    change: >
+      M10.3 — cortex/events/ attivato (EventBus + ResonanceScheduler).
+        EventBus: pub/sub in-process thread-safe (sync/async), WILDCARD subscriber,
+        dead letter queue per errori, metriche (published/delivered/dropped/latency).
+        EventType: 12 tipi bio-ispirati (VIABILITY_ALERT, ENERGY_LOW, CURIOSITY_SPIKE,
+        PREDICTION_ERROR_HIGH, MEMORY_CONSOLIDATED, THREAT_DETECTED, MUTATION_PROPOSED,
+        MUTATION_APPLIED, REPAIR_STARTED, REPAIR_ENDED, CYCLE_COMPLETED, WILDCARD).
+        ResonanceScheduler: Golden Ratio offset (φ=0.618) per distribuzione anti-risonanza
+        degli heartbeat — analogia orbitale + phyllotaxis. Conflict score < 0.15.
+        ProcessSpec: process_id, base_interval_s, priority, jitter_pct, fixed_interval.
+        9 processi SPEACE default configurati (speace_default_processes()).
+        EM-18 PASS: delivery corretto, WILDCARD funzionante, metriche accurate,
+        conflict score < 0.20, fixed_interval rispettato.
+      M10.4 — cortex/cognitive_autonomy/consolidation/ + metabolic/ attivati.
+        ConsolidationPass: hippocampal replay durante DEEP_SLEEP.
+        Pipeline: Rank (importanza composita) → Cluster (per tag) → Compress (MemoryTrace)
+        → Prune (candidati a bassa importanza) → Emit MEMORY_CONSOLIDATED su EventBus.
+        MetabolicSwitch: flessibilità metabolica bio-ispirata.
+        NORMAL (P0-P3) / REDUCED (P0-P1) / CONSERVATION (P0 only).
+        Hysteresis ±0.05 per stabilità. Stima carico computazionale per mode.
+        EM-19 PASS: traces create, pruning di episodi a bassa importanza,
+        transizioni metaboliche corrette (NORMAL→CONSERVATION→REDUCED),
+        load_estimated si riduce con modalità di conservazione.
+      BCS: ~65% → ~72%. Emergence Score: ~88% → ~91% (stimato post EM-18+EM-19).
+    evidence: "tests/test_emergence.py EM-18 + EM-19 PASS (2026-04-28)"
+    snapshot_pre: "snap_20260428_pre_epi013_m10_3_4"
+  - id: "EPI-012"
+    timestamp: "2026-04-28T14:00:00"
+    proposal: "PROP-M10-BIOINSPIRED"
+    change: >
+      M10 Bio-Inspired Architecture Review completato.
+      cognitive_autonomy.predictive.enabled: true (M10.1).
+        PredictiveProcessor (Friston Free Energy Principle):
+        PredictionModel EMA+trend, soppressione segnali stabili (< 0.03 error),
+        trasmissione prediction error al Cortex (> 0.15 = MEDIUM+).
+        Suppression rate target > 60% in stato stabile.
+        Soglie adattive per AWAKE/IDLE/DEEP_SLEEP.
+      cognitive_autonomy.immune.enabled: true (M10.2).
+        CognitiveImmune: 6 ThreatPattern builtin (TP-001→TP-006).
+        ImmuneMemory: cache MD5-keyed, TTL 24h, < 1ms risposta (memoria immunitaria).
+        SourceTrust: TRUSTED/KNOWN/UNKNOWN/QUARANTINED.
+        Auto-quarantine: sorgente con ≥ 3 threat → QUARANTINED automaticamente.
+      Bio-Inspired Architecture Review doc creato: docs/SPEACE-M10-BioInspired-Architecture-Review.md
+      BCS: 51% → ~65%. Emergence Score: ~82% → ~88% (post EM-16+EM-17).
+    evidence: "tests/test_emergence.py EM-16 + EM-17 PASS (2026-04-28)"
+    snapshot_pre: "snap_20260428_pre_epi012_m10"
+  - id: "EPI-011"
+    timestamp: "2026-04-28T10:00:00"
+    proposal: "PROP-M9-ENERGY-BUDGET"
+    change: >
+      cognitive_autonomy.energy.enabled: false → true.
+      EnergyBudget (budget.py): contabilità computazionale bio-ispirata.
+        EnergyConfig (cpu_budget=35%, mem=512MB, max_neurons=2).
+        EnergyBudget.can_activate(): gating sparse activation.
+        EnergyBudget.apply_behavioral_limits(): adatta limiti da DriveExecutive.
+        Result cache (lazy computation, TTL 300s).
+      SleepWakeCycle (sleep_wake.py): AWAKE/IDLE/DEEP_SLEEP con isteresi.
+        Heartbeat adattivo: 60s → 300s → 900s (risparmio fino a 93%).
+        Blocca esplorazione in IDLE, solo safety in DEEP_SLEEP.
+      ProcessScheduler (scheduler.py): TaskPriority P0-P4.
+        CRITICAL (bypass), HIGH (awake+idle), NORMAL (awake), LOW (awake+energy>0.5).
+        EXPLORATORY: bloccato se sleep_cycle.should_skip_exploration().
+        Deferred queue per task rimandati.
+      EM-15 PASS: energy 0.20 → IDLE → esplorazione deferred, safety approved.
+      Obiettivo: limitare consumo energetico su hardware domestico (PC notebook 16GB).
+    evidence: "tests/test_emergence.py EM-15 PASS (2026-04-28)"
+    snapshot_pre: "snap_20260428_pre_epi011_m9"
+  - id: "EPI-010"
+    timestamp: "2026-04-27T18:00:00"
+    proposal: "PROP-M8-SWARM-AGENTIC"
+    change: >
+      cognitive_autonomy.swarm.enabled: false → true.
+      SwarmOrchestrator implementato come 10° comparto SPEACE Cortex.
+      Port neuroni da speaceorganismocibernetico: PlannerNeuron, CriticNeuron,
+      ExecutorNeuron, ResearcherNeuron (base NeuronBase con fallback deterministico).
+      Pipeline: Researcher→Planner→Executor(x N)→Critic(x N)→Synthesis.
+      Integrazione BehavioralState: exploration_bonus > 0 → Swarm avviato spontaneamente.
+      M8.1: AutobiographicalMemory wired to SwarmOrchestrator synthesis.
+      EM-04 + EM-04b FAIL→PASS. Test suite: 29/29 PASS. Emergence EM-03 FAIL→PASS.
+      Score 58%→65% (M8) → ~73% (M8.1+M9).
+    evidence: "cortex/cognitive_autonomy/swarm/_tests_swarm.py (29/29, 2026-04-27)"
+    snapshot_pre: "snap_20260427_pre_epi010_m8"
   - id: "EPI-006"
     timestamp: "2026-04-27T09:00:00"
     proposal: "PROP-COG-AUTONOMY-M5-COMPLETE"
@@ -317,15 +598,207 @@ cognitive_autonomy:
   plasticity:
     enabled: true               # EPI-006: ON (2026-04-27) — Plasticity Hebbian + pruning attivi
   constraints:
-    enabled: true               # EPI-006: ON (2026-04-27) — ConstraintLayer penalità attivo
+    enabled: true               # EPI-006: ON
+  executive:
+    enabled: true               # EPI-008: ON (2026-04-27) — DriveExecutive M7.0 attivo
+    viability_repair_threshold: 0.4
+    viability_conserve_threshold: 0.6
+    curiosity_explore_threshold: 0.7
+    coherence_memory_threshold: 0.4
+    energy_shallow_threshold: 0.3
+    energy_deep_threshold: 0.7
+    alignment_gate_threshold: 0.5
+    phi_parallel_threshold: 0.7
+  swarm:
+    enabled: true               # EPI-010: ON (2026-04-27) — Swarm Agentic Layer 10° comparto
+    model: "gemma3:4b"
+    max_subtasks: 4
+    critic_strict: false
+  predictive:
+    enabled: true               # EPI-012: ON (2026-04-28) — PredictiveCoding (Friston) attivo
+    alpha: 0.15                 # peso osservazione corrente nell'EMA (basso=stabile, alto=reattivo)
+    beta: 0.10                  # peso del trend stimato
+    history_window: 30          # finestra storica per calcolo varianza
+    # Soglie errore (AWAKE): suppressed < 0.03 < low < 0.08 < medium < 0.15 < high < 0.30 < critical
+    threshold_suppressed: 0.03
+    threshold_low: 0.08
+    threshold_medium: 0.15
+    threshold_high: 0.30
+    # Obiettivo: suppression_rate > 0.60 in stato stabile (come corteccia biologica)
+    target_suppression_rate: 0.60
+  immune:
+    enabled: true               # EPI-012: ON (2026-04-28) — CognitiveImmune attivo
+    strict_mode: false          # false = preferisce missed detection a false alarm storm
+    threat_patterns_builtin: 6  # TP-001→TP-006 pre-caricati
+    immune_memory_max: 10000    # max entry cache ImmuneMemory
+    immune_memory_ttl_h: 24     # TTL cache (ore)
+    # Soglie severity (1.0 = massima pericolosità)
+    trusted_severity_threshold: 0.50   # sorgenti TRUSTED: blocca solo se severity > 0.50
+    default_severity_threshold: 0.70   # sorgenti UNKNOWN: blocca se severity > 0.70
+    # Sorgenti interne SPEACE (sempre TRUSTED, non subiscono screening completo):
+    internal_trusted_sources:
+      - smfoi_kernel
+      - drive_executive
+      - homeostatic_controller
+      - swarm_orchestrator
+      - world_model_cortex
+      - autobiographical_memory
+      - energy_budget
+      - predictive_processor
+      - safeproactive
+  homeostatic_plasticity:
+    enabled: true               # EPI-015: ON (2026-04-28) — HomeostaticPlasticityRegulator attivo
+    target_activity: 0.55       # firing rate target [0.0–1.0]
+    high_activity_thresh: 0.15  # > target+thresh → SCALE_DOWN
+    low_activity_thresh: 0.20   # < target-thresh → SCALE_UP
+    history_window: 20          # finestra mobile per moving average
+    scale_factor_max: 1.30      # amplificazione massima (+30%)
+    scale_factor_min: 0.70      # attenuazione massima (-30%)
+    scaling_speed: 0.02         # lento (biologico: ore/giorni)
+    min_samples_to_act: 5       # campioni minimi prima di agire
+  criticality:
+    enabled: true               # EPI-016: ON (2026-04-29) — CriticalityController attivo
+    order_threshold: 0.75       # soglia superiore ordine (> → OVER-ORDERED)
+    chaos_threshold: 0.35       # soglia inferiore ordine (< → OVER-CHAOTIC)
+    coherence_weight: 0.60      # peso coherence nel calcolo order_score
+    novelty_weight: 0.40        # peso (1-novelty) nel calcolo order_score
+    # Suggerimenti modulazione
+    temperature_boost: 0.15     # Δtemperatura in OVER-ORDERED (boost divergenza)
+    novelty_boost: 0.20         # Δexploration_bonus in OVER-ORDERED
+    temperature_cut: -0.15      # Δtemperatura in OVER-CHAOTIC (boost struttura)
+    coherence_boost: 0.20       # Δcoherence_boost in OVER-CHAOTIC
+    history_window: 20          # finestra rolling per mean_order_score
+    alpha_ema: 0.20             # peso EMA order_score
+    # mutation_gate_open: True SOLO nella zona CRITICAL — fuori dalla zona blocca mutazioni
+    # Target zone: 0.35 ≤ order_score ≤ 0.75 (metastabilità ottimale)
+  behavioral_predictor:
+    enabled: true               # EPI-016: ON (2026-04-29) — BehavioralPredictor attivo
+    memory_size: 20             # rolling history window (stati recenti)
+    min_history_for_pred: 3     # osservazioni minime per predizione affidabile
+    confidence_history_boost: 0.10  # boost confidenza se storia conferma pattern
+    # Classi d'azione: recall, explore, repair, plan, general
+    # Regole drive: viability<0.4→repair, curiosity>0.7+input→explore
+  semantic_search:
+    enabled: true               # EPI-016: ON (2026-04-29) — SemanticSearch attivo
+    ollama_model: "nomic-embed-text"  # modello Ollama per embeddings reali
+    ollama_timeout_s: 5.0       # timeout connessione Ollama
+    embedding_dim: 768          # dimensione vettore (nomic-embed-text default)
+    fallback_deterministic: true  # fallback hash-based se Ollama non disponibile
+    min_score: 0.0              # soglia minima score per risultati
+    # Wiring: AutobiographicalMemory.search_semantic(query, top_k) → SemanticSearch
+
+# ── EPI-017 ──────────────────────────────────────────────────────────────────
+evolution:
+  code_mutation_lab:
+    enabled: true               # EPI-017: ON (2026-04-29) — CodeMutationLab attivo
+    backup_dir: ".speace_backups"  # cartella backup timestamped
+    max_history: 50             # massimo eventi in mutation_history
+    require_approval: true      # SEMPRE richiede approvazione SafeProactive
+    auto_approve_risk: "NONE"   # nessuna auto-approvazione — tutto human-in-the-loop
+    # MutationType disponibili:
+    #   ADD_AUDIT_NOTE (LOW) — aggiunge commento evolutivo
+    #   ADD_LOGGING (LOW) — aggiunge import logging + log.debug
+    #   ADD_MODULE_DOCSTRING (LOW) — aggiunge docstring modulo
+    #   ADD_TYPE_HINTS (MEDIUM) — aggiunge # type: ignore
+    #   IMPROVE_ERROR_HANDLING (MEDIUM) — bare except → except Exception
+    # Pipeline: backup → ast_validate(original) → mutate → ast_validate(mutated)
+    #         → write → post_write_check → rollback automatico se fallisce
+
+identity:
+  persistent_identity:
+    enabled: true               # EPI-017: ON (2026-04-29) — PersistentIdentity attiva
+    identity_file: "data/identity.json"  # storage JSON multi-sessione
+    achievement_threshold: 0.85  # emergence_score minimo per achievement automatico
+    history_max: 50             # massimo punti in emergence_history (rolling)
+    narrative_max: 100          # massimo voci nel narrative log (rolling)
+    # Wiring SMFOI Step 1 (Self-Location):
+    #   identity.tick(emergence_score, metrics) — aggiornamento ad ogni ciclo
+    # Core values (immutabili): vedi DEFAULT_CORE_VALUES in persistent_identity.py
+    # Long-term goals: sincronizzati con evolver (rigeneproject.org) ogni 60 min
+
+  valence:
+    enabled: true               # EPI-015: ON (2026-04-28) — ValenceIntegrator attivo
+    sensitivity: 1.50           # scala il raw_valence prima di tanh
+    noise_floor: 0.05           # arousal minimo (sistema sempre "vivo")
+    alpha_ema: 0.15             # smoothing EMA della valence
+    # Pesi segnali (devono sommare a 1.0):
+    weights:
+      viability:       0.35     # drive più importante (sopravvivenza)
+      curiosity:       0.20     # novelty/reward
+      alignment:       0.20     # purpose/mission
+      coherence:       0.10     # self-consistency
+      energy:          0.10     # stato metabolico
+      plasticity_gain: 0.05     # progresso apprendimento
+  temporal:
+    enabled: true               # EPI-014: ON (2026-04-28) — CircadianOscillator attivo
+    use_system_clock: true      # usa ora reale di sistema
+    circadian_amplitude: 0.70   # ampiezza modulazione circadiana [0.0–1.0]
+    ultradian_amplitude: 0.20   # ampiezza ritmo ultradiano [0.0–0.50]
+    ultradian_rest_threshold: 0.15  # soglia pausa ultradiana
+    # Fasi circadiane: MORNING_PEAK (07-12), AFTERNOON (12-17),
+    #                  EVENING (17-21), NIGHT_VALLEY (21-07)
+    # Ultradian period: 5400s (90 min, ispirato a cicli REM/NREM)
+  glial:
+    enabled: true               # EPI-014: ON (2026-04-28) — GlialSupport attivo
+    plasticity_boost_max: 0.30  # boost massimo [0.0–1.0] da calcium wave
+    calcium_threshold: 0.40     # soglia Ca²⁺ per attivare plasticity boost
+    cleanup_awake_rate: 0.05    # clearance glinfatica in veglia (5%)
+    cleanup_sleep_rate: 0.40    # clearance glinfatica in deep_sleep (40%, 8× più alta)
+    metabolic_regen_rate: 0.10  # velocità rigenerazione metabolic_reserve
+    # AstrocyteNetwork: 11 nodi (10 comparti Cortex + energy_monitor)
+    # Topologia: 14 connessioni (ispirata a connettività funzionale cerebrale)
+  events:
+    enabled: true               # EPI-013: ON (2026-04-28) — EventBus pub/sub attivo
+    async_mode: false           # default sync (stesso thread del publisher)
+    queue_maxsize: 500          # buffer eventi in modalità async
+    # ResonanceScheduler
+    resonance_window_s: 5.0     # finestra sovrapposizione per conflict score
+    resonance_horizon_s: 3600.0 # orizzonte simulazione (1 ora)
+    target_conflict_score: 0.15 # soglia accettabile (< 15% tick in conflitto)
+  consolidation:
+    enabled: true               # EPI-013: ON (2026-04-28) — ConsolidationPass attivo
+    max_episodes: 50            # episodi max per ciclo di consolidamento
+    importance_threshold: 0.30  # soglia sotto cui un episodio è candidato al pruning
+    min_cluster_size: 2         # episodi minimi per formare una MemoryTrace
+    recency_weight: 0.20        # peso della recency nel calcolo importanza
+    prune_ratio: 0.20           # % episodi da prunare per ciclo
+    # Trigger: avvio automatico quando WakeState == DEEP_SLEEP
+    trigger_on_deep_sleep: true
+  metabolic:
+    enabled: true               # EPI-013: ON (2026-04-28) — MetabolicSwitch attivo
+    # Soglie transizione (con hysteresis ±0.05)
+    high_threshold: 0.50        # energy > 0.50 → NORMAL_METABOLISM
+    low_threshold: 0.25         # energy < 0.25 → CONSERVATION
+    hysteresis: 0.05            # banda morta anti-oscillazione
+    # Moduli per priorità
+    # P0 (survival, sempre attivi): homeostatic_controller, safety_module, smfoi_kernel
+    # P1 (essential, disabilitati in CONSERVATION): energy_monitor, cognitive_immune,
+    #                                                predictive_processor, event_bus
+    # P2 (standard, disabilitati in REDUCED+): autobiographical_memory, world_model,
+    #                                           swarm_orchestrator, consciousness_index
+    # P3 (expensive, disabilitati per primi): curiosity_module, default_mode_network,
+    #                                          evolver_heartbeat, mutation_engine
+  energy:
+    enabled: true               # EPI-011: ON (2026-04-28) — EnergyBudget bio-ispirato attivo
+    # Budget computazionale (calibrato per hardware domestico 16GB RAM, i9-11900H)
+    cpu_budget_pct: 35.0        # % CPU max per processi SPEACE background
+    cpu_per_neuron: 5.0         # % CPU stimata per neurone attivo
+    max_parallel_neurons: 2     # sparse activation: max neuroni paralleli
+    memory_budget_mb: 512.0     # RAM max per SPEACE agent
+    memory_per_neuron: 48.0     # RAM stimata per neurone (con modello LLM)
+    # Sleep/wake thresholds (ispirato a ciclo sonno biologico)
+    sleep_threshold: 0.30       # energy_drive < 0.30 → IDLE (heartbeat ridotto)
+    deep_sleep_threshold: 0.10  # energy_drive < 0.10 → DEEP_SLEEP (solo safety)
+    wake_threshold: 0.55        # energy_drive > 0.55 → risveglio AWAKE
+    # Heartbeat intervals
+    active_heartbeat_s: 60.0    # ciclo normale
+    idle_heartbeat_s: 300.0     # ciclo ridotto in IDLE (risparmio ~80%)
+    deep_sleep_heartbeat_s: 900.0  # ciclo minimo DEEP_SLEEP (risparmio ~93%)
+    # Cache (lazy computation)
+    cache_ttl_s: 300.0          # TTL cache risultati (5 minuti)
+    enable_result_cache: true
+    # Comportamenti adattativi
+    defer_exploration_in_idle: true    # blocca esplorazione in IDLE/DEEP_SLEEP
+    skip_nonessential_in_sleep: true   # in DEEP_SLEEP solo safety + homeostasis
   world_model:
-    enabled: true               # EPI-007: ON (2026-04-27) — WorldModelCortex 9° comparto attivo
-    seed_path: "memory/world_model.json"
-    db_path: null               # null = in-memory; path per SQLite persistence
-    feeds:
-      nasa_donki: true
-      noaa_climate: true
-      un_sdg: true
-    inference_rules_active: true
-    memory_bridge_active: true
-  m5_complete: true             # EPI-006: M5 Cognitive Autonomy Score 6/6 (2026-04-27): ON (2026-04-27) — ConstraintLayer penalità attivo
+    enabled: true               # EPI-007: ON (2026-04-27) — WorldModelCortex 9° comparto

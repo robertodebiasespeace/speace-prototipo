@@ -129,4 +129,7 @@ class FeedConnector:
                 return json.loads(fixture_path.read_text(encoding="utf-8"))
             except Exception:
                 pass
-  
+        return {"source": "fixture", "note": "offline fixture for " + self.name}
+
+
+__all__ = ["FeedConnector", "FeedResult"]
