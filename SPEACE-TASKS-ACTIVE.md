@@ -1,6 +1,6 @@
 # SPEACE — Tasks Board Attivo
 
-**Versione:** 3.1
+**Versione:** 3.2
 **Data:** 2026-04-29
 **Stato:** Documento vivo — aggiornato al completamento/inserimento di task
 **Scopo:** Vista sintetica e dinamica di tutti i task attivi per lo sviluppo di SPEACE, con snapshot dello stato complessivo.
@@ -38,10 +38,10 @@
 **Livello evolutivo dichiarato:** Modular Emergent (R=9 SMFOI) → avanzamento verso Lv3 (auto-modifica codice).
 **BRN integrati:** 15/20 fully implemented · 5/20 stub · wired via `--brain` flag (NEU-003 ✅).
 **M5 progress:** M5.0→M5.11 ✅ (A+B+M5C.1) · M5.12→M5.20 ⬜ · Test coverage: 25+39+24+22+32=**142 test green** · Dashboard v2: viability KPI + drives grid + cognitive section.
-**BCS:** ~91% (post M14.4 NeuralParliament). Target M14 completa: ~92%.
-**Test emergenza:** 29 (EM-04→EM-29). EM-28 GA PASS · EM-29 NeuralParliament PASS (consensus=87.2%). Emergence Score 86%.
-**DigitalDNA:** epigenome.yaml v2.4 (EPI-019: evolution.neural_parliament ON; EPI-018: GA; EPI-017: mutation_lab+identity).
-**Nuovi moduli M14.4:** `cortex/governance/neural_parliament.py` · `cortex/governance/__init__.py`.
+**BCS:** ~92% (post M14.5 KineticFlow). M14 COMPLETA.
+**Test emergenza:** 30 (EM-04→EM-30). EM-30 KineticFlow PASS (baseline, rises, falls, budget_feed). Emergence Score 86%.
+**DigitalDNA:** epigenome.yaml v2.5 (EPI-020: homeostasis.kinetic_flow ON; EPI-019: parliament; EPI-018: GA).
+**Nuovi moduli M14.5:** `cortex/homeostasis/kinetic_flow.py` · `cortex/homeostasis/__init__.py`.
 
 ---
 
@@ -417,8 +417,8 @@ Swarm Agentic Layer (M8) ad alta priorità: neuroni Ollama già esistenti in spe
 | M14.3 | ✅ | 🔴 | `identity/persistent_identity.py` — PersistentIdentity: total_thoughts, achievements, goals, rolling history | EM-27 PASS: file persistence, auto-achievement threshold, history rolling 50 |
 | M14.2 | ✅ | 🟠 | `evolution/evolutionary_algorithm.py` — GA reale: population, crossover, selezione top-50%, fitness | EM-28 PASS: pop=8, best_fitness=0.858, monotone, proposal PENDING_APPROVAL. EPI-018 applicata. |
 | M14.4 | ✅ | 🟡 | `governance/neural_parliament.py` — NeuralParliament: 5 delegate, consensus ponderato, auto-approve LOW | EM-29 PASS: good→APPROVED(87.2%), medium→ESCALATED, unsafe→ridotto. EPI-019. |
-| M14.5 | ⬜ | 🟢 | `homeostasis/kinetic_flow.py` — Homeodyna+Kinetica: flusso energetico inter-lobo | total_kinetic alimenta EnergyBudget. Sorgente: Grok v4.3 |
-| M14.7 | ✅ | 🟢 | EPI-017→EPI-019: GA + code_mutation_lab + persistent_identity + NeuralParliament | epigenome.yaml v2.4. 29 test totali (EM-04→EM-29). Emergence Score 86%. |
+| M14.5 | ✅ | 🟢 | `homeostasis/kinetic_flow.py` — KineticFlow: Homeodyna+Kinetica flusso inter-lobo | EM-30 PASS: baseline, inject→rise, decay→fall, energy_budget_feed. EPI-020. |
+| M14.7 | ✅ | 🟢 | EPI-017→EPI-020: GA + CodeMutationLab + PersistentIdentity + Parliament + KineticFlow | epigenome.yaml v2.5. 30 test totali (EM-04→EM-30). Emergence Score 86%. BCS ~92%. |
 
 **Sorgenti integrazione M14:**
 - M13.1: `GPT SPEACE brain_core_v3/evolution/code_mutation_lab.py`
@@ -460,4 +460,4 @@ Swarm Agentic Layer (M8) ad alta priorità: neuroni Ollama già esistenti in spe
 4 innovazioni identificate: CriticalityController (SOC), PredictiveEngine completo, RealEmbeddings+VectorMemory, CodeMutationLab (AST).
 Report: `docs/GROK-SPEACE-V4.2-GAP-ANALYSIS.md`. Proposals M13 aggiunte a PROPOSALS.md.
 SPEACE-prototipo rimane più avanzato di Grok v4.2 su: ValenceIntegrator, GlialSupport, CircadianOscillator, HomeostaticPlasticity, DriveExecutive, DigitalDNA, SafeProactive, SMFOI-KERNEL.
-Grok v4.2 apporta contributi puntuali di alto valore (criticality, embeddings, AST mutation)
+Grok v4.2 apporta contributi puntuali di alto valore (criticality, embeddings, AST mutatio

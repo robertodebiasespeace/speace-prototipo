@@ -1831,6 +1831,92 @@ def test_m14(ollama_ok: bool) -> None:
         record("EM-29", 3, "NeuralParliament exception",
                "FAIL", f"{e}\n{traceback.format_exc()}", "")
 
+
+    # ── EM-30: KineticFlow — flusso energetico inter-lobo (Homeodyna+Kinetica) ──
+    try:
+        from cortex.homeostasis import (
+            KineticFlow, KineticFlowConfig, DEFAULT_LOBES, DEFAULT_CONNECTIONS,
+        )
+
+        kf = KineticFlow()
+
+        # 1. Tick iniziale: sistema a equilibrio → kinetic quasi zero
+        r0 = kf.tick(dt=1.0)
+        baseline_low = r0.total_kinetic < 0.05
+        lobes_ok     = set(r0.lobes.keys()) == set(DEFAULT_LOBES.keys())
+        flowmap_ok   = set(r0.flow_map.keys()) == set(DEFAULT_LOBES.keys())
+
+        # 2. Iniezione energia → kinetic deve salire
+        kf.inject("Frontale", 0.20)
+        r1 = kf.tick(dt=1.0)
+        kinetic_rises = r1.total_kinetic > r0.total_kinetic
+        mean_energy_rises = r1.mean_energy > r0.mean_energy
+
+        # 3. Dopo N tick di decadimento → kinetic scende verso baseline
+        for _ in range(8):
+            r_decay = kf.tick(dt=1.0)
+        kinetic_falls = r_decay.total_kinetic < r1.total_kinetic
+        trend = kf.kinetic_trend()
+        trend_ok = trend in ("falling", "stable")
+
+        # 4. set_setpoint modifica il punto di equilibrio
+        kf.set_setpoint("Cingulate", 0.50)
+        r_sp = kf.tick(dt=1.0)
+        setpoint_changed = kf._states["Cingulate"].set_point == 0.50
+
+        # 5. Statistiche coerenti
+        stats = kf.get_stats()
+        stats_ok = (
+            stats["tick_count"] == 11
+            and "total_kinetic" in stats
+            and "mean_energy" in stats
+            and "lobes" in stats
+        )
+
+        # 6. Integrazione EnergyBudget (mock)
+        class MockBudget:
+            def __init__(self): self.activated = []; self.deactivated = []
+            def activate(self, pid): self.activated.append(pid)
+            def deactivate(self, pid): self.deactivated.append(pid)
+
+        # Inietta per portare high_kinetic=True (serve injections multiple)
+        for _ in range(3):
+            kf.inject("Frontale", 0.30)
+            kf.tick(dt=1.0)
+        mb = MockBudget()
+        tk = kf.energy_budget_feed(mb)
+        budget_integration_ok = isinstance(tk, float) and tk >= 0.0
+
+        all_ok = all([
+            baseline_low, lobes_ok, flowmap_ok,
+            kinetic_rises, mean_energy_rises,
+            kinetic_falls, trend_ok, setpoint_changed,
+            stats_ok, budget_integration_ok,
+        ])
+
+        detail = (
+            f"baseline_low={baseline_low}(tk0={r0.total_kinetic:.4f}) "
+            f"lobes={lobes_ok} flowmap={flowmap_ok} "
+            f"rises={kinetic_rises}(tk1={r1.total_kinetic:.4f}) "
+            f"falls={kinetic_falls} trend={trend} setpoint={setpoint_changed} "
+            f"stats={stats_ok} budget={budget_integration_ok}"
+        )
+
+        record("EM-30", 3,
+               "KineticFlow: Homeodyna+Kinetica flusso energetico inter-lobo",
+               "PASS" if all_ok else "PARTIAL",
+               detail,
+               "" if all_ok else "Verifica logica KineticFlow")
+
+    except ImportError as e:
+        record("EM-30", 3, "KineticFlow import",
+               "FAIL", str(e),
+               "cortex/homeostasis/kinetic_flow.py non trovato")
+    except Exception as e:
+        import traceback
+        record("EM-30", 3, "KineticFlow exception",
+               "FAIL", f"{e}\n{traceback.format_exc()}", "")
+
 # ── Main ─────────────────────────────────────────────────────────────────────
 
 def main():

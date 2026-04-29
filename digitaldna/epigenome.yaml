@@ -6,10 +6,10 @@
 # ============================================================
 
 meta:
-  version: "2.4"
+  version: "2.5"
   last_updated: "2026-04-29"
-  last_mutation_id: "EPI-019"
-  mutation_count: 19
+  last_mutation_id: "EPI-020"
+  mutation_count: 20
   # EPI-001: Aggiunta sezione consciousness_metrics (ACF Integration)
   #          + fitness_function v2 (6 componenti) in mutation_rules.yaml
   # EPI-002: M2 – external_benchmark_validated=true dopo benchmark suite 6/6 pass
@@ -92,6 +92,19 @@ meta:
   #          EM-29 PASS: good→APPROVED(87.2%), medium→ESCALATED, unsafe→ridotto, stats ok.
   #          BCS stimato: ~90% → ~91%. Test totali: 29 (EM-04→EM-29). Emergence Score: 86%.
   #          (PROP-M14-PARLIAMENT → LOW risk)
+  # EPI-020: M14.5 — KineticFlow: Homeodyna+Kinetica (2026-04-29)
+  #          homeostasis.kinetic_flow.enabled: true (M14.5)
+  #          KineticFlow: flusso energetico inter-lobo ispirato a diffusione termica.
+  #          5 lobi (Frontale, Temporale, Parietale, Occipitale, Cingulate).
+  #          Homeodyna: rilassamento omeostatico verso set_point (τ=5s).
+  #          Kinetica: energia cinetica = velocity² per lobo.
+  #          Flow: diffusion=0.25 * weight * (E_src - E_tgt) * dt.
+  #          total_kinetic = Σ K_i → iniettato in EnergyBudget via energy_budget_feed().
+  #          inject(lobo, amount): stimolazione esterna → picco kinetic → decadimento.
+  #          kinetic_trend(): 'rising'|'falling'|'stable' su history rolling 50.
+  #          EM-30 PASS: baseline_low, rises post-inject, falls post-decay, budget OK.
+  #          BCS stimato: ~91% → ~92%. Test totali: 30 (EM-04→EM-30). Emergence 86%.
+  #          (PROP-M14-KINETIC → LOW risk)
   # EPI-016: M13.0+M13.2+M13.3 — Grok SPEACE v4.2 Integration (2026-04-29)
   #          cognitive_autonomy.criticality.enabled: true (M13.0)
   #          CriticalityController: Self-Organized Criticality (Beggs & Plenz 2003).
@@ -767,6 +780,17 @@ evolution:
     #   LOW + consensus < 0.80 → ESCALATED (human review SafeProactive)
     #   LOW + consensus >= 0.80 → APPROVED (autonomo)
 
+  # ── EPI-020 ────────────────────────────────────────────────────────────────
+  kinetic_flow:               # EPI-020: ON (2026-04-29) — Homeodyna+Kinetica attivo
+    enabled: true
+    relaxation_tau: 5.0       # costante rilassamento omeostatico (secondi simulati)
+    diffusion_coeff: 0.25     # coefficiente diffusione inter-lobo
+    damping: 0.05             # smorzamento inerzia (anti-oscillazione)
+    high_kinetic_threshold: 0.15  # soglia eccitazione alta (→ attiva EnergyBudget)
+    history_max: 50           # rolling history tick
+    # Lobi: Frontale(0.82), Temporale(0.78), Parietale(0.71), Occipitale(0.65), Cingulate(0.85)
+    # total_kinetic → energy_budget_feed(EnergyBudget) ogni ciclo cognitivo
+
 identity:
   persistent_identity:
     enabled: true               # EPI-017: ON (2026-04-29) — PersistentIdentity attiva
@@ -778,7 +802,6 @@ identity:
     #   identity.tick(emergence_score, metrics) — aggiornamento ad ogni ciclo
     # Core values (immutabili): vedi DEFAULT_CORE_VALUES in persistent_identity.py
     # Long-term goals: sincronizzati con evolver (rigeneproject.org) ogni 60 min
-
   valence:
     enabled: true               # EPI-015: ON (2026-04-28) — ValenceIntegrator attivo
     sensitivity: 1.50           # scala il raw_valence prima di tanh

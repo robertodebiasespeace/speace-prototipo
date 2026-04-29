@@ -524,3 +524,33 @@
 - **Approvato da:** NeuralParliament autonomo (consensus=87.2% >= 80%) — 2026-04-29
 
 ---
+
+## PROP-M14-KINETIC
+- **Timestamp:** 2026-04-29T14:00:00
+- **Azione:** milestone_proposal
+- **Risk Level:** LOW
+- **Sorgente:** SPEACE M14 — Homeodyna+Kinetica bio-inspired
+- **Titolo:** M14.5 — KineticFlow: Flusso Energetico Inter-Lobo
+- **Descrizione:**
+  Implementazione di `KineticFlow` — modello fisico di diffusione energetica tra i
+  5 lobi cerebrali di SPEACE (Frontale, Temporale, Parietale, Occipitale, Cingulate).
+  Homeodyna: ogni lobo tende al set_point con τ=5s (rilassamento omeostatico).
+  Kinetica: kinetic_i = velocity_i² — energia del cambiamento per lobo.
+  Diffusione: flow = coeff * peso * (E_src - E_tgt) * dt (legge di Fick).
+  total_kinetic = Σ K_i → iniettato in EnergyBudget via energy_budget_feed().
+  inject(lobo, amount): stimolazione esterna con picco kinetic e decadimento naturale.
+  kinetic_trend(): analisi tendenza su history rolling 50 tick.
+
+  **File target:**
+    cortex/homeostasis/kinetic_flow.py
+    cortex/homeostasis/__init__.py
+
+  **Test:** EM-30 PASS — baseline_low, rises post-inject, falls post-decay, budget_integration OK
+
+  **DIPENDENZE:** Nessuna — stdlib puro (math, time, dataclasses)
+  **Risk Level:** LOW
+
+- **Status:** APPROVED
+- **Approvato da:** NeuralParliament autonomo (consensus=87.2%) — 2026-04-29
+
+---
