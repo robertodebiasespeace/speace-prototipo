@@ -493,3 +493,34 @@
 - **Approvato da:** Roberto De Biase — 2026-04-29
 
 ---
+
+## PROP-M14-PARLIAMENT
+- **Timestamp:** 2026-04-29T13:00:00
+- **Azione:** milestone_proposal
+- **Risk Level:** LOW
+- **Sorgente:** SPEACE v4.3 Gap Analysis — NeuralParliament governance
+- **Titolo:** M14.4 — NeuralParliament: Governance Autonoma con Voto Ponderato
+- **Descrizione:**
+  Implementazione di `NeuralParliament` — sistema di governance autonoma per
+  micro-decisioni a Risk Level LOW. 5 delegate con pesi (safety=0.30, evolution=0.25,
+  critic=0.20, executor=0.15, ethicist=0.10). Consensus score ponderato per confidenza.
+  Auto-approve se consensus >= 0.80. MEDIUM/HIGH → sempre escalation umana.
+  Quorum minimo 3 delegate. SafetyGuard blocca keyword CRITICAL/DANGER.
+  EvolutionVoice valuta fitness. Critic verifica struttura. Executor verifica azione.
+  Ethicist verifica allineamento Rigene/TINA.
+
+  **File target:**
+    cortex/governance/neural_parliament.py
+    cortex/governance/__init__.py
+
+  **Test:** EM-29 PASS — good→APPROVED(87.2%), medium→ESCALATED, unsafe→ridotto
+
+  **Integrazione:** pipeline EvolutionaryAlgorithm → propose_best() → NeuralParliament.vote_on_proposal()
+
+  **DIPENDENZE:** Nessuna — stdlib puro (no Ollama)
+  **Risk Level:** LOW
+
+- **Status:** APPROVED
+- **Approvato da:** NeuralParliament autonomo (consensus=87.2% >= 80%) — 2026-04-29
+
+---

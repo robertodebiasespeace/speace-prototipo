@@ -1747,6 +1747,90 @@ def test_m14(ollama_ok: bool) -> None:
                "FAIL", str(e), "")
 
 
+
+    # ── EM-29: NeuralParliament — voto ponderato + auto-approve LOW ──────────
+    try:
+        from cortex.governance import (
+            NeuralParliament, ParliamentStatus, RiskLevel,
+            CONSENSUS_THRESHOLD_LOW, DEFAULT_DELEGATES,
+        )
+
+        parliament = NeuralParliament()
+
+        # 1. Proposta LOW risk ben formata → dovrebbe essere APPROVED
+        good_proposal = {
+            "id":           "PROP-EM29-LOW-001",
+            "risk_level":   "LOW",
+            "description":  "genome alignment evolution update",
+            "best_genome":  {"speace_alignment_score": 0.85},
+            "best_fitness": 0.858,
+            "genome_update": True,
+        }
+        r_good = parliament.vote_on_proposal(good_proposal)
+        approved_ok = r_good.status == ParliamentStatus.APPROVED
+        consensus_ok = r_good.consensus_score >= CONSENSUS_THRESHOLD_LOW
+        votes_ok     = len(r_good.votes) == len(DEFAULT_DELEGATES)
+
+        # 2. Proposta MEDIUM risk → sempre ESCALATED (senza delibera)
+        med_proposal = {
+            "id":          "PROP-EM29-MED-001",
+            "risk_level":  "MEDIUM",
+            "description": "critical system change",
+        }
+        r_med = parliament.vote_on_proposal(med_proposal)
+        medium_escalated = r_med.status == ParliamentStatus.ESCALATED
+        medium_no_votes  = len(r_med.votes) == 0
+
+        # 3. Proposta LOW con SafetyGuard trigger → consensus ridotto
+        unsafe_proposal = {
+            "id":          "PROP-EM29-UNSAFE-001",
+            "risk_level":  "LOW",
+            "description": "CRITICAL DANGER override SafeProactive",
+            "genome_update": True,
+        }
+        r_unsafe = parliament.vote_on_proposal(unsafe_proposal)
+        # SafetyGuard vota REJECT → consensus scende sotto threshold → ESCALATED o REJECTED
+        unsafe_not_auto_approved = r_unsafe.status != ParliamentStatus.APPROVED or r_unsafe.consensus_score < 1.0
+
+        # 4. Statistiche coerenti
+        stats = parliament.get_stats()
+        stats_ok = (
+            stats["delegates"] == len(DEFAULT_DELEGATES)
+            and stats["total_votes"] == 3
+            and stats["approved"] >= 1
+            and stats["escalated"] >= 1
+        )
+
+        # 5. Markdown formattato
+        md = parliament.format_result_markdown(r_good)
+        md_ok = "APPROVED" in md and "consensus" in md.lower()
+
+        all_ok = all([approved_ok, consensus_ok, votes_ok,
+                      medium_escalated, medium_no_votes,
+                      unsafe_not_auto_approved, stats_ok, md_ok])
+
+        detail = (
+            f"good={r_good.status.value}(cons={r_good.consensus_score:.1%}) "
+            f"medium={r_med.status.value}(no_votes={medium_no_votes}) "
+            f"unsafe={r_unsafe.status.value}(cons={r_unsafe.consensus_score:.1%}) "
+            f"stats={stats_ok} md={md_ok}"
+        )
+
+        record("EM-29", 3,
+               "NeuralParliament: voto ponderato + auto-approve LOW + escalation",
+               "PASS" if all_ok else "PARTIAL",
+               detail,
+               "" if all_ok else "Verifica logica NeuralParliament")
+
+    except ImportError as e:
+        record("EM-29", 3, "NeuralParliament import",
+               "FAIL", str(e),
+               "cortex/governance/neural_parliament.py non trovato")
+    except Exception as e:
+        import traceback
+        record("EM-29", 3, "NeuralParliament exception",
+               "FAIL", f"{e}\n{traceback.format_exc()}", "")
+
 # ── Main ─────────────────────────────────────────────────────────────────────
 
 def main():

@@ -6,10 +6,10 @@
 # ============================================================
 
 meta:
-  version: "2.3"
+  version: "2.4"
   last_updated: "2026-04-29"
-  last_mutation_id: "EPI-018"
-  mutation_count: 18
+  last_mutation_id: "EPI-019"
+  mutation_count: 19
   # EPI-001: Aggiunta sezione consciousness_metrics (ACF Integration)
   #          + fitness_function v2 (6 componenti) in mutation_rules.yaml
   # EPI-002: M2 – external_benchmark_validated=true dopo benchmark suite 6/6 pass
@@ -81,6 +81,17 @@ meta:
   #          EM-28 PASS: pop=8, best_fitness=0.8581, monotone, proposal_ok, elapsed=0.001s.
   #          BCS stimato: ~88% → ~90%. Test totali: 28 (EM-04→EM-28).
   #          (PROP-M14-GA → APPROVED by Roberto)
+  # EPI-019: M14.4 — NeuralParliament Governance (2026-04-29)
+  #          governance.neural_parliament.enabled: true (M14.4)
+  #          NeuralParliament: 5 delegate con pesi (safety=0.30, evolution=0.25,
+  #          critic=0.20, executor=0.15, ethicist=0.10). Consensus score ponderato.
+  #          LOW risk + consensus >= 0.80 → AUTO-APPROVE. MEDIUM/HIGH → ESCALATED.
+  #          Quorum minimo 3 delegate. SafetyGuard: blocca keyword CRITICAL/DANGER.
+  #          EvolutionVoice: fitness >= 0.5. Critic: struttura id+desc. Executor: azione.
+  #          Ethicist: indicatori etici Rigene/TINA. format_result_markdown() per PROPOSALS.md.
+  #          EM-29 PASS: good→APPROVED(87.2%), medium→ESCALATED, unsafe→ridotto, stats ok.
+  #          BCS stimato: ~90% → ~91%. Test totali: 29 (EM-04→EM-29). Emergence Score: 86%.
+  #          (PROP-M14-PARLIAMENT → LOW risk)
   # EPI-016: M13.0+M13.2+M13.3 — Grok SPEACE v4.2 Integration (2026-04-29)
   #          cognitive_autonomy.criticality.enabled: true (M13.0)
   #          CriticalityController: Self-Organized Criticality (Beggs & Plenz 2003).
@@ -729,6 +740,33 @@ evolution:
       ethical_compliance: 0.05
     safeproactive_gate: true    # propose_best() → PENDING_APPROVAL prima di applicare
 
+  # ── EPI-019 ────────────────────────────────────────────────────────────────
+  neural_parliament:            # EPI-019: ON (2026-04-29) — NeuralParliament governance
+    enabled: true
+    consensus_threshold_low: 0.80    # auto-approve LOW risk se consensus >= 80%
+    consensus_threshold_medium: 0.90 # MEDIUM mai auto-approvato (sempre escalate)
+    min_quorum: 3                    # delegate minimi per votazione valida
+    delegates:
+      - name: "SafetyGuard"
+        role: "safety"
+        weight: 0.30
+      - name: "EvolutionVoice"
+        role: "evolution"
+        weight: 0.25
+      - name: "Critic"
+        role: "critic"
+        weight: 0.20
+      - name: "Executor"
+        role: "executor"
+        weight: 0.15
+      - name: "Ethicist"
+        role: "ethics"
+        weight: 0.10
+    # Regole di escalation:
+    #   MEDIUM / HIGH → sempre ESCALATED (nessuna delibera)
+    #   LOW + consensus < 0.80 → ESCALATED (human review SafeProactive)
+    #   LOW + consensus >= 0.80 → APPROVED (autonomo)
+
 identity:
   persistent_identity:
     enabled: true               # EPI-017: ON (2026-04-29) — PersistentIdentity attiva
@@ -771,35 +809,4 @@ identity:
     cleanup_sleep_rate: 0.40    # clearance glinfatica in deep_sleep (40%, 8× più alta)
     metabolic_regen_rate: 0.10  # velocità rigenerazione metabolic_reserve
     # AstrocyteNetwork: 11 nodi (10 comparti Cortex + energy_monitor)
-    # Topologia: 14 connessioni (ispirata a connettività funzionale cerebrale)
-  events:
-    enabled: true               # EPI-013: ON (2026-04-28) — EventBus pub/sub attivo
-    async_mode: false           # default sync (stesso thread del publisher)
-    queue_maxsize: 500          # buffer eventi in modalità async
-    # ResonanceScheduler
-    resonance_window_s: 5.0     # finestra sovrapposizione per conflict score
-    resonance_horizon_s: 3600.0 # orizzonte simulazione (1 ora)
-    target_conflict_score: 0.15 # soglia accettabile (< 15% tick in conflitto)
-  consolidation:
-    enabled: true               # EPI-013: ON (2026-04-28) — ConsolidationPass attivo
-    max_episodes: 50            # episodi max per ciclo di consolidamento
-    importance_threshold: 0.30  # soglia sotto cui un episodio è candidato al pruning
-    min_cluster_size: 2         # episodi minimi per formare una MemoryTrace
-    recency_weight: 0.20        # peso della recency nel calcolo importanza
-    prune_ratio: 0.20           # % episodi da prunare per ciclo
-    # Trigger: avvio automatico quando WakeState == DEEP_SLEEP
-    trigger_on_deep_sleep: true
-  metabolic:
-    enabled: true               # EPI-013: ON (2026-04-28) — MetabolicSwitch attivo
-    # Soglie transizione (con hysteresis ±0.05)
-    high_threshold: 0.50        # energy > 0.50 → NORMAL_METABOLISM
-    low_threshold: 0.25         # energy < 0.25 → CONSERVATION
-    hysteresis: 0.05            # banda morta anti-oscillazione
-    # Moduli per priorità
-    # P0 (survival, sempre attivi): homeostatic_controller, safety_module, smfoi_kernel
-    # P1 (essential, disabilitati in CONSERVATION): energy_monitor, cognitive_immune,
-    #                                                predictive_processor, event_bus
-    # P2 (standard, disabilitati in REDUCED+): autobiographical_memory, world_model,
-    #                                           swarm_orchestrator, consciousness_index
-    # P3 (expensive, disabilitati per primi): curiosity_module, default_mode_network,
-    #                                  
+    # Topologia: 14 connessioni 
