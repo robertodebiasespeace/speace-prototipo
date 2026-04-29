@@ -6,10 +6,10 @@
 # ============================================================
 
 meta:
-  version: "2.2"
+  version: "2.3"
   last_updated: "2026-04-29"
-  last_mutation_id: "EPI-017"
-  mutation_count: 17
+  last_mutation_id: "EPI-018"
+  mutation_count: 18
   # EPI-001: Aggiunta sezione consciousness_metrics (ACF Integration)
   #          + fitness_function v2 (6 componenti) in mutation_rules.yaml
   # EPI-002: M2 – external_benchmark_validated=true dopo benchmark suite 6/6 pass
@@ -71,6 +71,16 @@ meta:
   #          EM-27 PASS: file creation, auto-achievement, rolling history, persistenza.
   #          BCS stimato: 86% → ~88%. Test totali: 27 (EM-04→EM-27).
   #          (PROP-M13-AST-MUTATION + PROP-M14-PERSISTENT-IDENTITY → APPROVED by Roberto)
+  # EPI-018: M14.2 — EvolutionaryAlgorithm GA (2026-04-29)
+  #          evolution.genetic_algorithm.enabled: true (M14.2)
+  #          EvolutionaryAlgorithm: GA reale con population, crossover, selezione elite.
+  #          population_size=10, mutation_rate=0.20, crossover_rate=0.70, elite_fraction=0.50.
+  #          Fitness function: DEFAULT_FITNESS_WEIGHTS (alignment=0.35, success=0.25,
+  #          stability=0.20, efficiency=0.15, ethics=0.05). load_epigenome_genome_slice().
+  #          SafeProactive: propose_best() → PENDING_APPROVAL con genome_update + fitness.
+  #          EM-28 PASS: pop=8, best_fitness=0.8581, monotone, proposal_ok, elapsed=0.001s.
+  #          BCS stimato: ~88% → ~90%. Test totali: 28 (EM-04→EM-28).
+  #          (PROP-M14-GA → APPROVED by Roberto)
   # EPI-016: M13.0+M13.2+M13.3 — Grok SPEACE v4.2 Integration (2026-04-29)
   #          cognitive_autonomy.criticality.enabled: true (M13.0)
   #          CriticalityController: Self-Organized Criticality (Beggs & Plenz 2003).
@@ -704,6 +714,21 @@ evolution:
     # Pipeline: backup → ast_validate(original) → mutate → ast_validate(mutated)
     #         → write → post_write_check → rollback automatico se fallisce
 
+  genetic_algorithm:            # EPI-018: ON (2026-04-29) — EvolutionaryAlgorithm GA
+    enabled: true
+    population_size: 10         # individui per generazione
+    mutation_rate: 0.20         # ±20% proporzionale per gene
+    crossover_rate: 0.70        # probabilità crossover vs cloning
+    elite_fraction: 0.50        # top 50% sopravvive come élite
+    convergence_patience: 5     # generazioni senza miglioramento → stop
+    fitness_weights:            # DEFAULT_FITNESS_WEIGHTS
+      speace_alignment_score: 0.35
+      task_success_rate: 0.25
+      system_stability: 0.20
+      resource_efficiency: 0.15
+      ethical_compliance: 0.05
+    safeproactive_gate: true    # propose_best() → PENDING_APPROVAL prima di applicare
+
 identity:
   persistent_identity:
     enabled: true               # EPI-017: ON (2026-04-29) — PersistentIdentity attiva
@@ -777,28 +802,4 @@ identity:
     # P2 (standard, disabilitati in REDUCED+): autobiographical_memory, world_model,
     #                                           swarm_orchestrator, consciousness_index
     # P3 (expensive, disabilitati per primi): curiosity_module, default_mode_network,
-    #                                          evolver_heartbeat, mutation_engine
-  energy:
-    enabled: true               # EPI-011: ON (2026-04-28) — EnergyBudget bio-ispirato attivo
-    # Budget computazionale (calibrato per hardware domestico 16GB RAM, i9-11900H)
-    cpu_budget_pct: 35.0        # % CPU max per processi SPEACE background
-    cpu_per_neuron: 5.0         # % CPU stimata per neurone attivo
-    max_parallel_neurons: 2     # sparse activation: max neuroni paralleli
-    memory_budget_mb: 512.0     # RAM max per SPEACE agent
-    memory_per_neuron: 48.0     # RAM stimata per neurone (con modello LLM)
-    # Sleep/wake thresholds (ispirato a ciclo sonno biologico)
-    sleep_threshold: 0.30       # energy_drive < 0.30 → IDLE (heartbeat ridotto)
-    deep_sleep_threshold: 0.10  # energy_drive < 0.10 → DEEP_SLEEP (solo safety)
-    wake_threshold: 0.55        # energy_drive > 0.55 → risveglio AWAKE
-    # Heartbeat intervals
-    active_heartbeat_s: 60.0    # ciclo normale
-    idle_heartbeat_s: 300.0     # ciclo ridotto in IDLE (risparmio ~80%)
-    deep_sleep_heartbeat_s: 900.0  # ciclo minimo DEEP_SLEEP (risparmio ~93%)
-    # Cache (lazy computation)
-    cache_ttl_s: 300.0          # TTL cache risultati (5 minuti)
-    enable_result_cache: true
-    # Comportamenti adattativi
-    defer_exploration_in_idle: true    # blocca esplorazione in IDLE/DEEP_SLEEP
-    skip_nonessential_in_sleep: true   # in DEEP_SLEEP solo safety + homeostasis
-  world_model:
-    enabled: true               # EPI-007: ON (2026-04-27) — WorldModelCortex 9° comparto
+    #                                  

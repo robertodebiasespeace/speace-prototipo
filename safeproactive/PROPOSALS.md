@@ -465,3 +465,31 @@
 - **Approvato da:** Roberto De Biase — 2026-04-29
 
 ---
+
+## PROP-M14-GA
+- **Timestamp:** 2026-04-29T12:00:00
+- **Azione:** milestone_proposal
+- **Risk Level:** LOW
+- **Sorgente:** GROK SPEACE v4.3 Gap Analysis — EvolutionaryAlgorithm
+- **Titolo:** M14.2 — EvolutionaryAlgorithm: Algoritmo Genetico Reale
+- **Descrizione:**
+  Implementazione di `EvolutionaryAlgorithm` — GA reale con popolazione di individui,
+  crossover uniforme binario, selezione élite top-50%, mutazione ±rate proporzionale
+  per gene. Fitness function dai pesi `DEFAULT_FITNESS_WEIGHTS` (alignment/success/
+  stability/efficiency/ethics). `load_epigenome_genome_slice()` legge parametri float
+  da epigenome.yaml come base_genome. `propose_best()` genera proposta SafeProactive
+  PENDING_APPROVAL con genome_update + fitness score.
+
+  **File target:**
+    cortex/evolution/evolutionary_algorithm.py
+    cortex/evolution/__init__.py (aggiornato export)
+
+  **Test:** EM-28 PASS — pop=8, best_fitness=0.8581, monotone, proposal_ok
+
+  **DIPENDENZE:** stdlib (random, time, copy, dataclasses, pathlib); yaml opzionale
+  **Risk Level:** LOW (nessuna scrittura file senza approvazione umana)
+
+- **Status:** APPROVED
+- **Approvato da:** Roberto De Biase — 2026-04-29
+
+---

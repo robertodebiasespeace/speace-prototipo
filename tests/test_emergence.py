@@ -1657,6 +1657,95 @@ def test_m14(ollama_ok: bool) -> None:
         record("EM-27", 3, "PersistentIdentity exception",
                "FAIL", str(e), "")
 
+    # ── EM-28: EvolutionaryAlgorithm GA — population + crossover + selezione ──
+    try:
+        from cortex.evolution import (
+            EvolutionaryAlgorithm, Individual, EvolutionaryResult,
+            FITNESS_EXCELLENT, FITNESS_MIN_TO_APPLY,
+        )
+
+        # Genome base = parametri epigenetici target
+        base_genome = {
+            "speace_alignment_score": 0.70,
+            "task_success_rate":      0.65,
+            "system_stability":       0.80,
+            "resource_efficiency":    0.60,
+            "ethical_compliance":     0.90,
+        }
+
+        ga = EvolutionaryAlgorithm(
+            population_size=8,
+            mutation_rate=0.20,
+            crossover_rate=0.70,
+            rng_seed=42,           # riproducibilità
+        )
+
+        # 1. Evolvi per 5 generazioni
+        result = ga.evolve(base_genome, n_generations=5, verbose=False)
+
+        # Verifiche strutturali
+        pop_ok        = len(result.final_population) == 8
+        history_ok    = len(result.fitness_history) >= 1
+        best_ok       = isinstance(result.best_individual, Individual)
+        fitness_range = 0.0 <= result.best_individual.fitness <= 1.0
+        elapsed_ok    = result.elapsed_s >= 0.0
+
+        # 2. La fitness deve essere >= quella del base_genome (miglioramento o parità)
+        base_ind = Individual(genome=base_genome)
+        base_ind.fitness = ga._evaluate(base_genome)
+        improved = result.best_individual.fitness >= base_ind.fitness - 0.01  # tolleranza 1%
+
+        # 3. Il best_individual deve avere tutti i geni del base_genome
+        genome_complete = all(k in result.best_individual.genome for k in base_genome)
+
+        # 4. fitness_history monotona o plateau
+        fitnesses = [bf for _, bf, _ in result.fitness_history]
+        monotone_or_plateau = all(
+            fitnesses[i] >= fitnesses[i-1] - 1e-4
+            for i in range(1, len(fitnesses))
+        )
+
+        # 5. Proposta SafeProactive generata correttamente
+        proposal = ga.propose_best(result)
+        proposal_ok = (
+            "PROP-GA" in proposal["id"]
+            and "genome_update" in proposal
+            and proposal["fitness_score"] == result.best_individual.fitness
+            and proposal["status"] == "PENDING_APPROVAL"
+        )
+
+        # 6. stats coerenti
+        stats = ga.get_stats()
+        stats_ok = stats["population_size"] == 8 and stats["runs"] == 1
+
+        all_ok = all([
+            pop_ok, history_ok, best_ok, fitness_range,
+            improved, genome_complete, monotone_or_plateau, proposal_ok, stats_ok,
+        ])
+
+        detail = (
+            f"pop={len(result.final_population)}(ok={pop_ok}) "
+            f"history={len(result.fitness_history)}gens "
+            f"best_fitness={result.best_individual.fitness:.4f}(range={fitness_range}) "
+            f"improved={improved} genome_complete={genome_complete} "
+            f"monotone={monotone_or_plateau} proposal_ok={proposal_ok} "
+            f"stats={stats_ok} elapsed={result.elapsed_s:.3f}s"
+        )
+
+        record("EM-28", 3,
+               "EvolutionaryAlgorithm GA: population+crossover+selezione+proposta",
+               "PASS" if all_ok else "PARTIAL",
+               detail,
+               "" if all_ok else "Verifica logica GA / fitness function")
+
+    except ImportError as e:
+        record("EM-28", 3, "EvolutionaryAlgorithm import",
+               "FAIL", str(e),
+               "cortex/evolution/evolutionary_algorithm.py non trovato")
+    except Exception as e:
+        record("EM-28", 3, "EvolutionaryAlgorithm exception",
+               "FAIL", str(e), "")
+
 
 # ── Main ─────────────────────────────────────────────────────────────────────
 
@@ -1696,3 +1785,4 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+
