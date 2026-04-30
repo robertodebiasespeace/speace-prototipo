@@ -126,7 +126,9 @@ from .causal_reasoning import CausalReasoner, CausalGraph, create_causal_reasone
 from .abstraction_layer import AbstractionLayer, Concept, create_abstraction_layer
 # BRN-019 stub
 from .self_model import (
-    SelfModel, BodySchema, SelfNarrative, MetacognitiveMonitor, create_self_model,
+    SelfModel, BodySchema, SelfNarrative, MetacognitionLayer,
+    IntrospectionEngine, ReasoningTrace, Limitation, SelfRepresentation,
+    create_self_model,
 )
 # BRN-020 stub
 from .recursive_self_improvement import (

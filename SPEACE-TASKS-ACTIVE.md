@@ -1,6 +1,6 @@
 # SPEACE — Tasks Board Attivo
 
-**Versione:** 3.2
+**Versione:** 3.5
 **Data:** 2026-04-29
 **Stato:** Documento vivo — aggiornato al completamento/inserimento di task
 **Scopo:** Vista sintetica e dinamica di tutti i task attivi per lo sviluppo di SPEACE, con snapshot dello stato complessivo.
@@ -36,7 +36,8 @@
 
 **C-index (ultimo ciclo runtime):** ~0.427 (SMFOI) + ~0.311 (Brain) — dual C-index operativo.
 **Livello evolutivo dichiarato:** Modular Emergent (R=9 SMFOI) → avanzamento verso Lv3 (auto-modifica codice).
-**BRN integrati:** 15/20 fully implemented · 5/20 stub · wired via `--brain` flag (NEU-003 ✅).
+**BRN integrati:** 19/20 fully implemented · 1/20 stub (BRN-016 language) · wired via `--brain` flag (NEU-003 ✅). **BRN-017 ✅ 40/40 · BRN-018 ✅ 47/47 · BRN-019 ✅ 59/59 · BRN-020 ✅ 44/44 · HTN ✅ 41/41 · AGI-Loop ✅ 38/38 → Suite totale: 269/269 PASS.**
+**AGI Properties operative:** (1) Intelligenza generale cross-domain [BRN-018 AbstractionLayer] · (2) Comprensione causale [BRN-017 CausalReasoner] · (3) Pianificazione+auto-miglioramento [HTNPlanner+BRN-020+AGILoop SMFOI v0.3 6-step].
 **M5 progress:** M5.0→M5.11 ✅ (A+B+M5C.1) · M5.12→M5.20 ⬜ · Test coverage: 25+39+24+22+32=**142 test green** · Dashboard v2: viability KPI + drives grid + cognitive section.
 **BCS:** ~92% (post M14.5 KineticFlow). M14 COMPLETA.
 **Test emergenza:** 30 (EM-04→EM-30). EM-30 KineticFlow PASS (baseline, rises, falls, budget_feed). Emergence Score 86%.
@@ -84,16 +85,19 @@
 | BRN.W4 | ⬜ | 🟠 | — | Adapter neuroni BRN nel CNM Registry (`cortex/mesh/registry.py`) | `discover_neurons()` individua almeno 5 moduli brain |
 | BRN.W5 | ⬜ | 🟡 | — | Esporre metriche BRN su telemetria mesh (`mesh_state.jsonl`) | Campo `brain_state` nel record ciclo |
 | BRN.16 | ⬜ | 🟡 | BRN-016 | Implementare `LanguageAcquisition` (da stub a pieno) | Phonological + Semantic + Syntactic layers attivi |
-| BRN.17 | ⬜ | 🟡 | BRN-017 | Implementare `CausalReasoner` (Pearl hierarchy) | `do_operator()` funzionante su grafo semplice |
-| BRN.18 | ⬜ | 🟡 | BRN-018 | Implementare `AbstractionLayer` (conceptual blending) | `ConceptualBlender.blend()` su 2 concetti |
-| BRN.19 | ⬜ | 🟡 | BRN-019 | Implementare `SelfModel` (body schema + metacognizione) | `introspect()` ritorna stato coerente |
-| BRN.20 | ⬜ | 🟠 | BRN-020 | Implementare `RecursiveSelfImprover` (Darwin Gödel) | `SafeModificationGate` attivo, approval human-in-loop |
+| BRN.17 | ✅ | 🟡 | BRN-017 | Implementare `CausalReasoner` (Pearl hierarchy) | **40/40 test PASS** — CausalGraph DAG, do_operator, InterventionSimulator, CounterfactualEngine 3-step, CausalLearner (Granger), integrazione BRN-015+KG |
+| BRN.18 | ✅ | 🟡 | BRN-018 | Implementare `AbstractionLayer` (conceptual blending) | **47/47 test PASS** — ConceptualGraph (cosine sim), HierarchicalAbstractor, AnalogyEngine (Gentner struct-mapping), ConceptualBlender (Fauconnier+Turner), transfer_knowledge, integrazione BRN-017+KG |
+| BRN.19 | ✅ | 🟡 | BRN-019 | Implementare `SelfModel` (body schema + metacognizione) | **59/59 test PASS** — BodySchema (20 BRN registrati), MetacognitionLayer (BiasDetector+ConfidenceCalibrator+ECE), SelfNarrative (NarrativeEpisode+EvolutionArc), IntrospectionEngine (limitations+bottlenecks+accuracy), integrazioni BRN-017+018+020 |
+| BRN.20 | ✅ | 🟡 | BRN-020 | Implementare `RecursiveSelfImprover` (Darwin Gödel) | **44/44 test PASS** — CodeInspector (AST), ModificationProposer, ImprovementValidator, SafeModificationGate (WAL+PROPOSALS.md), FitnessScore (fitness_function.yaml), auto-apply solo LOW+HYPERPARAMETER, human-in-loop per MEDIUM+ |
 | BRN.AST | ⬜ | 🟡 | AST | Wiring `astrocyte_network.py` con `glial_controller` (AST-002) | `CalciumWave` propagazione verificabile |
 | BRN.AUT | ⬜ | 🟡 | AUT | Test `autopoietic_engine.py` + `system3_controller.py` integrati | Score autopoiesi > 0 nel ciclo runtime |
 | BRN.DNA | ⬜ | 🟠 | DNA | Attivare `fitness_function.yaml` nel loop DigitalDNA | `mutation_rules.py` legge fitness e filtra mutazioni |
 | BRN.DOC | ⬜ | 🟢 | — | Aggiornare `SPEACE-Engineering-Document-v1.2.md` con sezione M6 | Sezione "Brain Integration Layer" presente |
 
-**Dipendenze:** BRN.W1 → BRN.W2 → BRN.W3 → BRN.W4. BRN.16→BRN.20 indipendenti, ma BRN.20 richiede SafeProactive HIGH review. BRN.DNA sblocca EPI-005 (M5.7).
+| HTN.01 | ✅ | 🟠 | HTN | HTN Planner (pianificazione gerarchica a lungo termine) | **41/41 test PASS** — WorldState, Goal/GoalStack (priority+expiry), PrimitiveTask (preconditions+effects), Method+MethodLibrary, HTNPlanner (SHOP2 forward-chaining, backtracking), PlanMonitor (re-planning), HierarchicalPlanningSystem facade, 4 metodi SPEACE default |
+| AGI.01 | ✅ | 🟠 | AGI | AGI Loop orchestrator (ciclo cognitivo unificato SMFOI v0.3) | **38/38 test PASS** — 6-step SMFOI cycle (Self-Location→Constraint-Mapping→Push-Detection→Evolution-Stack→Output-Action→Outcome-Evaluation), SurpriseDetector, ModuleRegistry, AGIMetrics, AGILoop (hooks, history, run()), AGISystem (wire_all: BRN-017/018/019/020+HTN), **269/269 PASS suite totale** |
+
+**Dipendenze:** BRN.W1 → BRN.W2 → BRN.W3 → BRN.W4. BRN.16→BRN.20 indipendenti, ma BRN.20 richiede SafeProactive HIGH review. BRN.DNA sblocca EPI-005 (M5.7). HTN.01+AGI.01 completati → AGI properties 1+2+3 operative.
 
 ---
 
@@ -460,4 +464,4 @@ Swarm Agentic Layer (M8) ad alta priorità: neuroni Ollama già esistenti in spe
 4 innovazioni identificate: CriticalityController (SOC), PredictiveEngine completo, RealEmbeddings+VectorMemory, CodeMutationLab (AST).
 Report: `docs/GROK-SPEACE-V4.2-GAP-ANALYSIS.md`. Proposals M13 aggiunte a PROPOSALS.md.
 SPEACE-prototipo rimane più avanzato di Grok v4.2 su: ValenceIntegrator, GlialSupport, CircadianOscillator, HomeostaticPlasticity, DriveExecutive, DigitalDNA, SafeProactive, SMFOI-KERNEL.
-Grok v4.2 apporta contributi puntuali di alto valore (criticality, embeddings, AST mutatio
+Grok v4.2 apporta contributi puntuali di alto valore (criticality, embeddings, AST mutation) non presenti nel prototipo.*

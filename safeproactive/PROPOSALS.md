@@ -554,3 +554,643 @@
 - **Approvato da:** NeuralParliament autonomo (consensus=87.2%) — 2026-04-29
 
 ---
+## PROPOSAL-BRN020-BA8BE78B
+**Data:** 2026-04-29 18:57:22
+**Modulo:** `tmpv5sd7led`
+**Tipo:** architecture
+**Titolo:** [ARCHITECTURE] tmpv5sd7led: missing_tests
+**Rischio:** MEDIUM
+**Stato:** validated
+**ΔFitness stimato:** +0.100
+
+### Descrizione
+Nessun file di test trovato per `tmpv5sd7led`
+
+Crea `_tests_tmpv5sd7led.py` con pytest
+
+### Findings
+- missing_tests @ module: Nessun file di test trovato per `tmpv5sd7led`
+
+**Approvazione umana richiesta:** SÌ
+
+---
+## PROPOSAL-BRN020-D2141ECE
+**Data:** 2026-04-29 18:57:22
+**Modulo:** `tmpv5sd7led`
+**Tipo:** architecture
+**Titolo:** [ARCHITECTURE] tmpv5sd7led: nested_loop
+**Rischio:** MEDIUM
+**Stato:** validated
+**ΔFitness stimato:** +0.080
+
+### Descrizione
+`process` contiene loop annidati (O(n²)+)
+
+Considera strutture dati alternative o vettorizzazione
+
+### Findings
+- nested_loop @ process: `process` contiene loop annidati (O(n²)+)
+
+**Approvazione umana richiesta:** SÌ
+
+---
+## PROPOSAL-BRN020-347E2B6C
+**Data:** 2026-04-29 18:57:22
+**Modulo:** `tmpv5sd7led`
+**Tipo:** architecture
+**Titolo:** [ARCHITECTURE] tmpv5sd7led: nested_loop
+**Rischio:** MEDIUM
+**Stato:** validated
+**ΔFitness stimato:** +0.080
+
+### Descrizione
+`process` contiene loop annidati (O(n²)+)
+
+Considera strutture dati alternative o vettorizzazione
+
+### Findings
+- nested_loop @ process: `process` contiene loop annidati (O(n²)+)
+
+**Approvazione umana richiesta:** SÌ
+
+---
+## PROPOSAL-BRN020-D4351B24
+**Data:** 2026-04-29 18:57:22
+**Modulo:** `tmpv5sd7led`
+**Tipo:** architecture
+**Titolo:** [ARCHITECTURE] tmpv5sd7led: missing_docstring
+**Rischio:** MEDIUM
+**Stato:** validated
+**ΔFitness stimato:** +0.020
+
+### Descrizione
+`process` non ha docstring
+
+Aggiungi docstring a `process`
+
+### Findings
+- missing_docstring @ process: `process` non ha docstring
+
+**Approvazione umana richiesta:** SÌ
+
+---
+## PROPOSAL-BRN020-27A804B5
+**Data:** 2026-04-29 18:57:22
+**Modulo:** `tmpv5sd7led`
+**Tipo:** hyperparameter
+**Titolo:** [HYPERPARAMETER] tmpv5sd7led: missing_type_hints
+**Rischio:** LOW
+**Stato:** validated
+**ΔFitness stimato:** +0.020
+
+### Descrizione
+`process` ha solo 0/5 parametri tipizzati
+
+Aggiungi type hints a `process`
+
+### Findings
+- missing_type_hints @ process: `process` ha solo 0/5 parametri tipizzati
+
+**Approvazione umana richiesta:** NO
+
+---
+## PROPOSAL-BRN020-CB72263E
+**Data:** 2026-04-29 18:57:22
+**Modulo:** `my_module`
+**Tipo:** hyperparameter
+**Titolo:** [HYPERPARAMETER] my_module: tune alpha
+**Rischio:** LOW
+**Stato:** validated
+**ΔFitness stimato:** +0.033
+
+### Descrizione
+Modifica `alpha` da 0.3 a 0.2.
+Rationale: improve learning
+
+### Findings
+- param_tune: alpha 0.3 → 0.2
+
+### Patch proposta
+```diff
+- alpha = 0.3
++ alpha = 0.2
+```
+
+**Approvazione umana richiesta:** NO
+
+---
+## PROPOSAL-BRN020-DF76E6BB
+**Data:** 2026-04-29 18:57:22
+**Modulo:** `mod`
+**Tipo:** hyperparameter
+**Titolo:** [HYPERPARAMETER] mod: tune x
+**Rischio:** LOW
+**Stato:** validated
+**ΔFitness stimato:** +0.020
+
+### Descrizione
+Modifica `x` da 0.5 a 0.4.
+Rationale: test
+
+### Findings
+- param_tune: x 0.5 → 0.4
+
+### Patch proposta
+```diff
+- x = 0.5
++ x = 0.4
+```
+
+**Approvazione umana richiesta:** NO
+
+---
+## PROPOSAL-BRN020-F6FAC53F
+**Data:** 2026-04-29 18:59:30
+**Modulo:** `tmp1h4zyjza`
+**Tipo:** architecture
+**Titolo:** [ARCHITECTURE] tmp1h4zyjza: missing_tests
+**Rischio:** MEDIUM
+**Stato:** validated
+**ΔFitness stimato:** +0.100
+
+### Descrizione
+Nessun file di test trovato per `tmp1h4zyjza`
+
+Crea `_tests_tmp1h4zyjza.py` con pytest
+
+### Findings
+- missing_tests @ module: Nessun file di test trovato per `tmp1h4zyjza`
+
+**Approvazione umana richiesta:** SÌ
+
+---
+## PROPOSAL-BRN020-E93B94E9
+**Data:** 2026-04-29 18:59:30
+**Modulo:** `tmp1h4zyjza`
+**Tipo:** architecture
+**Titolo:** [ARCHITECTURE] tmp1h4zyjza: nested_loop
+**Rischio:** MEDIUM
+**Stato:** validated
+**ΔFitness stimato:** +0.080
+
+### Descrizione
+`process` contiene loop annidati (O(n²)+)
+
+Considera strutture dati alternative o vettorizzazione
+
+### Findings
+- nested_loop @ process: `process` contiene loop annidati (O(n²)+)
+
+**Approvazione umana richiesta:** SÌ
+
+---
+## PROPOSAL-BRN020-C939AE52
+**Data:** 2026-04-29 18:59:30
+**Modulo:** `tmp1h4zyjza`
+**Tipo:** architecture
+**Titolo:** [ARCHITECTURE] tmp1h4zyjza: nested_loop
+**Rischio:** MEDIUM
+**Stato:** validated
+**ΔFitness stimato:** +0.080
+
+### Descrizione
+`process` contiene loop annidati (O(n²)+)
+
+Considera strutture dati alternative o vettorizzazione
+
+### Findings
+- nested_loop @ process: `process` contiene loop annidati (O(n²)+)
+
+**Approvazione umana richiesta:** SÌ
+
+---
+## PROPOSAL-BRN020-D8B59195
+**Data:** 2026-04-29 18:59:30
+**Modulo:** `tmp1h4zyjza`
+**Tipo:** architecture
+**Titolo:** [ARCHITECTURE] tmp1h4zyjza: missing_docstring
+**Rischio:** MEDIUM
+**Stato:** validated
+**ΔFitness stimato:** +0.020
+
+### Descrizione
+`process` non ha docstring
+
+Aggiungi docstring a `process`
+
+### Findings
+- missing_docstring @ process: `process` non ha docstring
+
+**Approvazione umana richiesta:** SÌ
+
+---
+## PROPOSAL-BRN020-7C81DEED
+**Data:** 2026-04-29 18:59:30
+**Modulo:** `tmp1h4zyjza`
+**Tipo:** hyperparameter
+**Titolo:** [HYPERPARAMETER] tmp1h4zyjza: missing_type_hints
+**Rischio:** LOW
+**Stato:** validated
+**ΔFitness stimato:** +0.020
+
+### Descrizione
+`process` ha solo 0/5 parametri tipizzati
+
+Aggiungi type hints a `process`
+
+### Findings
+- missing_type_hints @ process: `process` ha solo 0/5 parametri tipizzati
+
+**Approvazione umana richiesta:** NO
+
+---
+## PROPOSAL-BRN020-13BCDAE4
+**Data:** 2026-04-29 18:59:31
+**Modulo:** `my_module`
+**Tipo:** hyperparameter
+**Titolo:** [HYPERPARAMETER] my_module: tune alpha
+**Rischio:** LOW
+**Stato:** validated
+**ΔFitness stimato:** +0.033
+
+### Descrizione
+Modifica `alpha` da 0.3 a 0.2.
+Rationale: improve learning
+
+### Findings
+- param_tune: alpha 0.3 → 0.2
+
+### Patch proposta
+```diff
+- alpha = 0.3
++ alpha = 0.2
+```
+
+**Approvazione umana richiesta:** NO
+
+---
+## PROPOSAL-BRN020-52B53382
+**Data:** 2026-04-29 18:59:31
+**Modulo:** `mod`
+**Tipo:** hyperparameter
+**Titolo:** [HYPERPARAMETER] mod: tune x
+**Rischio:** LOW
+**Stato:** validated
+**ΔFitness stimato:** +0.020
+
+### Descrizione
+Modifica `x` da 0.5 a 0.4.
+Rationale: test
+
+### Findings
+- param_tune: x 0.5 → 0.4
+
+### Patch proposta
+```diff
+- x = 0.5
++ x = 0.4
+```
+
+**Approvazione umana richiesta:** NO
+
+---
+## PROPOSAL-BRN020-F2EEBF33
+**Data:** 2026-04-29 19:00:59
+**Modulo:** `tmp3pywo0c5`
+**Tipo:** architecture
+**Titolo:** [ARCHITECTURE] tmp3pywo0c5: missing_tests
+**Rischio:** MEDIUM
+**Stato:** validated
+**ΔFitness stimato:** +0.100
+
+### Descrizione
+Nessun file di test trovato per `tmp3pywo0c5`
+
+Crea `_tests_tmp3pywo0c5.py` con pytest
+
+### Findings
+- missing_tests @ module: Nessun file di test trovato per `tmp3pywo0c5`
+
+**Approvazione umana richiesta:** SÌ
+
+---
+## PROPOSAL-BRN020-0A63991B
+**Data:** 2026-04-29 19:00:59
+**Modulo:** `tmp3pywo0c5`
+**Tipo:** architecture
+**Titolo:** [ARCHITECTURE] tmp3pywo0c5: nested_loop
+**Rischio:** MEDIUM
+**Stato:** validated
+**ΔFitness stimato:** +0.080
+
+### Descrizione
+`process` contiene loop annidati (O(n²)+)
+
+Considera strutture dati alternative o vettorizzazione
+
+### Findings
+- nested_loop @ process: `process` contiene loop annidati (O(n²)+)
+
+**Approvazione umana richiesta:** SÌ
+
+---
+## PROPOSAL-BRN020-90513E59
+**Data:** 2026-04-29 19:00:59
+**Modulo:** `tmp3pywo0c5`
+**Tipo:** architecture
+**Titolo:** [ARCHITECTURE] tmp3pywo0c5: nested_loop
+**Rischio:** MEDIUM
+**Stato:** validated
+**ΔFitness stimato:** +0.080
+
+### Descrizione
+`process` contiene loop annidati (O(n²)+)
+
+Considera strutture dati alternative o vettorizzazione
+
+### Findings
+- nested_loop @ process: `process` contiene loop annidati (O(n²)+)
+
+**Approvazione umana richiesta:** SÌ
+
+---
+## PROPOSAL-BRN020-E1F740E5
+**Data:** 2026-04-29 19:00:59
+**Modulo:** `tmp3pywo0c5`
+**Tipo:** hyperparameter
+**Titolo:** [HYPERPARAMETER] tmp3pywo0c5: magic_numbers
+**Rischio:** LOW
+**Stato:** validated
+**ΔFitness stimato:** +0.030
+
+### Descrizione
+3 magic numbers hardcoded nel modulo
+
+Sposta le costanti in una NamedTuple o dataclass di configurazione
+
+### Findings
+- magic_numbers @ module: 3 magic numbers hardcoded nel modulo
+
+**Approvazione umana richiesta:** NO
+
+---
+## PROPOSAL-BRN020-BF2F0EDE
+**Data:** 2026-04-29 19:00:59
+**Modulo:** `tmp3pywo0c5`
+**Tipo:** architecture
+**Titolo:** [ARCHITECTURE] tmp3pywo0c5: missing_docstring
+**Rischio:** MEDIUM
+**Stato:** validated
+**ΔFitness stimato:** +0.020
+
+### Descrizione
+`process` non ha docstring
+
+Aggiungi docstring a `process`
+
+### Findings
+- missing_docstring @ process: `process` non ha docstring
+
+**Approvazione umana richiesta:** SÌ
+
+---
+## PROPOSAL-BRN020-17FF32F1
+**Data:** 2026-04-29 19:00:59
+**Modulo:** `tmp3pywo0c5`
+**Tipo:** hyperparameter
+**Titolo:** [HYPERPARAMETER] tmp3pywo0c5: missing_type_hints
+**Rischio:** LOW
+**Stato:** validated
+**ΔFitness stimato:** +0.020
+
+### Descrizione
+`process` ha solo 0/5 parametri tipizzati
+
+Aggiungi type hints a `process`
+
+### Findings
+- missing_type_hints @ process: `process` ha solo 0/5 parametri tipizzati
+
+**Approvazione umana richiesta:** NO
+
+---
+## PROPOSAL-BRN020-88FC1549
+**Data:** 2026-04-29 19:00:59
+**Modulo:** `my_module`
+**Tipo:** hyperparameter
+**Titolo:** [HYPERPARAMETER] my_module: tune alpha
+**Rischio:** LOW
+**Stato:** validated
+**ΔFitness stimato:** +0.033
+
+### Descrizione
+Modifica `alpha` da 0.3 a 0.2.
+Rationale: improve learning
+
+### Findings
+- param_tune: alpha 0.3 → 0.2
+
+### Patch proposta
+```diff
+- alpha = 0.3
++ alpha = 0.2
+```
+
+**Approvazione umana richiesta:** NO
+
+---
+## PROPOSAL-BRN020-07AD1076
+**Data:** 2026-04-29 19:00:59
+**Modulo:** `mod`
+**Tipo:** hyperparameter
+**Titolo:** [HYPERPARAMETER] mod: tune x
+**Rischio:** LOW
+**Stato:** validated
+**ΔFitness stimato:** +0.020
+
+### Descrizione
+Modifica `x` da 0.5 a 0.4.
+Rationale: test
+
+### Findings
+- param_tune: x 0.5 → 0.4
+
+### Patch proposta
+```diff
+- x = 0.5
++ x = 0.4
+```
+
+**Approvazione umana richiesta:** NO
+
+---
+## PROPOSAL-BRN020-7094CB37
+**Data:** 2026-04-30 07:28:49
+**Modulo:** `tmpw_x_y03s`
+**Tipo:** architecture
+**Titolo:** [ARCHITECTURE] tmpw_x_y03s: missing_tests
+**Rischio:** MEDIUM
+**Stato:** validated
+**ΔFitness stimato:** +0.100
+
+### Descrizione
+Nessun file di test trovato per `tmpw_x_y03s`
+
+Crea `_tests_tmpw_x_y03s.py` con pytest
+
+### Findings
+- missing_tests @ module: Nessun file di test trovato per `tmpw_x_y03s`
+
+**Approvazione umana richiesta:** SÌ
+
+---
+## PROPOSAL-BRN020-8106DD22
+**Data:** 2026-04-30 07:28:49
+**Modulo:** `tmpw_x_y03s`
+**Tipo:** architecture
+**Titolo:** [ARCHITECTURE] tmpw_x_y03s: nested_loop
+**Rischio:** MEDIUM
+**Stato:** validated
+**ΔFitness stimato:** +0.080
+
+### Descrizione
+`process` contiene loop annidati (O(n²)+)
+
+Considera strutture dati alternative o vettorizzazione
+
+### Findings
+- nested_loop @ process: `process` contiene loop annidati (O(n²)+)
+
+**Approvazione umana richiesta:** SÌ
+
+---
+## PROPOSAL-BRN020-821F7F5C
+**Data:** 2026-04-30 07:28:49
+**Modulo:** `tmpw_x_y03s`
+**Tipo:** architecture
+**Titolo:** [ARCHITECTURE] tmpw_x_y03s: nested_loop
+**Rischio:** MEDIUM
+**Stato:** validated
+**ΔFitness stimato:** +0.080
+
+### Descrizione
+`process` contiene loop annidati (O(n²)+)
+
+Considera strutture dati alternative o vettorizzazione
+
+### Findings
+- nested_loop @ process: `process` contiene loop annidati (O(n²)+)
+
+**Approvazione umana richiesta:** SÌ
+
+---
+## PROPOSAL-BRN020-F0AC5892
+**Data:** 2026-04-30 07:28:49
+**Modulo:** `tmpw_x_y03s`
+**Tipo:** hyperparameter
+**Titolo:** [HYPERPARAMETER] tmpw_x_y03s: magic_numbers
+**Rischio:** LOW
+**Stato:** validated
+**ΔFitness stimato:** +0.030
+
+### Descrizione
+3 magic numbers hardcoded nel modulo
+
+Sposta le costanti in una NamedTuple o dataclass di configurazione
+
+### Findings
+- magic_numbers @ module: 3 magic numbers hardcoded nel modulo
+
+**Approvazione umana richiesta:** NO
+
+---
+## PROPOSAL-BRN020-E3D4CEE4
+**Data:** 2026-04-30 07:28:49
+**Modulo:** `tmpw_x_y03s`
+**Tipo:** architecture
+**Titolo:** [ARCHITECTURE] tmpw_x_y03s: missing_docstring
+**Rischio:** MEDIUM
+**Stato:** validated
+**ΔFitness stimato:** +0.020
+
+### Descrizione
+`process` non ha docstring
+
+Aggiungi docstring a `process`
+
+### Findings
+- missing_docstring @ process: `process` non ha docstring
+
+**Approvazione umana richiesta:** SÌ
+
+---
+## PROPOSAL-BRN020-99B4DA29
+**Data:** 2026-04-30 07:28:49
+**Modulo:** `tmpw_x_y03s`
+**Tipo:** hyperparameter
+**Titolo:** [HYPERPARAMETER] tmpw_x_y03s: missing_type_hints
+**Rischio:** LOW
+**Stato:** validated
+**ΔFitness stimato:** +0.020
+
+### Descrizione
+`process` ha solo 0/5 parametri tipizzati
+
+Aggiungi type hints a `process`
+
+### Findings
+- missing_type_hints @ process: `process` ha solo 0/5 parametri tipizzati
+
+**Approvazione umana richiesta:** NO
+
+---
+## PROPOSAL-BRN020-C0E54230
+**Data:** 2026-04-30 07:28:49
+**Modulo:** `my_module`
+**Tipo:** hyperparameter
+**Titolo:** [HYPERPARAMETER] my_module: tune alpha
+**Rischio:** LOW
+**Stato:** validated
+**ΔFitness stimato:** +0.033
+
+### Descrizione
+Modifica `alpha` da 0.3 a 0.2.
+Rationale: improve learning
+
+### Findings
+- param_tune: alpha 0.3 → 0.2
+
+### Patch proposta
+```diff
+- alpha = 0.3
++ alpha = 0.2
+```
+
+**Approvazione umana richiesta:** NO
+
+---
+## PROPOSAL-BRN020-96FA3A14
+**Data:** 2026-04-30 07:28:49
+**Modulo:** `mod`
+**Tipo:** hyperparameter
+**Titolo:** [HYPERPARAMETER] mod: tune x
+**Rischio:** LOW
+**Stato:** validated
+**ΔFitness stimato:** +0.020
+
+### Descrizione
+Modifica `x` da 0.5 a 0.4.
+Rationale: test
+
+### Findings
+- param_tune: x 0.5 → 0.4
+
+### Patch proposta
+```diff
+- x = 0.5
++ x = 0.4
+```
+
+**Approvazione umana richiesta:** NO
+
+---

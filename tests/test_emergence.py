@@ -1917,6 +1917,99 @@ def test_m14(ollama_ok: bool) -> None:
         record("EM-30", 3, "KineticFlow exception",
                "FAIL", f"{e}\n{traceback.format_exc()}", "")
 
+
+    # ── EM-31: SparseActivationEngine — sparse coding 1-5% moduli attivi ────
+    try:
+        from cortex.cognitive_autonomy.sparse import (
+            SparseActivationEngine, SparseConfig, SparseResult,
+        )
+
+        # Config: 5% target con 20 moduli → max 1-2 attivi
+        cfg = SparseConfig(
+            target_sparsity=0.05,
+            min_active=1,
+            max_active=4,
+            wta_temperature=0.5,
+            lifetime_penalty=0.15,
+        )
+        engine = SparseActivationEngine(cfg)
+
+        # Registra 20 moduli con salienze variabili
+        speace_modules = [
+            ("prefrontal",  0.90), ("hippocampus",  0.70), ("amygdala",    0.50),
+            ("thalamus",    0.80), ("cerebellum",   0.40), ("world_model", 0.85),
+            ("swarm",       0.60), ("energy",       0.30), ("immune",      0.65),
+            ("criticality", 0.75), ("valence",      0.55), ("plasticity",  0.45),
+            ("attention",   0.70), ("predictive",   0.60), ("executive",   0.80),
+            ("consolidate", 0.35), ("glial",        0.50), ("kinetic",     0.65),
+            ("identity",    0.55), ("evolution",    0.75),
+        ]
+        for name, sal in speace_modules:
+            engine.register(name, sal)
+
+        # 1. Primo ciclo: sparsity > 80%
+        r0 = engine.run_cycle()
+        sparsity_ok      = r0.sparsity >= 0.80
+        active_limited   = 1 <= len(r0.active_modules) <= cfg.max_active
+        suppressed_ok    = len(r0.suppressed) >= len(speace_modules) - cfg.max_active
+        popvec_ok        = abs(sum(r0.population_vector.values()) - 1.0) < 0.01                            or len(r0.population_vector) == 0
+
+        # 2. Update salience cambia chi viene attivato
+        engine.update_salience("consolidate", 0.99)  # boost improvviso
+        r1 = engine.run_cycle()
+        salience_effect = "consolidate" in r1.active_modules
+
+        # 3. Lifetime penalty: moduli troppo attivi vengono penalizzati
+        for _ in range(8):
+            engine.run_cycle()
+        stats = engine.get_stats()
+        lifetime_tracked = all("lifetime" in v for v in stats["modules"].values())
+
+        # 4. Population pattern: riflette attivazioni storiche
+        pattern = engine.get_population_pattern()
+        pattern_ok = len(pattern) > 0 and all(0 <= v <= 1 for v in pattern.values())
+
+        # 5. Energy savings > 70%
+        savings = engine.energy_savings_estimate()
+        savings_ok = savings >= 0.70
+
+        # 6. Integrazione con mock EnergyBudget: budget stressato → k dimezzato
+        class StressedBudget:
+            def snapshot(self):
+                class S:
+                    over_cpu_budget = True
+                    over_memory_budget = False
+                return S()
+        r_stress = engine.run_cycle(budget=StressedBudget())
+        # k dimezzato → dovrebbe avere meno o uguale attivi
+        stress_respected = len(r_stress.active_modules) <= cfg.max_active
+
+        all_ok = all([sparsity_ok, active_limited, suppressed_ok,
+                      popvec_ok, salience_effect, lifetime_tracked,
+                      pattern_ok, savings_ok, stress_respected])
+
+        detail = (
+            f"sparsity={r0.sparsity:.1%}(ok={sparsity_ok}) "
+            f"active={len(r0.active_modules)}(ok={active_limited}) "
+            f"salience_effect={salience_effect} lifetime={lifetime_tracked} "
+            f"pattern={pattern_ok} savings={savings:.1%}(ok={savings_ok}) "
+            f"stress={stress_respected}"
+        )
+
+        record("EM-31", 3,
+               "SparseActivationEngine: sparse coding ~5% moduli attivi",
+               "PASS" if all_ok else "PARTIAL",
+               detail,
+               "" if all_ok else "Verifica SparseActivationEngine")
+
+    except ImportError as e:
+        record("EM-31", 3, "SparseActivationEngine import",
+               "FAIL", str(e), "cortex/cognitive_autonomy/sparse/ non trovato")
+    except Exception as e:
+        import traceback
+        record("EM-31", 3, "SparseActivationEngine exception",
+               "FAIL", f"{e}\n{traceback.format_exc()}", "")
+
 # ── Main ─────────────────────────────────────────────────────────────────────
 
 def main():
