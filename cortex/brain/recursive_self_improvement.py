@@ -894,21 +894,4 @@ class RecursiveSelfImprover:
 
     def get_full_status(self) -> Dict[str, Any]:
         fitness_latest = (self._fitness_history[-1].to_dict()
-                          if self._fitness_history else None)
-        return {
-            "module":            "RecursiveSelfImprover",
-            "brn_id":            "BRN-020",
-            "status":            "active",
-            "safety_mode":       "STRICT – human approval required for MEDIUM+",
-            "cycle":             self._cycle,
-            "proposals":         self.get_proposals_summary(),
-            "fitness_latest":    fitness_latest,
-            "fitness_weights":   self._fitness_weights,
-            "applied_count":     len(self._applied),
-        }
-
-
-# ── Factory ───────────────────────────────────────────────────────────────────
-
-def create_recursive_self_improver() -> RecursiveSelfImprover:
-    return RecursiveSelfImprover()
+        

@@ -306,15 +306,4 @@ class TestAGISystem:
         sys = AGISystem().wire_all()
         ws = make_world_state(brn_017_active=True, brn_020_active=True)
         goal = sys.loop.create_goal("analyze_situation", {"causal_analysis_done": True})
-        sys.loop.add_goal(goal)
-        outputs = sys.loop.run(ws, n_cycles=3)
-        assert len(outputs) == 3
-        assert all(o.success for o in outputs)
-
-    def test_factory_create_agi_system(self):
-        sys = create_agi_system()
-        assert sys._wired is True
-
-
-if __name__ == "__main__":
-    pytest.main([__file__, "-v"])
+        sys.loop.add_goal(goa

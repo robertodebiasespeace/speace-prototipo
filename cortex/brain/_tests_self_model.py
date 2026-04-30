@@ -394,17 +394,4 @@ class TestSelfModel:
         sm = SelfModel()
         status = sm.get_full_status()
         assert status["brn_id"] == "BRN-019"
-        assert status["status"] == "active"
-        assert status["registered_modules"] == 20
-
-    def test_factory_function(self):
-        sm = create_self_model()
-        assert isinstance(sm, SelfModel)
-
-    def test_system_integrity_one(self):
-        sm = SelfModel()
-        assert sm.body_schema.compute_system_integrity() == pytest.approx(1.0)
-
-
-if __name__ == "__main__":
-    pytest.main([__file__, "-v"])
+        assert stat

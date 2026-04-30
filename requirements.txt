@@ -1,0 +1,38 @@
+# ============================================================
+# SPEACE – Python Dependencies
+# SuPer Entità Autonoma Cibernetica Evolutiva
+# ============================================================
+# Installa con:
+#   pip install -r requirements.txt
+#
+# Python >= 3.10 richiesto
+# ============================================================
+
+# ── Core runtime ─────────────────────────────────────────────
+pyyaml>=6.0               # DigitalDNA genome/epigenome (yaml)
+requests>=2.31.0          # HTTP calls (evolver, feeds, IoT)
+psutil>=5.9.0             # System metrics (energy budget, SystemReceptors)
+python-dotenv>=1.0.0      # .env loading (API keys, config)
+
+# ── AI / LLM ─────────────────────────────────────────────────
+anthropic>=0.28.0         # Claude API (Team Scientifico, LLM tissue)
+
+# ── Knowledge graph / World Model ────────────────────────────
+networkx>=3.2             # Knowledge Graph, causal DAG (BRN-015, BRN-017)
+
+# ── Numerical / scientific ───────────────────────────────────
+numpy>=1.26.0             # Sparse activation, STDP, predictive coding
+
+# ── Validation ───────────────────────────────────────────────
+jsonschema>=4.21.0        # Schema validation (SafeProactive proposals)
+
+# ── Scheduling / background ──────────────────────────────────
+schedule>=1.2.0           # speace-cortex-evolver heartbeat (60 min)
+
+# ── Dashboard ────────────────────────────────────────────────
+streamlit>=1.33.0         # Dashboard SPEACE (localhost:8501)
+plotly>=5.20.0            # Charts nel dashboard
+
+# ── Testing ──────────────────────────────────────────────────
+pytest>=8.0.0
+pytest-timeout>=2.3.0

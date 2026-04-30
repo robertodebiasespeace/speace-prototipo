@@ -567,22 +567,4 @@ class CausalReasoner:
             },
             "learner": {
                 "observations":   len(self.learner._observations),
-                "proposals_made": len(self.learner._proposal_log),
-            },
-            "surprises_detected": len(self._surprises),
-            "inferences_made":    len(self._inferences),
-            "causal_levels":      [lvl.name for lvl in CausalLevel],
-        }
-
-
-def create_causal_reasoner() -> CausalReasoner:
-    return CausalReasoner()
-
-
-def create_causal_reasoner_with_priors(
-    causal_links: List[Tuple[str, str, float, str]],
-) -> CausalReasoner:
-    cr = CausalReasoner()
-    for source, target, strength, domain in causal_links:
-        cr.add_causal_link(source, target, strength, domain=domain)
-    return cr
+                "proposals_made": len(self.learner._proposal_log)

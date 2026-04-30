@@ -768,20 +768,4 @@ class AGISystem:
 
     def get_status(self) -> Dict:
         return {
-            "agi_system": True,
-            "wired": self._wired,
-            "modules": list(self.modules.keys()),
-            "loop": self.loop.get_status(),
-        }
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-#  Factory
-# ──────────────────────────────────────────────────────────────────────────────
-
-def create_agi_loop() -> AGILoop:
-    return AGILoop()
-
-
-def create_agi_system() -> AGISystem:
-    return AGISystem().wire_all()
+            "agi_

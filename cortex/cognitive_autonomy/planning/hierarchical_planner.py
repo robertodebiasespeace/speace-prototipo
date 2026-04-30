@@ -825,18 +825,4 @@ class HierarchicalPlanningSystem:
             "active_plan": (
                 self._active_plan.to_dict() if self._active_plan else None
             ),
-            "plans_generated": len(self._plan_history),
-            "planner_stats": self.planner.get_stats(),
-            "monitor": {
-                "failures": self.monitor.failure_count,
-                "replannings": self.monitor.replanning_count,
-            },
-        }
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-#  Factory
-# ──────────────────────────────────────────────────────────────────────────────
-
-def create_htn_planner() -> HierarchicalPlanningSystem:
-    return HierarchicalPlanningSystem()
+            "plans_generated": len(s

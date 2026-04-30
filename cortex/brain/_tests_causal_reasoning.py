@@ -476,13 +476,3 @@ class TestCausalReasoner:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Esecuzione diretta
-# ─────────────────────────────────────────────────────────────────────────────
-
-if __name__ == "__main__":
-    import subprocess, sys
-    result = subprocess.run(
-        [sys.executable, "-m", "pytest", __file__, "-v", "--tb=short"],
-        capture_output=False
-    )
-    sys.exit(result.returncode)

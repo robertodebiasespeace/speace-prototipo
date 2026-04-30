@@ -894,29 +894,4 @@ class AbstractionLayer:
             },
             "abstractions_created": len(self._abstractions),
             "analogies_found":      len(self._analogies),
-            "blends_created":       len(self._blends),
-        }
-
-
-# ── Factory ───────────────────────────────────────────────────────────────────
-
-def create_abstraction_layer() -> AbstractionLayer:
-    return AbstractionLayer()
-
-
-def create_abstraction_layer_with_concepts(
-    concepts: List[Dict[str, Any]],
-) -> AbstractionLayer:
-    """
-    Factory con concetti precaricati.
-    concepts: lista di dict con chiavi label, features, domain, level
-    """
-    al = AbstractionLayer()
-    for cdata in concepts:
-        al.add_concept_from_dict(
-            label    = cdata["label"],
-            features = cdata.get("features", {}),
-            domain   = cdata.get("domain", "unknown"),
-            level    = cdata.get("level", AbstractionLevel.PERCEPTUAL.value),
-        )
-    return al
+            "blends_created":       l

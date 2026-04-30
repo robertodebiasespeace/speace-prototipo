@@ -487,17 +487,4 @@ class TestAbstractionLayer:
     def test_process_cycle_increments(self):
         al = create_abstraction_layer()
         c  = [make_animal_concept("c1", "cat"), make_animal_concept("c2", "dog")]
-        al.process(c)
-        al.process(c)
-        assert al._cycle == 2
-
-
-# ─── Esecuzione diretta ───────────────────────────────────────────────────────
-
-if __name__ == "__main__":
-    import subprocess, sys
-    result = subprocess.run(
-        [sys.executable, "-m", "pytest", __file__, "-v", "--tb=short"],
-        capture_output=False
-    )
-    sys.exit(result.returncode)
+       

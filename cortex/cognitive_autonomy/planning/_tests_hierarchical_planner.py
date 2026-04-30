@@ -315,14 +315,4 @@ class TestHierarchicalPlanningSystem:
     def test_get_status(self):
         hps = create_htn_planner()
         status = hps.get_status()
-        assert "active_goals" in status
-        assert "method_count" in status
-        assert "plans_generated" in status
-
-    def test_apply_self_model_none_safe(self):
-        hps = create_htn_planner()
-        hps.apply_self_model_constraints(None)   # should not raise
-
-
-if __name__ == "__main__":
-    pytest.main([__file__, "-v"])
+        assert "acti

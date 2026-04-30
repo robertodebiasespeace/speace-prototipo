@@ -19,6 +19,10 @@ git_push_log.txt
 
 # Documento bozza originale
 *.txt
+!requirements.txt
+!requirements*.txt
+!CHANGELOG.txt
+!LICENSE.txt
 
 # Python
 __pycache__/

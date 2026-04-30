@@ -839,18 +839,4 @@ class SelfModel:
             "brn_id": "BRN-019",
             "status": "active",
             "registered_modules": len(self.body_schema._modules),
-            "system_integrity": round(self.body_schema.compute_system_integrity(), 3),
-            "narrative_episodes": self.narrative.episode_count,
-            "last_report_ts": (
-                self._last_report.timestamp if self._last_report else None
-            ),
-        }
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-#  Factory
-# ──────────────────────────────────────────────────────────────────────────────
-
-def create_self_model() -> SelfModel:
-    """Factory function: creates and returns a fully initialized SelfModel."""
-    return SelfModel()
+            "system_integrity": round(self.body_schema.compute_system_

@@ -437,31 +437,4 @@ Swarm Agentic Layer (M8) ad alta priorità: neuroni Ollama già esistenti in spe
 > Sorgente: analisi comparativa GROK SPEACE v1.5–v4.2 vs SPEACE-prototipo.
 > Documento completo: `docs/GROK-SPEACE-V4.2-GAP-ANALYSIS.md`
 > BCS attuale: **82%**. Target post-M13: **~86%**.
-> 4 innovazioni architetturali identificate, 3 APPROVED (low risk), 1 PENDING_APPROVAL (medium).
-
-| ID | Stato | Prio | Descrizione | Criterio chiusura |
-|----|-------|------|-------------|-------------------|
-| M13.0 | ✅ | 🔴 | `criticality/criticality_controller.py` — CriticalityController SOC (ordine/caos) | EM-24 PASS: zone detection + modulation_suggestion coerente |
-| M13.2 | ✅ | 🟠 | Completare `predictive/predictive_processor.py` (scaffold M10 → implementazione) | BehavioralPredictor aggiunto: rolling history, predict_next_state, get_prediction_error |
-| M13.3 | ✅ | 🟡 | `memory/semantic_search.py` + `real_embeddings.py` — Ollama nomic-embed-text + cosine sim | EM-25 PASS: cosine search + fallback deterministico normalizzato |
-| M13.1 | ✅ | 🟡 | `evolution/code_mutation_lab.py` — AST mutation + backup + rollback | EM-26 PASS: backup, gate SafeProactive, apply, rollback, content restored |
-| M13.4 | ⬜ | 🟢 | `agency/tool_registry.py` — ToolRegistry centralizzato (read/write/run_python/shell) | DriveExecutive può interrogare registry per capacità disponibili |
-| M13.5 | ✅ | 🟢 | EPI-016: `criticality/behavioral_predictor/semantic_search.enabled: true` + test suite | epigenome.yaml v2.1. EM-24+EM-25 aggiunti. 25 test totali. |
-
-**Proposte SafeProactive:**
-- PROP-M13-CRITICALITY: **APPROVED** (low risk, auto)
-- PROP-M13-PREDICTIVE-COMPLETE: **APPROVED** (low risk, auto)
-- PROP-M13-SEMANTIC-MEMORY: **APPROVED** (low risk, auto)
-- PROP-M13-AST-MUTATION: **PENDING_APPROVAL** (medium risk — richiede Roberto)
-
-**Dipendenze:** M13.0 → M13.5 (EPI-016). M13.2 indipendente. M13.3 richiede Ollama con nomic-embed-text. M13.1 bloccato su PENDING_APPROVAL.
-
-**Test di emergenza nuovi:** EM-24 (CriticalityController), EM-25 (SemanticSearch).
-
----
-
-*v2.8 — 2026-04-28: Gap analysis GROK SPEACE v1.5→v4.2 completata.
-4 innovazioni identificate: CriticalityController (SOC), PredictiveEngine completo, RealEmbeddings+VectorMemory, CodeMutationLab (AST).
-Report: `docs/GROK-SPEACE-V4.2-GAP-ANALYSIS.md`. Proposals M13 aggiunte a PROPOSALS.md.
-SPEACE-prototipo rimane più avanzato di Grok v4.2 su: ValenceIntegrator, GlialSupport, CircadianOscillator, HomeostaticPlasticity, DriveExecutive, DigitalDNA, SafeProactive, SMFOI-KERNEL.
-Grok v4.2 apporta contributi puntuali di alto valore (criticality, embeddings, AST mutation) non presenti nel prototipo.*
+> 4 innovazioni architetturali identificate, 3 APPR

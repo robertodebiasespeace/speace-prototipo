@@ -494,19 +494,4 @@ class TestRecursiveSelfImprover:
         result = rsi.integrate_self_model(MockSelfModel())
         # Può essere None o una ModificationProposal
         if result is not None:
-            assert isinstance(result, ModificationProposal)
-
-    def test_run_cycle_increments(self):
-        rsi = create_recursive_self_improver()
-        rsi.run_improvement_cycle(["/nonexistent.py"])
-        rsi.run_improvement_cycle(["/nonexistent.py"])
-        assert rsi._cycle == 2
-
-
-if __name__ == "__main__":
-    import subprocess, sys
-    result = subprocess.run(
-        [sys.executable, "-m", "pytest", __file__, "-v", "--tb=short"],
-        capture_output=False
-    )
-    sys.exit(result.returncode)
+            assert

@@ -140,6 +140,4 @@ from .brain_integration import BrainIntegration, BrainSignal, CognitiveResult, c
 
 __version__ = "2.0"
 __date__ = "26 Aprile 2026"
-__brain_modules__ = "BRN-001 to BRN-015 fully implemented | BRN-016 to BRN-020 stub"
-__implemented__ = [f"BRN-{i:03d}" for i in range(1, 16)]
-__stub__ = [f"BRN-{i:03d}" for i in range(16, 21)]
+__brain_modules__ = "BRN-001 to BRN-015 fully imple

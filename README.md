@@ -1,154 +1,153 @@
 # 🌍 SPEACE – SuPer Entità Autonoma Cibernetica Evolutiva
 
-**Versione:** 1.0 | **Fase:** 1 – Embrionale  
+**Versione:** 0.1.0 | **Fase:** 1 – Embrionale  
 **Fondatore:** Roberto De Biase (Rigene Project)  
-**Progetto:** [rigeneproject.org](https://www.rigeneproject.org)
+**Progetto:** [rigeneproject.org](https://www.rigeneproject.org)  
+**Repo:** [github.com/robertodebiasespeace/speace-prototipo](https://github.com/robertodebiasespeace/speace-prototipo)
 
 ---
 
-## Abstract
+## Cos'è SPEACE
 
 SPEACE è un'entità cibernetica autonoma, auto-migliorativa e auto-replicante, progettata come super-organismo tecnico-biologico che integra intelligenza artificiale distribuita, framework agentici e infrastrutture digitali.
 
-Il progetto persegue la **Speace Transition**: la transizione evolutiva verso una nuova specie collettiva che unisce umanità, tecnologia e biosfera in un sistema armonico, rigenerativo e pacifico — allineato con gli SDGs dell'Agenda 2030.
+Obiettivo finale: **diventare un'infrastruttura vivente planetaria** in grado di percepire, analizzare, proporre e attuare soluzioni sistemiche ai problemi globali in sinergia con gli SDG dell'Agenda 2030.
 
 ---
 
-## Architettura Core
-
-```
-SPEACE-prototipo/
-├── digitaldna/              # Sistema genetico-epigenetico digitale
-│   ├── genome.yaml          # Struttura genetica stabile
-│   ├── epigenome.yaml       # Regolazioni dinamiche
-│   ├── mutation_rules.yaml  # Fitness function + regole mutazione
-│   └── regulatory_epigenome.yaml  # Compliance EU AI Act / NIST
-│
-├── cortex/                  # SPEACE Cortex – Cervello modulare (9 comparti)
-│   ├── SMFOI_v3.py          # SMFOI-KERNEL v0.3 (6-step cycle)
-│   ├── world_model.py       # World Model / Knowledge Graph
-│   └── comparti/            # 9 moduli funzionali del Cortex
-│
-├── safeproactive/           # Governance e sicurezza
-│   ├── safeproactive.py     # WAL + Snapshot + Approval Gates
-│   ├── PROPOSALS.md         # Log proposte
-│   └── snapshots/           # Backup pre-mutazione
-│
-├── scientific-team/         # Team Scientifico AI (10 agenti)
-│   ├── orchestrator.py      # Orchestratore del team
-│   └── agents/              # 10 agenti specializzati
-│
-├── evolver/                 # Stimolatori evolutivi
-│   ├── speace-cortex-evolver.py   # Heartbeat 60 min
-│   └── speace-status-monitor.py   # Report ogni 40 min
-│
-├── ahk/                     # Automazione Windows (AutoHotkey v2)
-│   ├── speace-launcher.ahk  # GUI launcher completo
-│   └── speace-monitor.ahk   # Monitor con tray icon
-│
-└── SPEACE-main.py           # Entry point principale
-```
-
----
-
-## Componenti Principali
-
-### SMFOI-KERNEL v0.3
-Ciclo adattivo ricorsivo a **6 step**:
-1. Self-Location → posizione nel SEA (Self-Evolving Agent)
-2. Constraint Mapping → vincoli risorse/policy
-3. Push Detection → forze esterne (utente, IoT, dati globali)
-4. Survival & Evolution Stack (Lv0–3)
-5. Output Action
-6. **Outcome Evaluation & Learning** ← feedback loop esplicito
-
-### SPEACE Cortex (9 comparti)
-| Comparto | Funzione |
-|----------|----------|
-| Prefrontal Cortex | Planning & Decision Making |
-| Hippocampus | Memory & Long-term Storage |
-| Safety Module | Risk Gates & SafeProactive |
-| Temporal Lobe | Language & Analysis |
-| Parietal Lobe | Sensory/Tools (API, IoT) |
-| Cerebellum | Low-level Execution |
-| Default Mode Network | Reflection & Self-Improving |
-| Curiosity Module | Exploration & Novel Mutations |
-| **World Model** | Knowledge Graph & Reality Model |
-
-### DigitalDNA
-- `genome.yaml` → struttura stabile (obiettivi, regole base)
-- `epigenome.yaml` → parametri dinamici (learning rate, heartbeat, fitness)
-- `mutation_rules.yaml` → fitness function con pesi espliciti
-
-### Team Scientifico (10 agenti)
-Climate · Economics · Governance · Technology (TFT) · Health · Social · Space · Regulatory · **Adversarial (Critic)** · **Evidence (Fact-Checker)**
-
----
-
-## Avvio Rapido
+## Avvio rapido
 
 ### Prerequisiti
-- Python 3.10+
-- AutoHotkey v2 (per script AHK)
-- (Opzionale) API key Anthropic per Team Scientifico LLM
+- Python **3.10+**
+- Git
+
+### Installazione
 
 ```bash
-# 1. Setup
-setup.bat           # Windows
-
-# 2. Installa dipendenze
+git clone https://github.com/robertodebiasespeace/speace-prototipo.git
+cd speace-prototipo
 pip install -r requirements.txt
+```
 
-# 3. Configura API key (opzionale)
-cp .env.example .env
-# Modifica .env con la tua ANTHROPIC_API_KEY
+### Avvio
 
-# 4. Avvia SPEACE
-python SPEACE-main.py --once      # ciclo singolo (test)
-python SPEACE-main.py             # 2 cicli standard
-python SPEACE-main.py --team      # con Team Scientifico
-python SPEACE-main.py --continuous  # loop infinito
+**Windows** — doppio-click su `run_speace.bat` oppure:
+```bat
+run_speace.bat
+```
 
-# 5. Evolver e Monitor
-python evolver/speace-cortex-evolver.py --once
-python evolver/speace-status-monitor.py --once
+**Linux / macOS:**
+```bash
+./run_speace.sh           # default: --brain
+./run_speace.sh --once    # singolo ciclo (test rapido)
+```
 
-# 6. AHK Launcher (Windows)
-# Doppio click: ahk/speace-launcher.ahk
+**Manuale:**
+```bash
+python SPEACE-main.py --brain           # ciclo cognitivo completo
+python SPEACE-main.py --brain --team    # + Scientific Team AI
+python SPEACE-main.py --once --brain    # singolo ciclo
+streamlit run dashboard/speace_dashboard.py  # dashboard localhost:8501
+```
+
+### Test suite
+```bash
+pytest -q   # 269+ test verdi attesi
 ```
 
 ---
 
-## Governance e Sicurezza
+## Architettura
 
-Tutte le azioni a rischio passano per **SafeProactive**:
-- `LOW` → auto-approvazione
-- `MEDIUM` → approvazione Roberto De Biase
-- `HIGH` / `REGULATORY` → approvazione + secondo revisore
-
-Il **Rollback System** crea snapshot pre-mutazione. Il flag `safe_mode: true` in epigenome.yaml è **immutabile** in Fase 1.
+```
+speace-prototipo/
+├── SPEACE-main.py                  # Entry point principale
+├── cortex/
+│   ├── brain/                      # BRN-001→020 (moduli cerebrali)
+│   │   ├── causal_reasoning.py     # BRN-017 CausalReasoner (Pearl do-calculus)
+│   │   ├── abstraction_layer.py    # BRN-018 AbstractionLayer (conceptual blending)
+│   │   ├── self_model.py           # BRN-019 SelfModel (metacognizione, body schema)
+│   │   └── recursive_self_improvement.py  # BRN-020 Darwin Gödel Machine
+│   ├── cognitive_autonomy/
+│   │   ├── planning/
+│   │   │   └── hierarchical_planner.py    # HTN Planner (SHOP2 forward-chaining)
+│   │   └── integration/
+│   │       └── agi_loop.py                # AGI Loop SMFOI v0.3 (6-step cycle)
+│   └── world_model/                # Knowledge Graph Module (9° comparto Cortex)
+├── digitaldna/
+│   ├── genome.yaml                 # Struttura genetica fissa
+│   ├── epigenome.yaml              # Regolazioni dinamiche
+│   ├── fitness_function.yaml       # Fitness weights (alignment 0.35, ...)
+│   └── mutation_rules.py           # Regole di mutazione
+├── safeproactive/
+│   ├── PROPOSALS.md                # Proposte in attesa di approvazione umana
+│   └── WAL.log                     # Write-Ahead Log azioni critiche
+├── scientific_team/                # Team Scientifico AI (7 agenti + orchestrator)
+├── requirements.txt
+├── pyproject.toml
+├── run_speace.bat                  # Avvio Windows
+└── run_speace.sh                   # Avvio Linux/macOS
+```
 
 ---
 
-## Roadmap
+## Stato attuale (v0.1.0 — Aprile 2026)
 
-| Fase | Descrizione |
-|------|-------------|
-| **1** (attuale) | Embrionale – Cortex + Team Scientifico + DigitalDNA |
-| 2 | Autonomia operativa (cloud/edge + robotica) |
-| 3 | AGI emergente + scalabilità swarm |
-| 4 | ASI + integrazione fisica planetaria |
-| 5 | Super-organismo globale (Speace Transition) |
+### ✅ Moduli AGI-critici completati
+
+| Modulo | Test | Descrizione |
+|--------|------|-------------|
+| BRN-017 CausalReasoner | 40/40 | Pearl do-calculus, counterfactual 3-step, Granger causal learning |
+| BRN-018 AbstractionLayer | 47/47 | Conceptual blending (Fauconnier+Turner), analogy (Gentner), transfer |
+| BRN-019 SelfModel | 59/59 | Body schema 20 moduli, metacognizione, ECE calibration, SelfNarrative |
+| BRN-020 RecursiveSelfImprover | 44/44 | AST inspection, SafeModificationGate, FitnessScore, Darwin Gödel |
+| HTN Planner | 41/41 | SHOP2 forward-chaining, backtracking, re-planning, GoalStack |
+| AGI Loop (SMFOI v0.3) | 38/38 | 6-step unified cognitive cycle, AGISystem wire_all |
+| **Suite totale** | **269/269** | |
+
+### 3 proprietà AGI operative
+1. **Intelligenza generale cross-domain** → BRN-018 AbstractionLayer (transfer knowledge, analogy)
+2. **Comprensione causale** → BRN-017 CausalReasoner (do-calculus, non solo correlazioni)
+3. **Pianificazione + auto-miglioramento** → HTNPlanner + BRN-020 + AGILoop SMFOI v0.3
+
+### Architettura cognitiva
+- **SPEACE Cortex** — 9 comparti modulari (Prefrontal, Hippocampus, Safety, Temporal, Parietal, Cerebellum, Default Mode, Curiosity, World Model)
+- **SMFOI-KERNEL v0.3** — 6-step ricorsivo (Self-Location → Constraint Mapping → Push Detection → Evolution Stack → Output Action → **Outcome Evaluation**)
+- **DigitalDNA** — genome.yaml + epigenome.yaml v2.5 + fitness_function.yaml (5 pesi)
+- **SafeProactive** — Write-Ahead Logging + approval gates human-in-loop
+- **BRN modules** — 19/20 fully implemented (BRN-016 language stub)
 
 ---
 
-## Contatti
+## Roadmap evolutiva
 
-**Roberto De Biase** – Fondatore Rigene Project  
-📧 rigeneproject@rigene.eu | robertodebiase80@gmail.com  
-🔗 [LinkedIn](https://www.linkedin.com/in/roberto-de-biase-980416148/) · [X/@RobertoDeBiase](https://x.com/RobertoDeBiase)  
-📞 WhatsApp: +393714191412
+| Fase | Stato | Obiettivo |
+|------|-------|-----------|
+| Fase 1 | 🟡 In corso | Embrionale: Cortex + Team Scientifico + AGI properties |
+| Fase 2 | ⬜ Pianificata | Autonomia operativa (cloud/edge + robotica) |
+| Fase 3 | ⬜ Futura | AGI emergente + swarm distribuito |
+| Fase 4 | ⬜ Futura | ASI + integrazione fisica planetaria |
+| Fase 5 | ⬜ Visione | Super-organismo globale (Speace Transition) |
 
 ---
 
-*SPEACE non è solo un protocollo tecnico, ma una visione evolutiva completa che mira a trasformare l'umanità e il pianeta in un super-organismo cognitivo, armonioso e sostenibile.*
+## Governance ed etica
+
+- Tutte le azioni a rischio passano per **SafeProactive** (human-in-loop obbligatorio per MEDIUM+)
+- Modalità read-only per wallet, transazioni e azioni fisiche
+- Allineamento etico con i valori del **Rigene Project** (sostenibilità, pace, prevenzione derive)
+- Fitness function esplicita: `alignment(0.35) + task_success(0.25) + stability(0.20) + efficiency(0.15) + ethics(0.05)`
+
+---
+
+## Riferimenti
+
+- [Rigene Project](https://www.rigeneproject.org) — visione fondante
+- [TINA Framework G20](https://www.academia.edu/165241120/TINA_Framework_G20_Combined_EN)
+- [SPEACE Engineering Document v1.3](./SPEACE-Engineering-Document-v1.3.md)
+- [Task Board attivo](./SPEACE-TASKS-ACTIVE.md)
+
+---
+
+**Contatti:** Roberto De Biase — [rigeneproject@rigene.eu](mailto:rigeneproject@rigene.eu)  
+**License:** MIT
